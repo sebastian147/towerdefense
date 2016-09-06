@@ -25,47 +25,112 @@
  * \return Retorna cero en caso de exito, -1 en caso de error.
 */
 
-int main(int argc, char *argv[]) {
-  int i;
-  char *arg;
-  char *file;
-  char path[256];
-  DIR *dp;
-  struct dirent *ep;
-  int rv;
-  
-  if(argc < 2) { // modo automatico
-  	dp = opendir("./assets");
-  	if(!dp) {
-  	  perror("No pude abrir el directorio de assets :(");
-  	  return -1;
-  	}
-  	i = 0;
-  	while((ep = readdir(dp)) != NULL) {
-  	  file = ep->d_name;
-  	  if(strncmp(file, ".", 1) && strncmp(file, "..", 2)) { //archivo valido
-  	    strcpy(path, "./assets/");
-  	    strcat(path, file);
-  	    rv = show_image(path, i);
-  	    if(rv == -1) {
-  	      fprintf(stderr, "Error mostrando imagen %s: %s\n", path, 
-  	        strerror(errno));
-  	    }
-  	    i++;
-  	  }
-  	}
-  	closedir(dp); 
-  } else { // imagenes especificamente seleccionadas por el usuario
-    for(i = 0, arg = argv[1]; arg != NULL; i++, arg++) {
-      rv = show_image(arg, i);
-      if(rv == -1) {
-  	    fprintf(stderr, "Error mostrando imagen %s: %s\n", arg, 
-  	      strerror(errno));
-  	  }
-    }
-  }
-  printf("Mostradas exitosamente %d imagenes!\n", i);
-  
-  //Terminamos el programa
-  return 0;
+int main(int argc, char **argv)
+{
+	//declaro variables
+	ALLEGRO_DISPLAY *display = NULL;
+	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
+	ALLEGRO_TIMER *timer = NULL;
+	ALLEGRO_BITMAP *image = NULL; 	
+	bool salir = false;
+
+
+	if(!al_init())
+	{
+		fprintf(stderr, "Fallo al iniciar allegro\n");
+		return -1;
+	//verifica si se inicio bien allegro
+	}
+
+	if(!al_install_keyboard())
+	{
+		fprintf(stderr, "Fallo al iniciar el teclado\n");
+		return -1;
+	//verifica si se inicio bien el teclado
+	}
+ 
+	timer = al_create_timer(1.0 / FPS);
+	//crea el timer
+	
+	if(!timer)
+	{
+		fprintf(stderr, "Fallo al crear el timer\n");
+		return -1;
+	//ve si el timer anda
+	}
+
+	if(!al_init_image_addon())
+	{
+		fprintf(stderr,"Fallo al iniciar imagen addon\n");
+		al_destroy_timer(timer);
+	}
+
+	display = al_create_display(WIDTH, HEIGHT);
+	//Crear el display
+
+	if(!display)	
+	{
+		fprintf(stderr, "Fallo al crearo el display\n");
+		al_destroy_timer(timer);
+		return -1;
+	//Ver si el display anda
+	}
+
+        image = al_load_bitmap("/home/sebastian/utn/info_2016/proyecto/towerdefense/assets/mapa1.jpeg");
+	//cargo la imagen del mapa
+
+	if(!image)
+	{
+		fprintf(stderr, "Fallo al crear el mapa\n");
+		al_destroy_display(display);
+		al_destroy_timer(timer);
+		return -1;
+	//verifico si se cargo bien
+	}
+
+	event_queue = al_create_event_queue();
+	//creo un evento
+
+	if(!event_queue)
+	{
+		fprintf(stderr, "failed to create event_queue!\n");
+		al_destroy_bitmap(image);
+		al_destroy_display(display);
+		al_destroy_timer(timer);
+		return -1;
+	//verifico si se creo bien
+	}
+	
+
+	al_register_event_source(event_queue, al_get_display_event_source(display));
+ 
+	al_register_event_source(event_queue, al_get_timer_event_source(timer));
+ 
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
+	//registro los eventos	
+
+ 	al_draw_bitmap(image,0,0,0);
+	al_flip_display();
+//	al_rest(2);
+ 
+	al_start_timer(timer);
+	while(!salir)
+	{
+
+		ALLEGRO_EVENT ev;
+
+		al_wait_for_event(event_queue, &ev);
+		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+		{
+			salir=true;
+		//sale del while al apretar la cruz del display
+		}
+	}
+	 
+	//Terminamos el programa
+	al_destroy_bitmap(image);
+	al_destroy_timer(timer);
+	al_destroy_display(display);
+	al_destroy_event_queue(event_queue);
+	return 0;
 }

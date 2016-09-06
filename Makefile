@@ -11,21 +11,23 @@ EXEC = ejemplo
 CC = gcc
 CFLAGS = -Wall
 # comentar lo siguiente para desactivar el debug
-CFLAGS += -g
+#CFLAGS += -g
 
 ##### librerias a linkear
-LIBS = -lm
-## descomentar lo siguiente para allegro
+LIBS = -lm -lallegro -lallegro_main -lallegro_image -lallegro_audio -lallegro_acodec -lallegro_primitives -lallegro_font -lallegro_ttf -lallegro_dialog 
+
+
+#descomentar lo siguiente para allegro
 #LIBS += $(shell pkg-config --libs allegro)
 #CFLAGS += $(shell pkg-config --cflags allegro)
-## idem para opencv
-LIBS += $(shell pkg-config --libs opencv)
-CFLAGS += $(shell pkg-config --cflags opencv)
-## ncurses
-#LIBS += $(shell pkg-config --libs ncurses)
-#CFLAGS += $(shell pkg-config --cflags ncurses)
 
-# todo lo de aca abajo no importa... MAGIA
+
+
+
+
+
+
+
 PWD = $(shell pwd)
 BINFOLDER = $(PWD)/bin
 SRC_PATH = $(PWD)/src
