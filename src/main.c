@@ -76,7 +76,9 @@ int main(int argc, char **argv)
 	//Ver si el display anda
 	}
 
-        image = al_load_bitmap("/home/sebastian/utn/info_2016/proyecto/towerdefense/assets/mapa1.jpeg");
+
+ 	image = al_load_bitmap("./assets/Map0.png");
+
 	//cargo la imagen del mapa
 
 	if(!image)
