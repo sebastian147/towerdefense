@@ -63,6 +63,7 @@ int main(int argc, char **argv)
 	{
 		fprintf(stderr,"Fallo al iniciar imagen addon\n");
 		al_destroy_timer(timer);
+		return -1;
 	}
 
 	display = al_create_display(WIDTH, HEIGHT);
@@ -95,7 +96,7 @@ int main(int argc, char **argv)
 
 	if(!event_queue)
 	{
-		fprintf(stderr, "failed to create event_queue!\n");
+		fprintf(stderr, "Fallo al crear el evento queue\n");
 		al_destroy_bitmap(image);
 		al_destroy_display(display);
 		al_destroy_timer(timer);
