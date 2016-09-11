@@ -31,8 +31,14 @@ int main(int argc, char **argv)
 	ALLEGRO_DISPLAY *display = NULL;
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 	ALLEGRO_TIMER *timer = NULL;
-	ALLEGRO_BITMAP *image = NULL; 	
+	ALLEGRO_BITMAP *mapa = NULL;
+	
 	bool salir = false;
+        bool redraw = true;
+
+	Cuadrado cuadrado;
+
+	bool keys[5] = {false, false, false, false, false};
 
 
 	if(!al_init())
@@ -49,7 +55,7 @@ int main(int argc, char **argv)
 	//verifica si se inicio bien el teclado
 	}
  
-	timer = al_create_timer(1.0 / FPS);
+	timer = al_create_timer(1.0 /10);
 	//crea el timer
 	
 	if(!timer)
@@ -66,7 +72,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	display = al_create_display(WIDTH, HEIGHT);
+	display = al_create_display(LARGO,ALTO);
 	//Crear el display
 
 	if(!display)	
@@ -78,11 +84,11 @@ int main(int argc, char **argv)
 	}
 
 
- 	image = al_load_bitmap("./assets/Map0.png");
+	mapa = al_load_bitmap("./assets/Map0.png");
 
 	//cargo la imagen del mapa
 
-	if(!image)
+	if(!mapa)
 	{
 		fprintf(stderr, "Fallo al crear el mapa\n");
 		al_destroy_display(display);
@@ -93,11 +99,28 @@ int main(int argc, char **argv)
 
 	event_queue = al_create_event_queue();
 	//creo un evento
+	 if(!al_init_primitives_addon())
+	{
+		fprintf(stderr,"Fallo al crear el evento\n");
+		al_destroy_bitmap(mapa);
+		al_destroy_display(display);
+		al_destroy_timer(timer);
+		return -1;
 
+	}
+	if(!al_install_keyboard())
+	{
+		fprintf(stderr, "Fallo al crear el teclado\n");
+		al_destroy_bitmap(mapa);
+		al_destroy_display(display);
+		al_destroy_timer(timer);
+		return -1;
+
+	}
 	if(!event_queue)
 	{
 		fprintf(stderr, "Fallo al crear el evento queue\n");
-		al_destroy_bitmap(image);
+		al_destroy_bitmap(mapa);
 		al_destroy_display(display);
 		al_destroy_timer(timer);
 		return -1;
@@ -110,13 +133,15 @@ int main(int argc, char **argv)
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
  
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
+    
+	al_start_timer(timer);
 	//registro los eventos	
 
- 	al_draw_bitmap(image,0,0,0);
+
+	al_draw_bitmap(mapa,0,0,0);
+	DibujarCuadrado(&cuadrado);
 	al_flip_display();
-//	al_rest(2);
- 
-	al_start_timer(timer);
+	
 	while(!salir)
 	{
 
@@ -128,10 +153,85 @@ int main(int argc, char **argv)
 			salir=true;
 		//sale del while al apretar la cruz del display
 		}
+		if(ev.type == ALLEGRO_EVENT_TIMER)
+		{
+			redraw = true;
+			if(keys[UP])
+				MoverCuadradoArriba(&cuadrado);
+			if(keys[DOWN])
+				MoverCuadradoAbajo(&cuadrado);
+			if(keys[LEFT])
+				MoverCuadradoIzquierda(&cuadrado);
+			if(keys[RIGHT])
+				MoverCuadradoDerecha(&cuadrado);
+
+		}
+		if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+		{
+			salir = true;
+		}
+                else if(ev.type == ALLEGRO_EVENT_KEY_DOWN)
+                {
+                        switch(ev.keyboard.keycode)
+                        {
+                        case ALLEGRO_KEY_ESCAPE:
+                                salir = true;
+                                break;
+                        case ALLEGRO_KEY_UP:
+                                keys[UP] = true;
+                                break;
+                        case ALLEGRO_KEY_DOWN:
+                                keys[DOWN] = true;
+                                break;
+                        case ALLEGRO_KEY_LEFT:
+                                keys[LEFT] = true;
+                                break;
+                        case ALLEGRO_KEY_RIGHT:
+                                keys[RIGHT] = true;
+                                break;
+                        }
+                }
+
+
+		else if(ev.type == ALLEGRO_EVENT_KEY_UP)
+		{
+			switch(ev.keyboard.keycode)
+			{
+			case ALLEGRO_KEY_ESCAPE:
+				salir = true;
+				break;
+			case ALLEGRO_KEY_UP:
+				keys[UP] = false;
+				break;
+			case ALLEGRO_KEY_DOWN:
+				keys[DOWN] = false;
+				break;
+			case ALLEGRO_KEY_LEFT:
+				keys[LEFT] = false;
+				break;
+			case ALLEGRO_KEY_RIGHT:
+				keys[RIGHT] = false;
+				break;
+			}
+		}
+		if(redraw && al_is_event_queue_empty(event_queue))
+		{
+			redraw = false; 
+
+			DibujarCuadrado(&cuadrado);
+		
+			al_flip_display();
+			al_draw_bitmap(mapa,0,0,0);
+
+		//	al_clear_to_color(al_map_rgb(0,0,0));
+
+
+		}
+
 	}
 	 
 	//Terminamos el programa
-	al_destroy_bitmap(image);
+	al_destroy_bitmap(mapa);
 	al_destroy_timer(timer);
 	al_destroy_display(display);
 	al_destroy_event_queue(event_queue);
