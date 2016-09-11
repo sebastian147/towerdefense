@@ -136,23 +136,18 @@ int main(int argc, char **argv)
     
 	al_start_timer(timer);
 	//registro los eventos	
+	IniciarCuadrado(&cuadrado);
 
-
-	al_draw_bitmap(mapa,0,0,0);
-	DibujarCuadrado(&cuadrado);
-	al_flip_display();
+//	DibujarCuadrado(&cuadrado);
+  //      al_draw_bitmap(mapa,0,0,0);
+//	al_flip_display();
 	
 	while(!salir)
 	{
 
 		ALLEGRO_EVENT ev;
-
 		al_wait_for_event(event_queue, &ev);
-		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
-		{
-			salir=true;
-		//sale del while al apretar la cruz del display
-		}
+
 		if(ev.type == ALLEGRO_EVENT_TIMER)
 		{
 			redraw = true;
@@ -166,7 +161,7 @@ int main(int argc, char **argv)
 				MoverCuadradoDerecha(&cuadrado);
 
 		}
-		if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
 			salir = true;
 		}
@@ -174,21 +169,21 @@ int main(int argc, char **argv)
                 {
                         switch(ev.keyboard.keycode)
                         {
-                        case ALLEGRO_KEY_ESCAPE:
-                                salir = true;
+            	            case ALLEGRO_KEY_ESCAPE:
+            	                    salir = true;
+            	                    break;
+            	            case ALLEGRO_KEY_UP:
+				keys[UP] = true;
                                 break;
-                        case ALLEGRO_KEY_UP:
-                                keys[UP] = true;
-                                break;
-                        case ALLEGRO_KEY_DOWN:
-                                keys[DOWN] = true;
-                                break;
-                        case ALLEGRO_KEY_LEFT:
-                                keys[LEFT] = true;
-                                break;
-                        case ALLEGRO_KEY_RIGHT:
-                                keys[RIGHT] = true;
-                                break;
+	        	    case ALLEGRO_KEY_DOWN:
+        	                        keys[DOWN] = true;
+                  	              break;
+                  	      case ALLEGRO_KEY_LEFT:
+                  	              keys[LEFT] = true;
+                        	        break;
+                  	      case ALLEGRO_KEY_RIGHT:
+                        	        keys[RIGHT] = true;
+                               		 break;
                         }
                 }
 
@@ -197,38 +192,40 @@ int main(int argc, char **argv)
 		{
 			switch(ev.keyboard.keycode)
 			{
-			case ALLEGRO_KEY_ESCAPE:
-				salir = true;
-				break;
-			case ALLEGRO_KEY_UP:
-				keys[UP] = false;
-				break;
-			case ALLEGRO_KEY_DOWN:
-				keys[DOWN] = false;
-				break;
-			case ALLEGRO_KEY_LEFT:
-				keys[LEFT] = false;
-				break;
-			case ALLEGRO_KEY_RIGHT:
-				keys[RIGHT] = false;
-				break;
+				case ALLEGRO_KEY_ESCAPE:
+					salir = true;
+					break;
+				case ALLEGRO_KEY_UP:
+					keys[UP] = false;
+					break;
+				case ALLEGRO_KEY_DOWN:
+					keys[DOWN] = false;
+					break;
+				case ALLEGRO_KEY_LEFT:
+					keys[LEFT] = false;
+					break;
+				case ALLEGRO_KEY_RIGHT:
+					keys[RIGHT] = false;
+					break;
 			}
 		}
 		if(redraw && al_is_event_queue_empty(event_queue))
 		{
 			redraw = false; 
 
-			DibujarCuadrado(&cuadrado);
+	//		DibujarCuadrado(&cuadrado);
 		
+
 			al_flip_display();
 			al_draw_bitmap(mapa,0,0,0);
+                        DibujarCuadrado(&cuadrado);
 
-		//	al_clear_to_color(al_map_rgb(0,0,0));
 
 
 		}
 
-	}
+
+}
 	 
 	//Terminamos el programa
 	al_destroy_bitmap(mapa);
