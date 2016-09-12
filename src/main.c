@@ -1,3 +1,4 @@
+
 /**
  * \file main.c
  * \brief Programa sencillo para abrir una imagen y presentarla en una ventana
@@ -27,18 +28,23 @@
 
 int main(int argc, char **argv)
 {
-	//declaro variables
+
+	//declaro objetos
+	Cuadrado cuadrado;//el cuadrado que se mueve por la pantalla
+	Enemigo enemigo1;
+
+	//Pongo punteros a null a los structs de allegro que inicio despues
 	ALLEGRO_DISPLAY *display = NULL;
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 	ALLEGRO_TIMER *timer = NULL;
 	ALLEGRO_BITMAP *mapa = NULL;
+	enemigo1.imagen=NULL;
 	
-	bool salir = false;
-        bool redraw = true;
-
-	Cuadrado cuadrado;
-
-	bool keys[5] = {false, false, false, false, false};
+	//declaro bools
+	bool salir = false;//para salir del while
+        bool redraw = true;//hace que entre al if de volver a dibujar
+	bool keys[5] = {false, false, false, false, false};//le dice como estan las teclas
+	
 
 
 	if(!al_init())
@@ -97,6 +103,20 @@ int main(int argc, char **argv)
 	//verifico si se cargo bien
 	}
 
+	enemigo1.imagen = al_load_bitmap("./assets/dsm12set.png");
+	al_convert_mask_to_alpha(enemigo1.imagen, al_map_rgb(120, 195, 128));
+        //cargo la imagen del enemigo
+
+        if(!enemigo1.imagen)
+        {
+                fprintf(stderr, "Fallo al crear el mapa\n");
+                al_destroy_display(display);
+                al_destroy_timer(timer);
+		al_destroy_bitmap(enemigo1.imagen);
+                return -1;
+        //verifico si se cargo bien
+        }
+
 	event_queue = al_create_event_queue();
 	//creo un evento
 	 if(!al_init_primitives_addon())
@@ -105,6 +125,7 @@ int main(int argc, char **argv)
 		al_destroy_bitmap(mapa);
 		al_destroy_display(display);
 		al_destroy_timer(timer);
+                al_destroy_bitmap(enemigo1.imagen);
 		return -1;
 
 	}
@@ -114,6 +135,7 @@ int main(int argc, char **argv)
 		al_destroy_bitmap(mapa);
 		al_destroy_display(display);
 		al_destroy_timer(timer);
+                al_destroy_bitmap(enemigo1.imagen);
 		return -1;
 
 	}
@@ -123,6 +145,7 @@ int main(int argc, char **argv)
 		al_destroy_bitmap(mapa);
 		al_destroy_display(display);
 		al_destroy_timer(timer);
+                al_destroy_bitmap(enemigo1.imagen);
 		return -1;
 	//verifico si se creo bien
 	}
@@ -137,17 +160,13 @@ int main(int argc, char **argv)
 	al_start_timer(timer);
 	//registro los eventos	
 	IniciarCuadrado(&cuadrado);
-
-//	DibujarCuadrado(&cuadrado);
-  //      al_draw_bitmap(mapa,0,0,0);
-//	al_flip_display();
-	
+	IniciarEnemigo1(&enemigo1);	
 	while(!salir)
 	{
 
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
-
+	
 		if(ev.type == ALLEGRO_EVENT_TIMER)
 		{
 			redraw = true;
@@ -159,12 +178,13 @@ int main(int argc, char **argv)
 				MoverCuadradoIzquierda(&cuadrado);
 			if(keys[RIGHT])
 				MoverCuadradoDerecha(&cuadrado);
+			MoverEnemigo(&enemigo1);	
 
-		}
+		}//de acuero a la tecla que oprimi se mueve
 		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
 			salir = true;
-		}
+		}//cierra el display
                 else if(ev.type == ALLEGRO_EVENT_KEY_DOWN)
                 {
                         switch(ev.keyboard.keycode)
@@ -185,9 +205,7 @@ int main(int argc, char **argv)
                         	        keys[RIGHT] = true;
                                		 break;
                         }
-                }
-
-
+                }//cambia los botones mientras los aprieto
 		else if(ev.type == ALLEGRO_EVENT_KEY_UP)
 		{
 			switch(ev.keyboard.keycode)
@@ -208,29 +226,28 @@ int main(int argc, char **argv)
 					keys[RIGHT] = false;
 					break;
 			}
-		}
+		}//cambia los botones cuando los suelto
+
+
 		if(redraw && al_is_event_queue_empty(event_queue))
 		{
-			redraw = false; 
-
-	//		DibujarCuadrado(&cuadrado);
-		
+			redraw = false;
+ 
+			DibujarCuadrado(&cuadrado);
 
 			al_flip_display();
 			al_draw_bitmap(mapa,0,0,0);
-                        DibujarCuadrado(&cuadrado);
 
+		}//si no recive ningun evento hace esto
+		
 
-
-		}
-
-
-}
+	}
 	 
 	//Terminamos el programa
 	al_destroy_bitmap(mapa);
 	al_destroy_timer(timer);
 	al_destroy_display(display);
 	al_destroy_event_queue(event_queue);
+        al_destroy_bitmap(enemigo1.imagen);
 	return 0;
 }

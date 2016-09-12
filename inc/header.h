@@ -8,11 +8,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "objetos.h"
-//#include <sys/types.h>
-//#include <dirent.h>
-//#include <errno.h>
-//#include <opencv/cv.h>
-//#include <highgui.h>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -22,6 +17,9 @@
 #define LARGO 800
 #define ALTO 480
 #define FPS 60
+
+#define CUADRADOY 40
+#define CUADRADOX 54
 
 enum MYKEYS 
 {
@@ -38,6 +36,8 @@ void MoverCuadradoIzquierda(Cuadrado *cuadrado);
 void MoverCuadradoDerecha(Cuadrado *cuadrado);
 
 
-
+//enemigos
+void MoverEnemigo(Enemigo *enemigo);
+void IniciarEnemigo1(Enemigo *enemigo);
 
 
