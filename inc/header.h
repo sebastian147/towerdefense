@@ -13,6 +13,8 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_native_dialog.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 
 #define LARGO 800
 #define ALTO 480
@@ -26,6 +28,12 @@ enum MYKEYS
 	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
 };
 enum KEYS{UP, DOWN, LEFT, RIGHT, SPACE};
+
+//reloj
+bool EmpezarReloj(ALLEGRO_FONT *fuente,Reloj *reloj);
+void Reloj0(ALLEGRO_FONT *fuente);
+void IniciarReloj(Reloj *reloj);
+
 
 //cuadrado
 void IniciarCuadrado(Cuadrado *cuadrado);

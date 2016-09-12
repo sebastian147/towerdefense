@@ -1,4 +1,4 @@
-#include <allegro5/allegro.h>
+ #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_native_dialog.h>
 #include <allegro5/allegro_primitives.h>
@@ -34,3 +34,10 @@ struct ENEMIGO
 	int spritey;
 };
 typedef struct ENEMIGO Enemigo;
+struct RELOJ
+{
+	int minutos;
+	int segundos;
+	int milisegundos;
+};
+typedef struct RELOJ Reloj;

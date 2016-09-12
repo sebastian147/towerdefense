@@ -32,19 +32,22 @@ int main(int argc, char **argv)
 	//declaro objetos
 	Cuadrado cuadrado;//el cuadrado que se mueve por la pantalla
 	Enemigo *enemigo=NULL,*aux;
+	Reloj reloj;
 
 	//Pongo punteros a null a los structs de allegro que inicio despues
 	ALLEGRO_DISPLAY *display = NULL;
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 	ALLEGRO_TIMER *timer = NULL;
 	ALLEGRO_BITMAP *mapa = NULL;
+	ALLEGRO_FONT *fuente =NULL;
 //	enemigo1.imagen=NULL;
 	
 	//declaro bools
 	bool salir = false;//para salir del while
         bool redraw = true;//hace que entre al if de volver a dibujar
 	bool keys[5] = {false, false, false, false, false};//le dice como estan las teclas
-	
+	bool RelojSalida=false;//reloj	
+	int oleada=0;
 
 
 	if(!al_init())
@@ -120,7 +123,7 @@ int main(int argc, char **argv)
 */
 	event_queue = al_create_event_queue();
 	//creo un evento
-	 if(!al_init_primitives_addon())
+	if(!al_init_primitives_addon())
 	{
 		fprintf(stderr,"Fallo al crear el evento\n");
 		al_destroy_bitmap(mapa);
@@ -151,6 +154,20 @@ int main(int argc, char **argv)
 	//verifico si se creo bien
 	}
 	
+//	fuente =al_load_ttf_font("./assest/Action\ force\ Normal.ttf",10,0);
+	al_init_font_addon();
+
+	if(!al_init_ttf_addon())	
+	{
+                fprintf(stderr, "Fallo al iniciar el archivo .ttf\n");
+                al_destroy_bitmap(mapa);
+                al_destroy_display(display);
+                al_destroy_timer(timer);
+	        al_destroy_event_queue(event_queue);
+
+	}
+
+        fuente =al_load_ttf_font("./assets/fuente1.ttf",20,0);
 
 	al_register_event_source(event_queue, al_get_display_event_source(display));
  
@@ -160,18 +177,15 @@ int main(int argc, char **argv)
     
 	al_start_timer(timer);
 
-	enemigo=NuevoEnemigo(enemigo);
-	enemigo=NuevoEnemigo(enemigo);
-	IniciarCuadrado(&cuadrado);
-	IniciarEnemigo1(enemigo);
-	IniciarEnemigo2(enemigo->siguiente);	
+	IniciarReloj(&reloj);
+        IniciarCuadrado(&cuadrado);
 
 	while(!salir)
 	{
 
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
-	
+
 		if(ev.type == ALLEGRO_EVENT_TIMER)
 		{
 			redraw = true;
@@ -186,12 +200,33 @@ int main(int argc, char **argv)
 			if(keys[RIGHT])
 				MoverCuadradoDerecha(&cuadrado);
 
-			//mueve el enemigo
-			for(aux=enemigo;aux!=NULL;aux=aux->siguiente)
+			//reloj
+			if(!RelojSalida)
 			{
-				MoverEnemigo(aux);
-			}	
+				RelojSalida=EmpezarReloj(fuente,&reloj);
+			}
+			else if(RelojSalida)
+			{
+				//Crea al enemigo
+				if(oleada==0)
+				{
+					enemigo=NuevoEnemigo(enemigo);
+					enemigo=NuevoEnemigo(enemigo);
+					IniciarEnemigo1(enemigo);
+					IniciarEnemigo2(enemigo->siguiente);
+					oleada++;				
+				}
+				else
+				{
+					//mueve el enemigo
+					for(aux=enemigo;aux!=NULL;aux=aux->siguiente)
+					{
 
+						MoverEnemigo(aux);
+					}	
+				}
+				Reloj0(fuente);		
+			}
 		}//de acuero a la tecla que oprimi se mueve
 		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
@@ -206,7 +241,8 @@ int main(int argc, char **argv)
             	                    break;
             	            case ALLEGRO_KEY_UP:
 				keys[UP] = true;
-                                break;
+                             	enemigo->vida.x--;
+				   break;
 	        	    case ALLEGRO_KEY_DOWN:
         	                        keys[DOWN] = true;
                   	              break;
@@ -260,6 +296,8 @@ int main(int argc, char **argv)
 	al_destroy_timer(timer);
 	al_destroy_display(display);
 	al_destroy_event_queue(event_queue);
+	al_destroy_font(fuente);
  //       al_destroy_bitmap(enemigo1.imagen);
+	
 	return 0;
 }

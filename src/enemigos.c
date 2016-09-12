@@ -45,9 +45,16 @@ void IniciarEnemigo2(Enemigo *enemigo)
 }
 void BarraDeVida(Enemigo *enemigo)
 {
-	float porcentaje=(32)/(enemigo->vida.y);
-	al_draw_filled_rectangle((enemigo->pocicion.x+(32))-(porcentaje*enemigo->vida.x),enemigo->pocicion.y-5,enemigo->pocicion.x+32,enemigo->pocicion.y,al_map_rgb(255, 0, 0));
-	al_draw_filled_rectangle(enemigo->pocicion.x,enemigo->pocicion.y-5,enemigo->pocicion.x+32,enemigo->pocicion.y,al_map_rgb(0, 255, 0));
+	float porcentaje=(32.0)/(enemigo->vida.y);
+	if(porcentaje*enemigo->vida.x>0)
+	{
+       		al_draw_filled_rectangle(enemigo->pocicion.x,enemigo->pocicion.y-5,enemigo->pocicion.x+32,enemigo->pocicion.y,al_map_rgb(0, 255, 0));
+		al_draw_filled_rectangle(enemigo->pocicion.x+(porcentaje*enemigo->vida.x),enemigo->pocicion.y-5,enemigo->pocicion.x+32,enemigo->pocicion.y,al_map_rgb(255, 0, 0));
+	}
+	else
+	{
+		enemigo->bandera=11;
+	}
 }
 Enemigo * NuevoEnemigo(Enemigo *anterior)
 {
@@ -157,14 +164,16 @@ void MoverEnemigo(Enemigo *enemigo)
 	MoverEnemigoDerecha(10,enemigo,9);
 	MoverEnemigoAbajo(12,enemigo,10);
 
-
-
-
-	
-	//dibuja al enemigo
-	BarraDeVida(enemigo);
-	al_draw_bitmap_region(enemigo->imagen,enemigo->FrameActual.x*enemigo->DistanciaFrames.x,(enemigo->spritey+enemigo->FrameActual.y)*enemigo->DistanciaFrames.y, enemigo->DistanciaFrames.x, enemigo->DistanciaFrames.y, enemigo->pocicion.x, enemigo->pocicion.y, 0);
-
+	if(enemigo->bandera==11)
+	{
+	//	LiberarMemoriaEnemigo();
+	}
+	else
+	{
+		//dibuja al enemigo
+		BarraDeVida(enemigo);
+		al_draw_bitmap_region(enemigo->imagen,enemigo->FrameActual.x*enemigo->DistanciaFrames.x,(enemigo->spritey+enemigo->FrameActual.y)*enemigo->DistanciaFrames.y, enemigo->DistanciaFrames.x, enemigo->DistanciaFrames.y, enemigo->pocicion.x, enemigo->pocicion.y, 0);
+	}
 }
 
 
