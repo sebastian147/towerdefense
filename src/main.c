@@ -31,14 +31,14 @@ int main(int argc, char **argv)
 
 	//declaro objetos
 	Cuadrado cuadrado;//el cuadrado que se mueve por la pantalla
-	Enemigo enemigo1,nuevoenemigo;
+	Enemigo *enemigo=NULL,*aux;
 
 	//Pongo punteros a null a los structs de allegro que inicio despues
 	ALLEGRO_DISPLAY *display = NULL;
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 	ALLEGRO_TIMER *timer = NULL;
 	ALLEGRO_BITMAP *mapa = NULL;
-	enemigo1.imagen=NULL;
+//	enemigo1.imagen=NULL;
 	
 	//declaro bools
 	bool salir = false;//para salir del while
@@ -103,11 +103,11 @@ int main(int argc, char **argv)
 	//verifico si se cargo bien
 	}
 
-	enemigo1.imagen = al_load_bitmap("./assets/dsm12set.png");
-	al_convert_mask_to_alpha(enemigo1.imagen, al_map_rgb(120, 195, 128));
+//	enemigo.imagen = al_load_bitmap("./assets/dsm12set.png");
+//	al_convert_mask_to_alpha(enemigo.imagen, al_map_rgb(120, 195, 128));
         //cargo la imagen del enemigo
-
-        if(!enemigo1.imagen)
+//
+  /*      if(!enemigo1.imagen)
         {
                 fprintf(stderr, "Fallo al crear el mapa\n");
                 al_destroy_display(display);
@@ -116,8 +116,8 @@ int main(int argc, char **argv)
                 return -1;
         //verifico si se cargo bien
         }
-	nuevoenemigo.imagen=enemigo1.imagen;
-
+	//nuevoenemigo.imagen=enemigo.imagen;
+*/
 	event_queue = al_create_event_queue();
 	//creo un evento
 	 if(!al_init_primitives_addon())
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 		al_destroy_bitmap(mapa);
 		al_destroy_display(display);
 		al_destroy_timer(timer);
-                al_destroy_bitmap(enemigo1.imagen);
+     //           al_destroy_bitmap(enemigo1.imagen);
 		return -1;
 
 	}
@@ -136,7 +136,7 @@ int main(int argc, char **argv)
 		al_destroy_bitmap(mapa);
 		al_destroy_display(display);
 		al_destroy_timer(timer);
-                al_destroy_bitmap(enemigo1.imagen);
+ //               al_destroy_bitmap(enemigo1.imagen);
 		return -1;
 
 	}
@@ -146,7 +146,7 @@ int main(int argc, char **argv)
 		al_destroy_bitmap(mapa);
 		al_destroy_display(display);
 		al_destroy_timer(timer);
-                al_destroy_bitmap(enemigo1.imagen);
+   //             al_destroy_bitmap(enemigo1.imagen);
 		return -1;
 	//verifico si se creo bien
 	}
@@ -159,11 +159,12 @@ int main(int argc, char **argv)
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
     
 	al_start_timer(timer);
-	//registro los eventos	
+
+	enemigo=NuevoEnemigo(enemigo);
+	enemigo=NuevoEnemigo(enemigo);
 	IniciarCuadrado(&cuadrado);
-	IniciarEnemigo1(&enemigo1);
-	//nuevoenemigo=(Enemigo *)malloc(sizeof(Enemigo));
-	IniciarEnemigo2(&nuevoenemigo);
+	IniciarEnemigo1(enemigo);
+	IniciarEnemigo2(enemigo->siguiente);
 	while(!salir)
 	{
 
@@ -185,8 +186,10 @@ int main(int argc, char **argv)
 				MoverCuadradoDerecha(&cuadrado);
 
 			//mueve el enemigo
-			MoverEnemigo(&enemigo1);	
-			MoverEnemigo(&nuevoenemigo);
+			for(aux=enemigo;aux!=NULL;aux=aux->siguiente)
+			{
+				MoverEnemigo(aux);
+			}	
 
 		}//de acuero a la tecla que oprimi se mueve
 		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -256,6 +259,6 @@ int main(int argc, char **argv)
 	al_destroy_timer(timer);
 	al_destroy_display(display);
 	al_destroy_event_queue(event_queue);
-        al_destroy_bitmap(enemigo1.imagen);
+ //       al_destroy_bitmap(enemigo1.imagen);
 	return 0;
 }

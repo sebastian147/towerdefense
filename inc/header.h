@@ -44,4 +44,5 @@ void MoverEnemigoIzquierda(int final,Enemigo *enemigo,int bandera);
 void MoverEnemigoDerecha(int final,Enemigo *enemigo,int bandera);
 void MoverEnemigoArriba(int final,Enemigo *enemigo,int bandera);
 void IniciarEnemigo2(Enemigo *enemigo);
+Enemigo * NuevoEnemigo(Enemigo *anterior);
 

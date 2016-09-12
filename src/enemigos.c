@@ -2,6 +2,8 @@
 void IniciarEnemigo1(Enemigo *enemigo)
 {
 //	enemigo->nombre={'D','r','a','g','o','n'};
+        enemigo->imagen = al_load_bitmap("./assets/dsm12set.png");
+        al_convert_mask_to_alpha(enemigo->imagen, al_map_rgb(120, 195, 128));
 	enemigo->vida=5;
 	enemigo->velocidad=2;
 	enemigo->danio=2;
@@ -21,6 +23,8 @@ void IniciarEnemigo1(Enemigo *enemigo)
 void IniciarEnemigo2(Enemigo *enemigo)
 {
 //	enemigo->nombre={'D','r','a','g','o','n'};
+        enemigo->imagen = al_load_bitmap("./assets/dsm12set.png");
+        al_convert_mask_to_alpha(enemigo->imagen, al_map_rgb(120, 195, 128));
 	enemigo->vida=5;
 	enemigo->velocidad=7;
 	enemigo->danio=2;
@@ -37,6 +41,21 @@ void IniciarEnemigo2(Enemigo *enemigo)
 	enemigo->spritey=4;
 //le doy valor al enemigo 	
 }
+Enemigo * NuevoEnemigo(Enemigo *anterior)
+{
+        Enemigo *nuevo;
+        nuevo=(Enemigo *) malloc(sizeof(Enemigo));
+        if (anterior)
+        {
+                nuevo->siguiente=anterior;
+        }
+        else
+        {
+                nuevo->siguiente=NULL;
+        }
+        return nuevo;
+}
+
 void MoverEnemigoAbajo(int final,Enemigo *enemigo,int bandera)
 {
 	if (enemigo->bandera==bandera)//compara el flag para elegir que orden hace
@@ -53,6 +72,12 @@ void MoverEnemigoAbajo(int final,Enemigo *enemigo,int bandera)
 		enemigo->pocicion.y+=enemigo->velocidad;//cambia el valor de la pocicion del enemigo
 		if(enemigo->pocicion.y >= CUADRADOY*final)
 			enemigo->bandera=bandera+1;//pone un flag cuando llega al final de la linea
+		if(bandera==11)
+	        {
+                	al_destroy_bitmap(enemigo->imagen);
+	                free(enemigo);
+       	 	}
+
 	}
 }
 void MoverEnemigoIzquierda(int final,Enemigo *enemigo,int bandera)
@@ -123,6 +148,10 @@ void MoverEnemigo(Enemigo *enemigo)
 	MoverEnemigoArriba(3,enemigo,8);
 	MoverEnemigoDerecha(10,enemigo,9);
 	MoverEnemigoAbajo(12,enemigo,10);
+
+
+
+
 	
 	//dibuja al enemigo
 	al_draw_bitmap_region(enemigo->imagen,enemigo->FrameActual.x*enemigo->DistanciaFrames.x,(enemigo->spritey+enemigo->FrameActual.y)*enemigo->DistanciaFrames.y, enemigo->DistanciaFrames.x, enemigo->DistanciaFrames.y, enemigo->pocicion.x, enemigo->pocicion.y, 0);
