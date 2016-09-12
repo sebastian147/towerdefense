@@ -30,5 +30,7 @@ struct ENEMIGO
 	xy CantidadFrames;
 	int contador;
 	int bandera;
+	struct ENEMIGO *siguiente;
+	int spritey;
 };
 typedef struct ENEMIGO Enemigo;

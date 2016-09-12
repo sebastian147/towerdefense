@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 
 	//declaro objetos
 	Cuadrado cuadrado;//el cuadrado que se mueve por la pantalla
-	Enemigo enemigo1;
+	Enemigo enemigo1,nuevoenemigo;
 
 	//Pongo punteros a null a los structs de allegro que inicio despues
 	ALLEGRO_DISPLAY *display = NULL;
@@ -116,6 +116,7 @@ int main(int argc, char **argv)
                 return -1;
         //verifico si se cargo bien
         }
+	nuevoenemigo.imagen=enemigo1.imagen;
 
 	event_queue = al_create_event_queue();
 	//creo un evento
@@ -160,7 +161,9 @@ int main(int argc, char **argv)
 	al_start_timer(timer);
 	//registro los eventos	
 	IniciarCuadrado(&cuadrado);
-	IniciarEnemigo1(&enemigo1);	
+	IniciarEnemigo1(&enemigo1);
+	//nuevoenemigo=(Enemigo *)malloc(sizeof(Enemigo));
+	IniciarEnemigo2(&nuevoenemigo);
 	while(!salir)
 	{
 
@@ -170,6 +173,8 @@ int main(int argc, char **argv)
 		if(ev.type == ALLEGRO_EVENT_TIMER)
 		{
 			redraw = true;
+
+			//mueve el cuadrado
 			if(keys[UP])
 				MoverCuadradoArriba(&cuadrado);
 			if(keys[DOWN])
@@ -178,7 +183,10 @@ int main(int argc, char **argv)
 				MoverCuadradoIzquierda(&cuadrado);
 			if(keys[RIGHT])
 				MoverCuadradoDerecha(&cuadrado);
+
+			//mueve el enemigo
 			MoverEnemigo(&enemigo1);	
+			MoverEnemigo(&nuevoenemigo);
 
 		}//de acuero a la tecla que oprimi se mueve
 		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -238,7 +246,7 @@ int main(int argc, char **argv)
 			al_flip_display();
 			al_draw_bitmap(mapa,0,0,0);
 
-		}//si no recive ningun evento hace esto
+		}//si no recibe ningun evento hace esto
 		
 
 	}

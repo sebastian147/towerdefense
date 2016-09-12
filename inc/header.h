@@ -39,5 +39,9 @@ void MoverCuadradoDerecha(Cuadrado *cuadrado);
 //enemigos
 void MoverEnemigo(Enemigo *enemigo);
 void IniciarEnemigo1(Enemigo *enemigo);
-
+void MoverEnemigoAbajo(int final,Enemigo *enemigo,int bandera);
+void MoverEnemigoIzquierda(int final,Enemigo *enemigo,int bandera);
+void MoverEnemigoDerecha(int final,Enemigo *enemigo,int bandera);
+void MoverEnemigoArriba(int final,Enemigo *enemigo,int bandera);
+void IniciarEnemigo2(Enemigo *enemigo);
 
