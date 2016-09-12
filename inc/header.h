@@ -18,7 +18,7 @@
 
 #define LARGO 800
 #define ALTO 480
-#define FPS 60
+#define FPS 10
 
 #define CUADRADOY 40
 #define CUADRADOX 54
@@ -28,6 +28,10 @@ enum MYKEYS
 	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
 };
 enum KEYS{UP, DOWN, LEFT, RIGHT, SPACE};
+
+//iniciar
+void InicializarIniciar(Iniciar *iniciar);
+int IniciarYErrores(Iniciar *iniciar);
 
 //reloj
 bool EmpezarReloj(ALLEGRO_FONT *fuente,Reloj *reloj);

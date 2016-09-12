@@ -29,162 +29,52 @@
 int main(int argc, char **argv)
 {
 
-	//declaro objetos
+/*********************************************variables*************************************/
+	//declaro las estructuras
 	Cuadrado cuadrado;//el cuadrado que se mueve por la pantalla
-	Enemigo *enemigo=NULL,*aux;
-	Reloj reloj;
-
+	Enemigo *enemigo=NULL,*aux;//declaro los punteros de enemigos para trabajarlos en forma de lista
+	Reloj reloj;//El reloj de abajo a la derecha
+	Iniciar iniciar;
 	//Pongo punteros a null a los structs de allegro que inicio despues
-	ALLEGRO_DISPLAY *display = NULL;
-	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
-	ALLEGRO_TIMER *timer = NULL;
-	ALLEGRO_BITMAP *mapa = NULL;
-	ALLEGRO_FONT *fuente =NULL;
-//	enemigo1.imagen=NULL;
+	InicializarIniciar(&iniciar);
 	
 	//declaro bools
 	bool salir = false;//para salir del while
         bool redraw = true;//hace que entre al if de volver a dibujar
 	bool keys[5] = {false, false, false, false, false};//le dice como estan las teclas
 	bool RelojSalida=false;//reloj	
-	int oleada=0;
+	int oleada=0;//para saber donde esta 
 
+/**************************************Inicia Allegro y analiza errores*********************************/
 
-	if(!al_init())
+	if(IniciarYErrores(&iniciar))
 	{
-		fprintf(stderr, "Fallo al iniciar allegro\n");
 		return -1;
-	//verifica si se inicio bien allegro
 	}
 
-	if(!al_install_keyboard())
-	{
-		fprintf(stderr, "Fallo al iniciar el teclado\n");
-		return -1;
-	//verifica si se inicio bien el teclado
-	}
+
+/****************************************Registro los eventos************************************/
+
+
+	al_register_event_source(iniciar.event_queue, al_get_display_event_source(iniciar.display));
  
-	timer = al_create_timer(1.0 /10);
-	//crea el timer
-	
-	if(!timer)
-	{
-		fprintf(stderr, "Fallo al crear el timer\n");
-		return -1;
-	//ve si el timer anda
-	}
-
-	if(!al_init_image_addon())
-	{
-		fprintf(stderr,"Fallo al iniciar imagen addon\n");
-		al_destroy_timer(timer);
-		return -1;
-	}
-
-	display = al_create_display(LARGO,ALTO);
-	//Crear el display
-
-	if(!display)	
-	{
-		fprintf(stderr, "Fallo al crearo el display\n");
-		al_destroy_timer(timer);
-		return -1;
-	//Ver si el display anda
-	}
-
-
-	mapa = al_load_bitmap("./assets/Map0.png");
-
-	//cargo la imagen del mapa
-
-	if(!mapa)
-	{
-		fprintf(stderr, "Fallo al crear el mapa\n");
-		al_destroy_display(display);
-		al_destroy_timer(timer);
-		return -1;
-	//verifico si se cargo bien
-	}
-
-//	enemigo.imagen = al_load_bitmap("./assets/dsm12set.png");
-//	al_convert_mask_to_alpha(enemigo.imagen, al_map_rgb(120, 195, 128));
-        //cargo la imagen del enemigo
-//
-  /*      if(!enemigo1.imagen)
-        {
-                fprintf(stderr, "Fallo al crear el mapa\n");
-                al_destroy_display(display);
-                al_destroy_timer(timer);
-		al_destroy_bitmap(enemigo1.imagen);
-                return -1;
-        //verifico si se cargo bien
-        }
-	//nuevoenemigo.imagen=enemigo.imagen;
-*/
-	event_queue = al_create_event_queue();
-	//creo un evento
-	if(!al_init_primitives_addon())
-	{
-		fprintf(stderr,"Fallo al crear el evento\n");
-		al_destroy_bitmap(mapa);
-		al_destroy_display(display);
-		al_destroy_timer(timer);
-     //           al_destroy_bitmap(enemigo1.imagen);
-		return -1;
-
-	}
-	if(!al_install_keyboard())
-	{
-		fprintf(stderr, "Fallo al crear el teclado\n");
-		al_destroy_bitmap(mapa);
-		al_destroy_display(display);
-		al_destroy_timer(timer);
- //               al_destroy_bitmap(enemigo1.imagen);
-		return -1;
-
-	}
-	if(!event_queue)
-	{
-		fprintf(stderr, "Fallo al crear el evento queue\n");
-		al_destroy_bitmap(mapa);
-		al_destroy_display(display);
-		al_destroy_timer(timer);
-   //             al_destroy_bitmap(enemigo1.imagen);
-		return -1;
-	//verifico si se creo bien
-	}
-	
-//	fuente =al_load_ttf_font("./assest/Action\ force\ Normal.ttf",10,0);
-	al_init_font_addon();
-
-	if(!al_init_ttf_addon())	
-	{
-                fprintf(stderr, "Fallo al iniciar el archivo .ttf\n");
-                al_destroy_bitmap(mapa);
-                al_destroy_display(display);
-                al_destroy_timer(timer);
-	        al_destroy_event_queue(event_queue);
-
-	}
-
-        fuente =al_load_ttf_font("./assets/fuente1.ttf",20,0);
-
-	al_register_event_source(event_queue, al_get_display_event_source(display));
+	al_register_event_source(iniciar.event_queue, al_get_timer_event_source(iniciar.timer));
  
-	al_register_event_source(event_queue, al_get_timer_event_source(timer));
- 
-	al_register_event_source(event_queue, al_get_keyboard_event_source());
+	al_register_event_source(iniciar.event_queue, al_get_keyboard_event_source());
     
-	al_start_timer(timer);
+	al_start_timer(iniciar.timer);
+/*********************inicio los structs******************************************/
 
 	IniciarReloj(&reloj);
         IniciarCuadrado(&cuadrado);
+
+/********************************comienza el juego**********************************/
 
 	while(!salir)
 	{
 
 		ALLEGRO_EVENT ev;
-		al_wait_for_event(event_queue, &ev);
+		al_wait_for_event(iniciar.event_queue, &ev);
 
 		if(ev.type == ALLEGRO_EVENT_TIMER)
 		{
@@ -203,7 +93,7 @@ int main(int argc, char **argv)
 			//reloj
 			if(!RelojSalida)
 			{
-				RelojSalida=EmpezarReloj(fuente,&reloj);
+				RelojSalida=EmpezarReloj(iniciar.fuente,&reloj);
 			}
 			else if(RelojSalida)
 			{
@@ -225,7 +115,7 @@ int main(int argc, char **argv)
 						MoverEnemigo(aux);
 					}	
 				}
-				Reloj0(fuente);		
+				Reloj0(iniciar.fuente);		
 			}
 		}//de acuero a la tecla que oprimi se mueve
 		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -277,14 +167,14 @@ int main(int argc, char **argv)
 		}//cambia los botones cuando los suelto
 
 
-		if(redraw && al_is_event_queue_empty(event_queue))
+		if(redraw && al_is_event_queue_empty(iniciar.event_queue))
 		{
 			redraw = false;
  
 			DibujarCuadrado(&cuadrado);
 
 			al_flip_display();
-			al_draw_bitmap(mapa,0,0,0);
+			al_draw_bitmap(iniciar.mapa,0,0,0);
 
 		}//si no recibe ningun evento hace esto
 		
@@ -292,11 +182,11 @@ int main(int argc, char **argv)
 	}
 	 
 	//Terminamos el programa
-	al_destroy_bitmap(mapa);
-	al_destroy_timer(timer);
-	al_destroy_display(display);
-	al_destroy_event_queue(event_queue);
-	al_destroy_font(fuente);
+	al_destroy_bitmap(iniciar.mapa);
+	al_destroy_timer(iniciar.timer);
+	al_destroy_display(iniciar.display);
+	al_destroy_event_queue(iniciar.event_queue);
+	al_destroy_font(iniciar.fuente);
  //       al_destroy_bitmap(enemigo1.imagen);
 	
 	return 0;

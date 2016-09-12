@@ -59,8 +59,8 @@ void BarraDeVida(Enemigo *enemigo)
 Enemigo * NuevoEnemigo(Enemigo *anterior)
 {
         Enemigo *nuevo;
-        nuevo=(Enemigo *) malloc(sizeof(Enemigo));
-        if (anterior)
+        nuevo=(Enemigo *) malloc(sizeof(Enemigo));//pido memoria para el struct enemigo
+        if (anterior)//si es el
         {
                 nuevo->siguiente=anterior;
         }
