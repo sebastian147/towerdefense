@@ -21,7 +21,7 @@ struct ENEMIGO
 {
 	char nombre[20];
 	ALLEGRO_BITMAP *imagen;
-	int vida;
+	xy vida;
 	int velocidad;
 	int danio;
 	xy pocicion;

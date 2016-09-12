@@ -4,7 +4,8 @@ void IniciarEnemigo1(Enemigo *enemigo)
 //	enemigo->nombre={'D','r','a','g','o','n'};
         enemigo->imagen = al_load_bitmap("./assets/dsm12set.png");
         al_convert_mask_to_alpha(enemigo->imagen, al_map_rgb(120, 195, 128));
-	enemigo->vida=5;
+	enemigo->vida.x=5;
+	enemigo->vida.y=5;
 	enemigo->velocidad=2;
 	enemigo->danio=2;
 	enemigo->pocicion.x=320;
@@ -25,7 +26,8 @@ void IniciarEnemigo2(Enemigo *enemigo)
 //	enemigo->nombre={'D','r','a','g','o','n'};
         enemigo->imagen = al_load_bitmap("./assets/dsm12set.png");
         al_convert_mask_to_alpha(enemigo->imagen, al_map_rgb(120, 195, 128));
-	enemigo->vida=5;
+	enemigo->vida.x=5;
+	enemigo->vida.y=5;
 	enemigo->velocidad=7;
 	enemigo->danio=2;
 	enemigo->pocicion.x=320;
@@ -40,6 +42,12 @@ void IniciarEnemigo2(Enemigo *enemigo)
 	enemigo->bandera=0;
 	enemigo->spritey=4;
 //le doy valor al enemigo 	
+}
+void BarraDeVida(Enemigo *enemigo)
+{
+	float porcentaje=(32)/(enemigo->vida.y);
+	al_draw_filled_rectangle((enemigo->pocicion.x+(32))-(porcentaje*enemigo->vida.x),enemigo->pocicion.y-5,enemigo->pocicion.x+32,enemigo->pocicion.y,al_map_rgb(255, 0, 0));
+	al_draw_filled_rectangle(enemigo->pocicion.x,enemigo->pocicion.y-5,enemigo->pocicion.x+32,enemigo->pocicion.y,al_map_rgb(0, 255, 0));
 }
 Enemigo * NuevoEnemigo(Enemigo *anterior)
 {
@@ -154,6 +162,7 @@ void MoverEnemigo(Enemigo *enemigo)
 
 	
 	//dibuja al enemigo
+	BarraDeVida(enemigo);
 	al_draw_bitmap_region(enemigo->imagen,enemigo->FrameActual.x*enemigo->DistanciaFrames.x,(enemigo->spritey+enemigo->FrameActual.y)*enemigo->DistanciaFrames.y, enemigo->DistanciaFrames.x, enemigo->DistanciaFrames.y, enemigo->pocicion.x, enemigo->pocicion.y, 0);
 
 }

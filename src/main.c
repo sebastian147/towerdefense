@@ -164,7 +164,8 @@ int main(int argc, char **argv)
 	enemigo=NuevoEnemigo(enemigo);
 	IniciarCuadrado(&cuadrado);
 	IniciarEnemigo1(enemigo);
-	IniciarEnemigo2(enemigo->siguiente);
+	IniciarEnemigo2(enemigo->siguiente);	
+
 	while(!salir)
 	{
 
