@@ -175,6 +175,46 @@ void MoverEnemigo(Enemigo *enemigo)
 		al_draw_bitmap_region(enemigo->imagen,enemigo->FrameActual.x*enemigo->DistanciaFrames.x,(enemigo->spritey+enemigo->FrameActual.y)*enemigo->DistanciaFrames.y, enemigo->DistanciaFrames.x, enemigo->DistanciaFrames.y, enemigo->pocicion.x, enemigo->pocicion.y, 0);
 	}
 }
+Enemigo *EmpezarOleada(Enemigo *enemigo, int oleada,int malo)
+{	
+	if(oleada==1)
+	{
+		if(malo%2)
+		{
+			enemigo=NuevoEnemigo(enemigo);
+			IniciarEnemigo1(enemigo);
+		}
+		else
+		{
+			enemigo=NuevoEnemigo(enemigo);
+			IniciarEnemigo2(enemigo);
+		}
+	}
+	return enemigo;
+}
+Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador)
+{
 
-
+	Enemigo *aux;
+	if(jugador->relojito==0&&jugador->malo!=15)
+	{
+			
+		enemigo=EmpezarOleada(enemigo,jugador->oleada,jugador->malo);
+		jugador->malo++;			
+	}
+	if(enemigo!=NULL)
+	{
+	//mueve el enemigo
+		for(aux=enemigo;aux!=NULL;aux=aux->siguiente)
+		{
+			MoverEnemigo(aux);
+		}	
+	}
+	jugador->relojito++;
+	if(jugador->relojito==10)
+	{
+		jugador->relojito=0;
+	}
+	return enemigo;
+}
 

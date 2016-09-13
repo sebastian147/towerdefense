@@ -12,6 +12,9 @@ struct XY
 	int y;
 };
 typedef struct XY xy;
+
+
+
 struct CUADRADO
 {
         int ID;
@@ -19,6 +22,9 @@ struct CUADRADO
         int y;
 };
 typedef struct CUADRADO Cuadrado;
+
+
+
 struct ENEMIGO
 {
 	char nombre[20];
@@ -34,8 +40,12 @@ struct ENEMIGO
 	int bandera;
 	struct ENEMIGO *siguiente;
 	int spritey;
+//eliminar las que siguen
 };
 typedef struct ENEMIGO Enemigo;
+
+
+
 struct RELOJ
 {
 	int minutos;
@@ -43,6 +53,9 @@ struct RELOJ
 	int milisegundos;
 };
 typedef struct RELOJ Reloj;
+
+
+
 struct INICIAR
 {
 	ALLEGRO_DISPLAY *display;
@@ -53,3 +66,27 @@ struct INICIAR
 
 };
 typedef struct INICIAR Iniciar;
+
+
+
+struct JUGADOR
+{
+	int vida;
+	int score;
+	int plata;
+	int oleada;
+	int relojito;
+	int malo;
+};
+typedef struct JUGADOR Jugador;
+
+
+
+struct TORRE
+{
+	int rango;
+	int danio;
+	xy pocicion;
+	int cadencia;
+};
+typedef struct TORRE Torre;

@@ -35,13 +35,14 @@ int main(int argc, char **argv)
 	Enemigo *enemigo=NULL,*aux;//declaro los punteros de enemigos para trabajarlos en forma de lista
 	Reloj reloj;//El reloj de abajo a la derecha
 	Iniciar iniciar;
+	Jugador jugador;
 	//Pongo punteros a null a los structs de allegro que inicio despues
 	InicializarIniciar(&iniciar);
 	
 	//declaro bools
 	bool salir = false;//para salir del while
         bool redraw = true;//hace que entre al if de volver a dibujar
-	bool keys[5] = {false, false, false, false, false};//le dice como estan las teclas
+	bool teclas[5] = {false, false, false, false, false};//le dice como estan las teclas
 	bool RelojSalida=false;//reloj	
 	int oleada=0;//para saber donde esta 
 
@@ -67,6 +68,7 @@ int main(int argc, char **argv)
 
 	IniciarReloj(&reloj);
         IniciarCuadrado(&cuadrado);
+	IniciarJugador(&jugador);
 
 /********************************comienza el juego**********************************/
 
@@ -81,17 +83,17 @@ int main(int argc, char **argv)
 			redraw = true;
 
 			//mueve el cuadrado
-			if(keys[UP])
+			if(teclas[ARRIBA])
 				MoverCuadradoArriba(&cuadrado);
-			if(keys[DOWN])
+			if(teclas[ABAJO])
 				MoverCuadradoAbajo(&cuadrado);
-			if(keys[LEFT])
+			if(teclas[IZQUIERDA])
 				MoverCuadradoIzquierda(&cuadrado);
-			if(keys[RIGHT])
+			if(teclas[DERECHA])
 				MoverCuadradoDerecha(&cuadrado);
 
 			//reloj
-			if(!RelojSalida)
+			/*if(!RelojSalida && enemigo==NULL)
 			{
 				RelojSalida=EmpezarReloj(iniciar.fuente,&reloj);
 			}
@@ -100,6 +102,8 @@ int main(int argc, char **argv)
 				//Crea al enemigo
 				if(oleada==0)
 				{
+					enemigo=SpawnearEnemigos(enemigo);
+					oleada++;
 					enemigo=NuevoEnemigo(enemigo);
 					enemigo=NuevoEnemigo(enemigo);
 					IniciarEnemigo1(enemigo);
@@ -116,7 +120,21 @@ int main(int argc, char **argv)
 					}	
 				}
 				Reloj0(iniciar.fuente);		
+			} */
+		if(ev.type == ALLEGRO_EVENT_TIMER)
+		{
+		if(!RelojSalida && enemigo==NULL)
+			{
+				RelojSalida=EmpezarReloj(iniciar.fuente,&reloj);
 			}
+			else if(RelojSalida)
+			{
+				//Crea al enemigo
+
+				enemigo=SpawnearEnemigos(enemigo,&jugador);
+				Reloj0(iniciar.fuente);		
+			} 	
+		}
 		}//de acuero a la tecla que oprimi se mueve
 		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
@@ -130,17 +148,17 @@ int main(int argc, char **argv)
             	                    salir = true;
             	                    break;
             	            case ALLEGRO_KEY_UP:
-				keys[UP] = true;
+				teclas[ARRIBA] = true;
                              	enemigo->vida.x--;
 				   break;
 	        	    case ALLEGRO_KEY_DOWN:
-        	                        keys[DOWN] = true;
+        	                        teclas[ABAJO] = true;
                   	              break;
                   	      case ALLEGRO_KEY_LEFT:
-                  	              keys[LEFT] = true;
+                  	              teclas[IZQUIERDA] = true;
                         	        break;
                   	      case ALLEGRO_KEY_RIGHT:
-                        	        keys[RIGHT] = true;
+                        	        teclas[DERECHA] = true;
                                		 break;
                         }
                 }//cambia los botones mientras los aprieto
@@ -152,16 +170,16 @@ int main(int argc, char **argv)
 					salir = true;
 					break;
 				case ALLEGRO_KEY_UP:
-					keys[UP] = false;
+					teclas[ARRIBA] = false;
 					break;
 				case ALLEGRO_KEY_DOWN:
-					keys[DOWN] = false;
+					teclas[ABAJO] = false;
 					break;
 				case ALLEGRO_KEY_LEFT:
-					keys[LEFT] = false;
+					teclas[IZQUIERDA] = false;
 					break;
 				case ALLEGRO_KEY_RIGHT:
-					keys[RIGHT] = false;
+					teclas[DERECHA] = false;
 					break;
 			}
 		}//cambia los botones cuando los suelto
@@ -180,14 +198,8 @@ int main(int argc, char **argv)
 		
 
 	}
-	 
-	//Terminamos el programa
-	al_destroy_bitmap(iniciar.mapa);
-	al_destroy_timer(iniciar.timer);
-	al_destroy_display(iniciar.display);
-	al_destroy_event_queue(iniciar.event_queue);
-	al_destroy_font(iniciar.fuente);
- //       al_destroy_bitmap(enemigo1.imagen);
+	IniciarLiberarMemoria(&iniciar); 
+
 	
 	return 0;
 }
