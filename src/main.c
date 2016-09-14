@@ -92,49 +92,19 @@ int main(int argc, char **argv)
 			if(teclas[DERECHA])
 				MoverCuadradoDerecha(&cuadrado);
 
-			//reloj
-			/*if(!RelojSalida && enemigo==NULL)
-			{
-				RelojSalida=EmpezarReloj(iniciar.fuente,&reloj);
+			//reloj			
+			if(!RelojSalida && enemigo==NULL)
+			{			
+				RelojSalida=EmpezarReloj(iniciar.fuente,&reloj);//reloj de 1 minuto a 0
 			}
 			else if(RelojSalida)
 			{
 				//Crea al enemigo
-				if(oleada==0)
-				{
-					enemigo=SpawnearEnemigos(enemigo);
-					oleada++;
-					enemigo=NuevoEnemigo(enemigo);
-					enemigo=NuevoEnemigo(enemigo);
-					IniciarEnemigo1(enemigo);
-					IniciarEnemigo2(enemigo->siguiente);
-					oleada++;				
-				}
-				else
-				{
-					//mueve el enemigo
-					for(aux=enemigo;aux!=NULL;aux=aux->siguiente)
-					{
-
-						MoverEnemigo(aux);
-					}	
-				}
-				Reloj0(iniciar.fuente);		
-			} */
-		if(ev.type == ALLEGRO_EVENT_TIMER)
-		{
-		if(!RelojSalida && enemigo==NULL)
-			{
-				RelojSalida=EmpezarReloj(iniciar.fuente,&reloj);
-			}
-			else if(RelojSalida)
-			{
-				//Crea al enemigo
-
 				enemigo=SpawnearEnemigos(enemigo,&jugador);
+				//pone el reloj en 0
 				Reloj0(iniciar.fuente);		
 			} 	
-		}
+			Informacion(iniciar.fuente,&jugador);//dibuja la informacion del jugador
 		}//de acuero a la tecla que oprimi se mueve
 		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
@@ -198,6 +168,7 @@ int main(int argc, char **argv)
 		
 
 	}
+/*************************************Libera la memoria************************************/
 	IniciarLiberarMemoria(&iniciar); 
 
 	

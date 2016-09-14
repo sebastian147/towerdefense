@@ -53,11 +53,32 @@ void BarraDeVida(Enemigo *enemigo)
 	}
 	else
 	{
-		enemigo->bandera=11;
+		enemigo->bandera=12;
 	}
 }
-Enemigo * NuevoEnemigo(Enemigo *anterior)
+Enemigo * NuevoEnemigo(Enemigo *enemigo)
 {
+
+	Enemigo *aux=NULL,*nuevoEnemigo=NULL;//Declaro variables
+	nuevoEnemigo=(Enemigo *)malloc(sizeof(Enemigo));//pido memoria
+	if(nuevoEnemigo==NULL)//pregunto si sale error
+	{
+		printf("Error al crear enemigo");
+		return -1;
+	}
+	aux=enemigo;//hago la variable auxiliar igual al enemigo
+	if(aux==NULL)//si auxiliar no existe creo la lista
+	{
+		nuevoEnemigo->siguiente=NULL;
+		nuevoEnemigo->anterior=NULL;
+	}
+	else//agrego el nuevo nodo de la lista al principio|
+	{
+		nuevoEnemigo->siguiente=aux;
+		nuevoEnemigo->anterior=aux->anterior;
+	}
+	return nuevoEnemigo;//retorno el puntero al principio
+	/*
         Enemigo *nuevo;
         nuevo=(Enemigo *) malloc(sizeof(Enemigo));//pido memoria para el struct enemigo
         if (anterior)//si es el
@@ -68,9 +89,30 @@ Enemigo * NuevoEnemigo(Enemigo *anterior)
         {
                 nuevo->siguiente=NULL;
         }
-        return nuevo;
+        return nuevo;*/
 }
-
+/*void OrdenarEnemigos(Enemigo *enemigo)
+{
+	Enemigo *aux1,*aux2,*aux3;
+	aux3=enemigo;
+	//for(aux2=enemigo;aux2!=NULL;aux2=aux2->siguiente)
+	for(aux1=enemigo;aux1!=NULL;aux1=aux1->siguiente)
+	{		
+		for(aux2=enemigo;aux2!=NULL;aux2=aux2->siguiente)
+		{
+			if(aux2->bandera > aux2->siguiente->bandera)
+			{
+				aux3=aux2->siguiente;
+				
+				aux2->siguiente=aux2;
+				aux2=aux3;
+			}
+		}
+		if(aux1->siguiente==NULL)
+			free(aux1);
+		
+	}	
+}*/
 void MoverEnemigoAbajo(int final,Enemigo *enemigo,int bandera)
 {
 	if (enemigo->bandera==bandera)//compara el flag para elegir que orden hace
@@ -149,7 +191,7 @@ void MoverEnemigoArriba(int final,Enemigo *enemigo,int bandera)
 			enemigo->bandera=bandera+1;//pone un flag cuando llega al final de la linea
 	}
 }
-void MoverEnemigo(Enemigo *enemigo)
+void MoverEnemigo(Enemigo *enemigo, Jugador *jugador)
 {
 	//mueve la pocicion del enemigo
 	MoverEnemigoAbajo(1, enemigo,0);
@@ -166,7 +208,13 @@ void MoverEnemigo(Enemigo *enemigo)
 
 	if(enemigo->bandera==11)
 	{
+	//	jugador->vida=enemigo->danio;
 	//	LiberarMemoriaEnemigo();
+		enemigo->bandera=15;
+	}
+	else if(enemigo->bandera==12)
+	{
+		//LiberarMemoriaEnemigo();
 	}
 	else
 	{
@@ -177,17 +225,17 @@ void MoverEnemigo(Enemigo *enemigo)
 }
 Enemigo *EmpezarOleada(Enemigo *enemigo, int oleada,int malo)
 {	
-	if(oleada==1)
+	if(oleada==1)//hace esto para la oleada
 	{
-		if(malo%2)
+		if(malo%2)//si es impar 
 		{
-			enemigo=NuevoEnemigo(enemigo);
-			IniciarEnemigo1(enemigo);
+			enemigo=NuevoEnemigo(enemigo);//pide memoria para el enemigio en la lista
+			IniciarEnemigo1(enemigo);//inicia el enemigo con sus valores
 		}
 		else
 		{
-			enemigo=NuevoEnemigo(enemigo);
-			IniciarEnemigo2(enemigo);
+			enemigo=NuevoEnemigo(enemigo);//pide memoria para el enemigio en la lista
+			IniciarEnemigo2(enemigo);//inicia el enemigo con sus valores
 		}
 	}
 	return enemigo;
@@ -199,21 +247,27 @@ Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador)
 	if(jugador->relojito==0&&jugador->malo!=15)
 	{
 			
-		enemigo=EmpezarOleada(enemigo,jugador->oleada,jugador->malo);
-		jugador->malo++;			
+		enemigo=EmpezarOleada(enemigo,jugador->oleada,jugador->malo);//empieza la oleada
+		jugador->malo++;//aumenta la cantidad de enemigos que se spawnean			
 	}
 	if(enemigo!=NULL)
 	{
-	//mueve el enemigo
+		//mueve a los enemigos recorriendo la lista
 		for(aux=enemigo;aux!=NULL;aux=aux->siguiente)
 		{
-			MoverEnemigo(aux);
+			MoverEnemigo(aux,&jugador);
 		}	
+		jugador->relojito++;//reloj cuando pasa 10 veces, spawnea al enemigo(pasa 1 segundo)	
 	}
-	jugador->relojito++;
-	if(jugador->relojito==10)
+	if(jugador->relojito==10 && enemigo!=NULL)
 	{
-		jugador->relojito=0;
+		jugador->relojito=0;//lo pone en 0 para pasar a la proxima lista
+	}
+	if(enemigo!=NULL && jugador->malo==15)
+	{
+		jugador->oleada++;
+		jugador->malo++;
+		jugador->relojito=10;
 	}
 	return enemigo;
 }

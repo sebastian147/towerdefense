@@ -39,6 +39,7 @@ struct ENEMIGO
 	int contador;
 	int bandera;
 	struct ENEMIGO *siguiente;
+	struct ENEMIGO *anterior;
 	int spritey;
 //eliminar las que siguen
 };

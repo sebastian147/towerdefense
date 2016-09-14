@@ -39,6 +39,8 @@ void IniciarLiberarMemoria(Iniciar *iniciar);
 bool EmpezarReloj(ALLEGRO_FONT *fuente,Reloj *reloj);
 void Reloj0(ALLEGRO_FONT *fuente);
 void IniciarReloj(Reloj *reloj);
+void Informacion(ALLEGRO_FONT *fuente,Jugador *jugador);
+
 
 
 //cuadrado
@@ -57,7 +59,7 @@ void IniciarJugador(Jugador *jugador);
 
 
 //enemigos
-void MoverEnemigo(Enemigo *enemigo);
+void MoverEnemigo(Enemigo *enemigo, Jugador *jugador);
 void IniciarEnemigo1(Enemigo *enemigo);
 void MoverEnemigoAbajo(int final,Enemigo *enemigo,int bandera);
 void MoverEnemigoIzquierda(int final,Enemigo *enemigo,int bandera);
@@ -68,3 +70,4 @@ Enemigo * NuevoEnemigo(Enemigo *anterior);
 void BarraDeVida(Enemigo *enemigo);
 Enemigo * EmpezarOleada(Enemigo *enemigo, int oleada,int malo);
 Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador);
+//void OrdenarEnemigos(Enemigo *enemigo);

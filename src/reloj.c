@@ -1,4 +1,12 @@
 #include"header.h"
+void Informacion(ALLEGRO_FONT *fuente,Jugador *jugador)
+{
+	al_draw_textf(fuente,al_map_rgb(0,0,255),LARGO-150,ALTO-60,0,"vida:%d",jugador->vida);
+	al_draw_textf(fuente,al_map_rgb(0,0,255),LARGO-150,ALTO-80,0,"oleada:%d",jugador->oleada);
+	al_draw_textf(fuente,al_map_rgb(0,0,255),LARGO-150,ALTO-100,0,"plata:%d",jugador->plata);
+	al_draw_textf(fuente,al_map_rgb(0,0,255),LARGO-150,ALTO-120,0,"score:%d",jugador->score);
+	//imprimo los datos del jugador
+}
 void IniciarReloj(Reloj *reloj)
 {
 	reloj->segundos=0;
