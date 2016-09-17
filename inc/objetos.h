@@ -5,7 +5,7 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
-enum IDS{JUGADOR};
+//enum IDS{JUGADOR};
 struct XY
 {
 	int x;

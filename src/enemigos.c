@@ -115,6 +115,8 @@ Enemigo * NuevoEnemigo(Enemigo *enemigo)
 }*/
 void MoverEnemigoAbajo(int final,Enemigo *enemigo,int bandera)
 {
+//	int bandera;
+//	bandera=enemigo->bandera;
 	if (enemigo->bandera==bandera)//compara el flag para elegir que orden hace
 	{
 		enemigo->FrameActual.y=0;//mueve el sprite en el eje y
@@ -128,7 +130,9 @@ void MoverEnemigoAbajo(int final,Enemigo *enemigo,int bandera)
 		
 		enemigo->pocicion.y+=enemigo->velocidad;//cambia el valor de la pocicion del enemigo
 		if(enemigo->pocicion.y >= CUADRADOY*final)
+		{
 			enemigo->bandera=bandera+1;//pone un flag cuando llega al final de la linea
+		}
 		if(bandera==11)
 	        {
                 	al_destroy_bitmap(enemigo->imagen);
@@ -138,7 +142,10 @@ void MoverEnemigoAbajo(int final,Enemigo *enemigo,int bandera)
 	}
 }
 void MoverEnemigoIzquierda(int final,Enemigo *enemigo,int bandera)
+//void MoverEnemigoIzquierda(int final,Enemigo *enemigo)
 {
+//	int bandera;
+//	bandera=enemigo->bandera;
 	if (enemigo->bandera==bandera)//compara el flag para elegir que orden hace
 	{
 		enemigo->FrameActual.y=1;//mueve el sprite en el eje y
@@ -149,14 +156,15 @@ void MoverEnemigoIzquierda(int final,Enemigo *enemigo,int bandera)
 
 			enemigo->contador= 0;//vuelvo a iniciar el sprite
 		}
-		
 		enemigo->pocicion.x-=enemigo->velocidad;//cambia el valor de la pocicion del enemigo
 		if(enemigo->pocicion.x <= CUADRADOX*final)
 			enemigo->bandera=bandera+1;//pone un flag cuando llega al final de la linea
+
 	}
 }
 void MoverEnemigoDerecha(int final,Enemigo *enemigo,int bandera)
 {
+//	int bandera=enemigo->bandera;
 	if (enemigo->bandera==bandera)//compara el flag para elegir que orden hace
 	{
 		enemigo->FrameActual.y=2;//mueve el sprite en el eje y
@@ -175,6 +183,8 @@ void MoverEnemigoDerecha(int final,Enemigo *enemigo,int bandera)
 }
 void MoverEnemigoArriba(int final,Enemigo *enemigo,int bandera)
 {
+//	int bandera;
+//	bandera=enemigo->bandera;
 	if (enemigo->bandera==bandera)//compara el flag para elegir que orden hace
 	{
 		enemigo->FrameActual.y=3;//mueve el sprite en el eje y
@@ -196,11 +206,14 @@ void MoverEnemigo(Enemigo *enemigo, Jugador *jugador)
 	//mueve la pocicion del enemigo
 	MoverEnemigoAbajo(1, enemigo,0);
 	MoverEnemigoIzquierda(1,enemigo,1);
+//	MoverEnemigoIzquierda(1,enemigo);
 	MoverEnemigoAbajo(10,enemigo,2);
 	MoverEnemigoDerecha(7,enemigo,3);
 	MoverEnemigoArriba(5,enemigo,4);
 	MoverEnemigoIzquierda(5,enemigo,5);
+//	MoverEnemigoIzquierda(5,enemigo);
 	MoverEnemigoAbajo(8,enemigo,6);
+//	MoverEnemigoIzquierda(3,enemigo);
 	MoverEnemigoIzquierda(3,enemigo,7);
 	MoverEnemigoArriba(3,enemigo,8);
 	MoverEnemigoDerecha(10,enemigo,9);

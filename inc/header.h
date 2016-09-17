@@ -20,8 +20,8 @@
 #define ALTO 480
 #define FPS 10
 
-#define CUADRADOY 40
-#define CUADRADOX 54
+#define CUADRADOY 42
+#define CUADRADOX 53.33333
 
 enum MYKEYS 
 {
@@ -63,6 +63,7 @@ void MoverEnemigo(Enemigo *enemigo, Jugador *jugador);
 void IniciarEnemigo1(Enemigo *enemigo);
 void MoverEnemigoAbajo(int final,Enemigo *enemigo,int bandera);
 void MoverEnemigoIzquierda(int final,Enemigo *enemigo,int bandera);
+//void MoverEnemigoIzquierda(int final,Enemigo *enemigo);
 void MoverEnemigoDerecha(int final,Enemigo *enemigo,int bandera);
 void MoverEnemigoArriba(int final,Enemigo *enemigo,int bandera);
 void IniciarEnemigo2(Enemigo *enemigo);
