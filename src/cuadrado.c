@@ -3,7 +3,6 @@ void IniciarCuadrado(Cuadrado *cuadrado)
 {
         cuadrado->x = 0;
         cuadrado->y = 0;
-        cuadrado->ID = JUGADOR;
 }
 void DibujarCuadrado(Cuadrado *cuadrado)
 {

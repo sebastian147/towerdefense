@@ -11,7 +11,7 @@ EXEC = ejemplo
 CC = gcc
 CFLAGS = -Wall
 # comentar lo siguiente para desactivar el debug
-#CFLAGS += -g
+CFLAGS += -g
 
 ##### librerias a linkear
 LIBS = -lm -lallegro -lallegro_main -lallegro_image -lallegro_audio -lallegro_acodec -lallegro_primitives -lallegro_font -lallegro_ttf -lallegro_dialog 

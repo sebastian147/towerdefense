@@ -45,15 +45,15 @@ void IniciarEnemigo2(Enemigo *enemigo)
 }
 void BarraDeVida(Enemigo *enemigo)
 {
-	float porcentaje=(32.0)/(enemigo->vida.y);
+	float porcentaje=(32.0)/(enemigo->vida.y);//saco el porcentaje de la barra de vida
 	if(porcentaje*enemigo->vida.x>0)
 	{
-       		al_draw_filled_rectangle(enemigo->pocicion.x,enemigo->pocicion.y-5,enemigo->pocicion.x+32,enemigo->pocicion.y,al_map_rgb(0, 255, 0));
-		al_draw_filled_rectangle(enemigo->pocicion.x+(porcentaje*enemigo->vida.x),enemigo->pocicion.y-5,enemigo->pocicion.x+32,enemigo->pocicion.y,al_map_rgb(255, 0, 0));
+       		al_draw_filled_rectangle(enemigo->pocicion.x,enemigo->pocicion.y-5,enemigo->pocicion.x+32,enemigo->pocicion.y,al_map_rgb(0, 255, 0));//dibujo la barra verde
+		al_draw_filled_rectangle(enemigo->pocicion.x+(porcentaje*enemigo->vida.x),enemigo->pocicion.y-5,enemigo->pocicion.x+32,enemigo->pocicion.y,al_map_rgb(255, 0, 0));//dibujo la barra roja
 	}
 	else
 	{
-		enemigo->bandera=12;
+		enemigo->bandera=12;//si la vida es 0 que salga con un flag para liberarla despues
 	}
 }
 Enemigo * NuevoEnemigo(Enemigo *enemigo)
@@ -144,10 +144,11 @@ void MoverEnemigoAbajo(int final,Enemigo *enemigo,int bandera)
 void MoverEnemigoIzquierda(int final,Enemigo *enemigo,int bandera)
 //void MoverEnemigoIzquierda(int final,Enemigo *enemigo)
 {
-//	int bandera;
+//	int bandera=5;
 //	bandera=enemigo->bandera;
 	if (enemigo->bandera==bandera)//compara el flag para elegir que orden hace
 	{
+			printf("%d\n",enemigo->bandera);
 		enemigo->FrameActual.y=1;//mueve el sprite en el eje y
 		if(++enemigo->contador >= 3)
 		{
@@ -158,8 +159,9 @@ void MoverEnemigoIzquierda(int final,Enemigo *enemigo,int bandera)
 		}
 		enemigo->pocicion.x-=enemigo->velocidad;//cambia el valor de la pocicion del enemigo
 		if(enemigo->pocicion.x <= CUADRADOX*final)
-			enemigo->bandera=bandera+1;//pone un flag cuando llega al final de la linea
-
+		//	enemigo->bandera=bandera+1;//pone un flag cuando llega al final de la linea
+			enemigo->bandera=bandera+1;
+			printf("%d\n",enemigo->bandera);
 	}
 }
 void MoverEnemigoDerecha(int final,Enemigo *enemigo,int bandera)
@@ -175,7 +177,6 @@ void MoverEnemigoDerecha(int final,Enemigo *enemigo,int bandera)
 
 			enemigo->contador= 0;//vuelvo a iniciar el sprite
 		}
-		
 		enemigo->pocicion.x+=enemigo->velocidad;//cambia el valor de la pocicion del enemigo
 		if(enemigo->pocicion.x >= CUADRADOX*final)
 			enemigo->bandera=bandera+1;//pone un flag cuando llega al final de la linea
