@@ -59,16 +59,16 @@ void IniciarJugador(Jugador *jugador);
 
 
 //enemigos
-void MoverEnemigo(Enemigo *enemigo, Jugador *jugador);
-void IniciarEnemigo1(Enemigo *enemigo);
-void MoverEnemigoAbajo(int final,Enemigo *enemigo,int bandera);
-void MoverEnemigoIzquierda(int final,Enemigo *enemigo,int bandera);
-//void MoverEnemigoIzquierda(int final,Enemigo *enemigo);
-void MoverEnemigoDerecha(int final,Enemigo *enemigo,int bandera);
-void MoverEnemigoArriba(int final,Enemigo *enemigo,int bandera);
-void IniciarEnemigo2(Enemigo *enemigo);
+void MoverEnemigo(Enemigo **enemigo, Jugador *jugador);
+void IniciarEnemigo1(Enemigo **enemigo);
+void MoverEnemigoAbajo(int final,Enemigo **enemigo,int bandera);
+void MoverEnemigoIzquierda(int final,Enemigo **enemigo,int bandera);
+void MoverEnemigoDerecha(int final,Enemigo **enemigo,int bandera);
+void MoverEnemigoArriba(int final,Enemigo **enemigo,int bandera);
+void IniciarEnemigo2(Enemigo **enemigo);
 Enemigo * NuevoEnemigo(Enemigo *anterior);
-void BarraDeVida(Enemigo *enemigo);
-Enemigo * EmpezarOleada(Enemigo *enemigo, int oleada,int malo);
+void BarraDeVida(Enemigo **enemigo);
+Enemigo *EmpezarOleada(Enemigo *enemigo, int oleada,int malo);
 Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador);
 //void OrdenarEnemigos(Enemigo *enemigo);
+void LiberarMemoriaEnemigo(Enemigo **enemigo);

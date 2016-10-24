@@ -24,10 +24,9 @@ struct CUADRADO
 typedef struct CUADRADO Cuadrado;
 
 
-
 struct ENEMIGO
 {
-	char nombre[20];
+	int ID;
 	ALLEGRO_BITMAP *imagen;
 	xy vida;
 	int velocidad;
@@ -45,6 +44,12 @@ struct ENEMIGO
 };
 typedef struct ENEMIGO Enemigo;
 
+struct OLEADA
+{
+	struct ENEMIGO *Dragon;
+	struct ENEMIGO *Minotauro;
+};
+typedef struct OLEADA Oleada;
 
 
 struct RELOJ

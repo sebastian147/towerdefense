@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 	Jugador jugador;
 	//Pongo punteros a null a los structs de allegro que inicio despues
 	InicializarIniciar(&iniciar);
-	
+
 	//declaro bools
 	bool salir = false;//para salir del while
         bool redraw = true;//hace que entre al if de volver a dibujar
@@ -92,9 +92,9 @@ int main(int argc, char **argv)
 			if(teclas[DERECHA])
 				MoverCuadradoDerecha(&cuadrado);
 
-			//reloj			
+			//reloj	
 			if(!RelojSalida && enemigo==NULL)
-			{			
+			{
 				RelojSalida=EmpezarReloj(iniciar.fuente,&reloj);//reloj de 1 minuto a 0
 			}
 			else if(RelojSalida)
@@ -102,8 +102,8 @@ int main(int argc, char **argv)
 				//Crea al enemigo
 				enemigo=SpawnearEnemigos(enemigo,&jugador);
 				//pone el reloj en 0
-				Reloj0(iniciar.fuente);		
-			} 	
+				Reloj0(iniciar.fuente);	
+			} 
 			Informacion(iniciar.fuente,&jugador);//dibuja la informacion del jugador
 		}//de acuero a la tecla que oprimi se mueve
 		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
