@@ -94,5 +94,8 @@ struct TORRE
 	int danio;
 	xy pocicion;
 	int cadencia;
+	struct TORRE *siguiente;
+	struct TORRE *anterior;
+	ALLEGRO_BITMAP *imagen;
 };
 typedef struct TORRE Torre;

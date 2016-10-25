@@ -1,7 +1,8 @@
 #include "header.h"
-void IniciarTorre(Torre **seleccionada)
+void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado)
 {
-  
+  al_convert_mask_to_alpha((*seleccionada)->imagen, al_map_rgb(120, 195, 128));
+
 }
 void MejorarTorre(Torre **seleccionada)
 {
@@ -19,7 +20,7 @@ void CrearTorre(Torre **primera)
 {
   Torre *aux=NULL,*nuevaTorre=NULL;//Declaro variables
   nuevaTorre=(Torre*)malloc(sizeof(Torre));//pido memoria
-  if(nuevoTorre==NULL)//pregunto si sale error
+  if(nuevaTorre==NULL)//pregunto si sale error
   {
     printf("Error al crear enemigo");
     return -1;
@@ -41,4 +42,13 @@ void CrearTorre(Torre **primera)
 Enemigo* BuscarUltimoEnRadio(Enemigo *primero)
 {
 
+}
+void ActualizarTorre(Torre **primera)
+{
+  Torre *aux=*primera;
+  while(aux!=NULL)
+  {
+    al_draw_bitmap_region(aux->imagen,0,0,0,0,aux->pocicion.x,aux->pocicion.y,0);
+    aux=aux->siguiente;
+  }
 }

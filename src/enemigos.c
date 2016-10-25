@@ -2,8 +2,8 @@
 void IniciarEnemigo1(Enemigo **enemigo)
 {
 //	enemigo->nombre={'D','r','a','g','o','n'};
-        (*enemigo)->imagen = al_load_bitmap("./assets/dsm12set.png");
-        al_convert_mask_to_alpha((*enemigo)->imagen, al_map_rgb(120, 195, 128));
+  (*enemigo)->imagen = al_load_bitmap("./assets/dsm12set.png");
+  al_convert_mask_to_alpha((*enemigo)->imagen, al_map_rgb(120, 195, 128));
 	(*enemigo)->vida.x=5;
 	(*enemigo)->vida.y=5;
 	(*enemigo)->velocidad=7;

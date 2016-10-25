@@ -16,12 +16,12 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
-#define LARGO 800
-#define ALTO 480
+#define LARGO 750
+#define ALTO 600
 #define FPS 10
 
-#define CUADRADOY 42
-#define CUADRADOX 53.33333
+#define CUADRADOY 50
+#define CUADRADOX 50
 
 enum MYKEYS
 {
@@ -79,4 +79,9 @@ void Proyectil(Torre *primera);
 void DestruirTorre(Torre **seleccionada);
 void CrearTorre(Torre **primera);
 Enemigo* BuscarUltimoEnRadio(Enemigo *primero);
-void IniciarTorre(Torre **seleccionada);
+void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado);
+void ActualizarTorre(Torre **primera);
+
+
+//mapa
+void ImprimirMapa(Iniciar *iniciar);

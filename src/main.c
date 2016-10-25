@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 
 	//declaro bools
 	bool salir = false;//para salir del while
-        bool redraw = true;//hace que entre al if de volver a dibujar
+  bool redraw = true;//hace que entre al if de volver a dibujar
 	bool teclas[5] = {false, false, false, false, false};//le dice como estan las teclas
 	bool RelojSalida=false;//reloj
 	int oleada=0;//para saber donde esta
@@ -67,7 +67,7 @@ int main(int argc, char **argv)
 /*********************inicio los structs******************************************/
 
 	IniciarReloj(&reloj);
-        IniciarCuadrado(&cuadrado);
+  IniciarCuadrado(&cuadrado);
 	IniciarJugador(&jugador);
 
 /********************************comienza el juego**********************************/
@@ -162,7 +162,8 @@ int main(int argc, char **argv)
 			DibujarCuadrado(&cuadrado);
 
 			al_flip_display();
-			al_draw_bitmap(iniciar.mapa,0,0,0);
+			//al_draw_bitmap(iniciar.mapa,0,0,0);
+			ImprimirMapa(&iniciar);
 		}//si no recibe ningun evento hace esto
 
 

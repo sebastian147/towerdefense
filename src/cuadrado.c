@@ -6,7 +6,7 @@ void IniciarCuadrado(Cuadrado *cuadrado)
 }
 void DibujarCuadrado(Cuadrado *cuadrado)
 {
-        al_draw_rectangle(cuadrado->x, cuadrado->y , cuadrado->x+CUADRADOX, cuadrado->y+CUADRADOY, al_map_rgb(0, 0, 0),0);
+        al_draw_rectangle(cuadrado->x, cuadrado->y , cuadrado->x+CUADRADOX, cuadrado->y+CUADRADOY, al_map_rgb(255,255,255),0);
 }
 void MoverCuadradoArriba(Cuadrado *cuadrado)
 {
@@ -32,5 +32,3 @@ void MoverCuadradoDerecha(Cuadrado *cuadrado)
         if(cuadrado->x > LARGO-CUADRADOX)
                 cuadrado->x = LARGO-CUADRADOX;
 }
-
-

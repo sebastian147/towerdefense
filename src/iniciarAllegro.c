@@ -32,10 +32,10 @@ int IniciarYErrores(Iniciar *iniciar)
 		return -1;
 	//verifica si se inicio bien el teclado
 	}
- 
+
 	iniciar->timer = al_create_timer(1.0 /FPS);
 	//crea el timer
-	
+
 	if(!iniciar->timer)
 	{
 		fprintf(stderr, "Fallo al crear el timer\n");
@@ -53,7 +53,7 @@ int IniciarYErrores(Iniciar *iniciar)
 	iniciar->display = al_create_display(LARGO,ALTO);
 	//Crear el display
 
-	if(!iniciar->display)	
+	if(!iniciar->display)
 	{
 		fprintf(stderr, "Fallo al crearo el display\n");
 		al_destroy_timer(iniciar->timer);
@@ -62,9 +62,9 @@ int IniciarYErrores(Iniciar *iniciar)
 	}
 
 
-	iniciar->mapa = al_load_bitmap("./assets/Map0.png");
+	iniciar->mapa = al_load_bitmap("./assets/basic.bmp");
 
-	//cargo la imagen del mapa 
+	//cargo la imagen del mapa
 
 	if(!iniciar->mapa)
 	{
@@ -74,21 +74,6 @@ int IniciarYErrores(Iniciar *iniciar)
 		return -1;
 	//verifico si se cargo bien
 	}
-
-//	al_convert_mask_to_alpha(enemigo.imagen, al_map_rgb(120, 195, 128));
-        //cargo la imagen del enemigo
-//
-  /*      if(!enemigo1.imagen)
-        {
-                fprintf(stderr, "Fallo al crear el mapa\n");
-                al_destroy_display(display);
-                al_destroy_timer(timer);
-		al_destroy_bitmap(enemigo1.imagen);
-                return -1;
-        //verifico si se cargo bien
-        }
-	//nuevoenemigo.imagen=enemigo.imagen;
-*/
 	if(!al_init_primitives_addon())
 	{
 		fprintf(stderr,"Fallo al crear el evento\n");
@@ -118,16 +103,16 @@ int IniciarYErrores(Iniciar *iniciar)
 		al_destroy_bitmap(iniciar->mapa);
 		al_destroy_display(iniciar->display);
 		al_destroy_timer(iniciar->timer);
-  
+
  //             al_destroy_bitmap(enemigo1.imagen);
 		return -1;
 	//verifico si se creo bien
 	}
-	
+
 //	fuente =al_load_ttf_font("./assest/Action\ force\ Normal.ttf",10,0);
 	al_init_font_addon();//inicio el addon para leer fuenetes
 
-	if(!al_init_ttf_addon())	
+	if(!al_init_ttf_addon())
 	{
                 fprintf(stderr, "Fallo al iniciar el archivo .ttf\n");
                 al_destroy_bitmap(iniciar->mapa);
@@ -142,4 +127,3 @@ int IniciarYErrores(Iniciar *iniciar)
         iniciar->fuente =al_load_ttf_font("./assets/fuente1.ttf",20,0);//cargo el archivo con las funtes de texto
 	return 0;
 }
-
