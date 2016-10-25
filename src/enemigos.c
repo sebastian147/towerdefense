@@ -3,7 +3,7 @@ void IniciarEnemigo1(Enemigo **enemigo)
 {
 //	enemigo->nombre={'D','r','a','g','o','n'};
         (*enemigo)->imagen = al_load_bitmap("./assets/dsm12set.png");
-        al_convert_mask_to_alpha(enemigo->imagen, al_map_rgb(120, 195, 128));
+        al_convert_mask_to_alpha((*enemigo)->imagen, al_map_rgb(120, 195, 128));
 	(*enemigo)->vida.x=5;
 	(*enemigo)->vida.y=5;
 	(*enemigo)->velocidad=2;
@@ -19,13 +19,13 @@ void IniciarEnemigo1(Enemigo **enemigo)
 	(*enemigo)->contador=0;
 	(*enemigo)->bandera=0;
 	(*enemigo)->spritey=0;
-//le doy valor al enemigo 
+//le doy valor al enemigo
 }
 void IniciarEnemigo2(Enemigo **enemigo)
 {
 //	enemigo->nombre={'D','r','a','g','o','n'};
-        (*enemigo)->imagen = al_load_bitmap("./assets/dsm12set.png");
-        al_convert_mask_to_alpha(enemigo->imagen, al_map_rgb(120, 195, 128));
+  (*enemigo)->imagen = al_load_bitmap("./assets/dsm12set.png");
+  al_convert_mask_to_alpha((*enemigo)->imagen, al_map_rgb(120, 195, 128));
 	(*enemigo)->vida.x=5;
 	(*enemigo)->vida.y=5;
 	(*enemigo)->velocidad=7;
@@ -41,8 +41,44 @@ void IniciarEnemigo2(Enemigo **enemigo)
 	(*enemigo)->contador=0;
 	(*enemigo)->bandera=0;
 	(*enemigo)->spritey=4;
-//le doy valor al enemigo 	
+//le doy valor al enemigo
 }
+void LiberarMemoriaEnemigo(Enemigo **enemigo)
+{
+  Enemigo *aux,*aux2;
+  aux=*enemigo;
+  aux2=*enemigo;
+  if(aux->anterior==NULL && aux->siguiente!=NULL)
+  {
+
+    printf("ok1\n");
+    aux2=aux2->siguiente;
+    aux2->anterior=aux->anterior;
+    *enemigo=aux2;
+  }//si es el primero
+  else if(aux->siguiente!=NULL && aux->anterior!=NULL)
+  {
+    printf("ok2\n");
+    aux2->anterior->siguiente=aux2->siguiente;
+    aux2->siguiente->anterior=aux2->anterior;
+    aux2=aux2->anterior;
+    *enemigo=aux2;
+  }//si es alguno del medio
+  else if(aux->anterior!=NULL&&aux->siguiente==NULL)
+  {
+    printf("ok3\n");
+    aux2=aux2->anterior;
+    aux2->siguiente=NULL;
+    *enemigo=aux2;
+  }//si es el ultimo
+  else if(aux->anterior==NULL&&aux->siguiente==NULL)
+  {
+    *enemigo=NULL;
+    printf("ok44444\n");
+  }
+  al_destroy_bitmap(aux->imagen);//libero la imagen
+  free(aux);//libero el auxiliar
+}/*
 void LiberarMemoriaEnemigo(Enemigo **enemigo)
 {
 	Enemigo *aux;
@@ -58,33 +94,30 @@ void LiberarMemoriaEnemigo(Enemigo **enemigo)
 		aux->siguiente=NULL;
 		free(*enemigo);
 	}
-	else if((*enemigo)->siguiente==NULL &&enemigo->anterior==NULL)
+	else if((*enemigo)->siguiente==NULL &&(*enemigo)->anterior==NULL)
 	{
 		free(*enemigo);
 	}
-	else if(enemigo->siguiente!=NULL && enemigo->anterior!=NULL)
+	else if((*enemigo)->siguiente!=NULL && (*enemigo)->anterior!=NULL)
 	{
-		aux=enemigo;
-		enemigo->anterior->siguiente=enemigo->siguiente;
-		enemigo->siguiente->anterior=enemigo->anterior;
+		aux=(*enemigo);
+		(*enemigo)->anterior->siguiente=(*enemigo)->siguiente;
+		(*enemigo)->siguiente->anterior=(*enemigo)->anterior;
 		free(aux);
 	}
-	*actual=enemigo;
-}
-void BarraDeVida(Enemigo **actual)
+}*/
+void BarraDeVida(Enemigo **enemigo)
 {
-	Enemigo *enemigo=*actual;
-	float porcentaje=(32.0)/(enemigo->vida.y);//saco el porcentaje de la barra de vida
-	if(porcentaje*enemigo->vida.x>0)
+	float porcentaje=(32.0)/((*enemigo)->vida.y);//saco el porcentaje de la barra de vida
+	if(porcentaje*(*enemigo)->vida.x>0)
 	{
-       		al_draw_filled_rectangle(enemigo->pocicion.x,enemigo->pocicion.y-5,enemigo->pocicion.x+32,enemigo->pocicion.y,al_map_rgb(0, 255, 0));//dibujo la barra verde
-		al_draw_filled_rectangle(enemigo->pocicion.x+(porcentaje*enemigo->vida.x),enemigo->pocicion.y-5,enemigo->pocicion.x+32,enemigo->pocicion.y,al_map_rgb(255, 0, 0));//dibujo la barra roja
+       		al_draw_filled_rectangle((*enemigo)->pocicion.x,(*enemigo)->pocicion.y-5,(*enemigo)->pocicion.x+32,(*enemigo)->pocicion.y,al_map_rgb(0, 255, 0));//dibujo la barra verde
+		al_draw_filled_rectangle((*enemigo)->pocicion.x+(porcentaje*(*enemigo)->vida.x),(*enemigo)->pocicion.y-5,(*enemigo)->pocicion.x+32,(*enemigo)->pocicion.y,al_map_rgb(255, 0, 0));//dibujo la barra roja
 	}
 	else
 	{
-		enemigo->bandera=12;//si la vida es 0 que salga con un flag para liberarla despues
+		(*enemigo)->bandera=12;//si la vida es 0 que salga con un flag para liberarla despues
 	}
-	*actual=enemigo;
 }
 Enemigo * NuevoEnemigo(Enemigo *enemigo)
 {
@@ -105,128 +138,117 @@ Enemigo * NuevoEnemigo(Enemigo *enemigo)
 	else//agrego el nuevo nodo de la lista al principio|
 	{
 		nuevoEnemigo->siguiente=aux;
-		nuevoEnemigo->anterior=aux->anterior;
+    aux->anterior=nuevoEnemigo;
+		nuevoEnemigo->anterior=NULL;
 	}
 	return nuevoEnemigo;//retorno el puntero al principio
 }
-void MoverEnemigoAbajo(int final,Enemigo **actual,int bandera)
+void MoverEnemigoAbajo(int final,Enemigo **enemigo,int bandera)
 {
-	Enemigo *enemigo=*actual;
-	if (enemigo->bandera==bandera)//compara el flag para elegir que orden hace
+	if ((*enemigo)->bandera==bandera)//compara el flag para elegir que orden hace
 	{
-		enemigo->FrameActual.y=0;//mueve el sprite en el eje y
-		if(++enemigo->contador >= 3)
+		(*enemigo)->FrameActual.y=0;//mueve el sprite en el eje y
+		if(++(*enemigo)->contador >= 3)
 		{
-			if(++enemigo->FrameActual.x >= enemigo->CantidadFrames.x)
-				enemigo->FrameActual.x = 0;//mueve entre los frames del enemigo
-			enemigo->contador= 0;//vuelvo a iniciar el sprite
+			if(++(*enemigo)->FrameActual.x >= (*enemigo)->CantidadFrames.x)
+				(*enemigo)->FrameActual.x = 0;//mueve entre los frames del enemigo
+			(*enemigo)->contador= 0;//vuelvo a iniciar el sprite
 		}
-		enemigo->pocicion.y+=enemigo->velocidad;//cambia el valor de la pocicion del enemigo
-		if(enemigo->pocicion.y >= CUADRADOY*final)
+		(*enemigo)->pocicion.y+=(*enemigo)->velocidad;//cambia el valor de la pocicion del enemigo
+		if((*enemigo)->pocicion.y >= CUADRADOY*final)
 		{
-			enemigo->bandera=bandera+1;//pone un flag cuando llega al final de la linea
+			(*enemigo)->bandera=bandera+1;//pone un flag cuando llega al final de la linea
 		}
 		if(bandera==11)
 	        {
-                	al_destroy_bitmap(enemigo->imagen);
-	                free(enemigo);
+                	al_destroy_bitmap((*enemigo)->imagen);
        	 	}
 
 	}
-	*actual=enemigo;
 }
-void MoverEnemigoIzquierda(int final,Enemigo **actual,int bandera)
+void MoverEnemigoIzquierda(int final,Enemigo **enemigo,int bandera)
 {
-	Enemigo *enemigo=*actual;
-	if (enemigo->bandera==bandera)//compara el flag para elegir que orden hace
+	if ((*enemigo)->bandera==bandera)//compara el flag para elegir que orden hace
 	{
-			printf("%d\n",enemigo->bandera);
-		enemigo->FrameActual.y=1;//mueve el sprite en el eje y
-		if(++enemigo->contador >= 3)
+			printf("%d\n",(*enemigo)->bandera);
+		(*enemigo)->FrameActual.y=1;//mueve el sprite en el eje y
+		if(++(*enemigo)->contador >= 3)
 		{
-			if(++enemigo->FrameActual.x >= enemigo->CantidadFrames.x)
-				enemigo->FrameActual.x = 0;//mueve entre los frames del enemigo
+			if(++(*enemigo)->FrameActual.x >= (*enemigo)->CantidadFrames.x)
+				(*enemigo)->FrameActual.x = 0;//mueve entre los frames del enemigo
 
-			enemigo->contador= 0;//vuelvo a iniciar el sprite
+			(*enemigo)->contador= 0;//vuelvo a iniciar el sprite
 		}
-		enemigo->pocicion.x-=enemigo->velocidad;//cambia el valor de la pocicion del enemigo
-		if(enemigo->pocicion.x <= CUADRADOX*final)
-			enemigo->bandera=bandera+1;
-			printf("%d\n",enemigo->bandera);
+		(*enemigo)->pocicion.x-=(*enemigo)->velocidad;//cambia el valor de la pocicion del enemigo
+		if((*enemigo)->pocicion.x <= CUADRADOX*final)
+			(*enemigo)->bandera=bandera+1;
+			printf("%d\n",(*enemigo)->bandera);
 	}
-	*actual=enemigo;
 }
-void MoverEnemigoDerecha(int final,Enemigo **actual,int bandera)
+void MoverEnemigoDerecha(int final,Enemigo **enemigo,int bandera)
 {
-	Enemigo *enemigo=*actual;
-	if (enemigo->bandera==bandera)//compara el flag para elegir que orden hace
+	if ((*enemigo)->bandera==bandera)//compara el flag para elegir que orden hace
 	{
-		enemigo->FrameActual.y=2;//mueve el sprite en el eje y
-		if(++enemigo->contador >= 3)
+		(*enemigo)->FrameActual.y=2;//mueve el sprite en el eje y
+		if(++(*enemigo)->contador >= 3)
 		{
-			if(++enemigo->FrameActual.x >= enemigo->CantidadFrames.x)
-				enemigo->FrameActual.x = 0;//mueve entre los frames del enemigo
+			if(++(*enemigo)->FrameActual.x >= (*enemigo)->CantidadFrames.x)
+				(*enemigo)->FrameActual.x = 0;//mueve entre los frames del enemigo
 
-			enemigo->contador= 0;//vuelvo a iniciar el sprite
+			(*enemigo)->contador= 0;//vuelvo a iniciar el sprite
 		}
-		enemigo->pocicion.x+=enemigo->velocidad;//cambia el valor de la pocicion del enemigo
-		if(enemigo->pocicion.x >= CUADRADOX*final)
-			enemigo->bandera=bandera+1;//pone un flag cuando llega al final de la linea
+		(*enemigo)->pocicion.x+=(*enemigo)->velocidad;//cambia el valor de la pocicion del enemigo
+		if((*enemigo)->pocicion.x >= CUADRADOX*final)
+			(*enemigo)->bandera=bandera+1;//pone un flag cuando llega al final de la linea
 	}
-	*actual=enemigo;
 }
-void MoverEnemigoArriba(int final,Enemigo **actual,int bandera)
+void MoverEnemigoArriba(int final,Enemigo **enemigo,int bandera)
 {
-	Enemigo *enemigo=*actual;
-	if (enemigo->bandera==bandera)//compara el flag para elegir que orden hace
+	if ((*enemigo)->bandera==bandera)//compara el flag para elegir que orden hace
 	{
-		enemigo->FrameActual.y=3;//mueve el sprite en el eje y
-		if(++enemigo->contador >= 3)
+		(*enemigo)->FrameActual.y=3;//mueve el sprite en el eje y
+		if(++(*enemigo)->contador >= 3)
 		{
-			if(++enemigo->FrameActual.x >= enemigo->CantidadFrames.x)
-				enemigo->FrameActual.x = 0;//mueve entre los frames del enemigo
-			enemigo->contador= 0;//vuelvo a iniciar el sprite
+			if(++(*enemigo)->FrameActual.x >= (*enemigo)->CantidadFrames.x)
+				(*enemigo)->FrameActual.x = 0;//mueve entre los frames del enemigo
+			(*enemigo)->contador= 0;//vuelvo a iniciar el sprite
 		}
-		enemigo->pocicion.y-=enemigo->velocidad;//cambia el valor de la pocicion del enemigo
-		if(enemigo->pocicion.y <= CUADRADOY*final)
-			enemigo->bandera=bandera+1;//pone un flag cuando llega al final de la linea
+		(*enemigo)->pocicion.y-=(*enemigo)->velocidad;//cambia el valor de la pocicion del enemigo
+		if((*enemigo)->pocicion.y <= CUADRADOY*final)
+			(*enemigo)->bandera=bandera+1;//pone un flag cuando llega al final de la linea
 	}
-	*actual=enemigo;
 }
-void MoverEnemigo(Enemigo **actual, Jugador *jugador)
+void MoverEnemigo(Enemigo **enemigo, Jugador *jugador)
 {
-	Enemigo *enemigo=*actual;
 
 
-	MoverEnemigoAbajo(1,&enemigo,0);
-	MoverEnemigoIzquierda(1,&enemigo,1);
-	MoverEnemigoAbajo(10,&enemigo,2);
-	MoverEnemigoDerecha(7,&enemigo,3);
-	MoverEnemigoArriba(5,&enemigo,4);
-	MoverEnemigoIzquierda(5,&enemigo,5);
-	MoverEnemigoAbajo(8,&enemigo,6);
-	MoverEnemigoIzquierda(3,&enemigo,7);
-	MoverEnemigoArriba(3,&enemigo,8);
-	MoverEnemigoDerecha(10,&enemigo,9);
-	MoverEnemigoAbajo(12,&enemigo,10);
+	MoverEnemigoAbajo(1,enemigo,0);
+	MoverEnemigoIzquierda(1,enemigo,1);
+	MoverEnemigoAbajo(10,enemigo,2);
+	MoverEnemigoDerecha(7,enemigo,3);
+	MoverEnemigoArriba(5,enemigo,4);
+	MoverEnemigoIzquierda(5,enemigo,5);
+	MoverEnemigoAbajo(8,enemigo,6);
+	MoverEnemigoIzquierda(3,enemigo,7);
+	MoverEnemigoArriba(3,enemigo,8);
+	MoverEnemigoDerecha(10,enemigo,9);
+	MoverEnemigoAbajo(12,enemigo,10);
 
-	if(enemigo->bandera==11)
+	if((*enemigo)->bandera==11)
 	{
-		jugador->vida-=(*actual)->danio;
-		(*actual)->bandera=14;
-	//	LiberarMemoriaEnemigo(&enemigo);
+		jugador->vida-=(*enemigo)->danio;
+		LiberarMemoriaEnemigo(enemigo);
 	}
-	else if(enemigo->bandera==12)
+	else if((*enemigo)->bandera==12)
 	{
-		LiberarMemoriaEnemigo(&enemigo);
+		LiberarMemoriaEnemigo(enemigo);
 	}
 	else
 	{
 		//dibuja al enemigo
-		BarraDeVida(&enemigo);
-		al_draw_bitmap_region(enemigo->imagen,enemigo->FrameActual.x*enemigo->DistanciaFrames.x,(enemigo->spritey+enemigo->FrameActual.y)*enemigo->DistanciaFrames.y, enemigo->DistanciaFrames.x, enemigo->DistanciaFrames.y, enemigo->pocicion.x, enemigo->pocicion.y, 0);
+		BarraDeVida(enemigo);
+		al_draw_bitmap_region((*enemigo)->imagen,(*enemigo)->FrameActual.x*(*enemigo)->DistanciaFrames.x,((*enemigo)->spritey+(*enemigo)->FrameActual.y)*(*enemigo)->DistanciaFrames.y, (*enemigo)->DistanciaFrames.x, (*enemigo)->DistanciaFrames.y, (*enemigo)->pocicion.x, (*enemigo)->pocicion.y, 0);
 	}
-	*actual=enemigo;
 }
 Enemigo *EmpezarOleada(Enemigo *enemigo, int oleada,int malo)
 {
@@ -261,7 +283,7 @@ Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador)
 		{
 			MoverEnemigo(&aux,jugador);
 		}
-		jugador->relojito++;//reloj cuando pasa 10 veces, spawnea al enemigo(pasa 1 segundo)	
+		jugador->relojito++;//reloj cuando pasa 10 veces, spawnea al enemigo(pasa 1 segundo)
 	}
 	if(jugador->relojito==10 && enemigo!=NULL)
 	{
@@ -275,4 +297,3 @@ Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador)
 	}
 	return enemigo;
 }
-

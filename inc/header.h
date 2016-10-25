@@ -23,7 +23,7 @@
 #define CUADRADOY 42
 #define CUADRADOX 53.33333
 
-enum MYKEYS 
+enum MYKEYS
 {
 	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
 };
@@ -57,7 +57,6 @@ void MoverCuadradoDerecha(Cuadrado *cuadrado);
 void IniciarJugador(Jugador *jugador);
 
 
-
 //enemigos
 void MoverEnemigo(Enemigo **enemigo, Jugador *jugador);
 void IniciarEnemigo1(Enemigo **enemigo);
@@ -72,3 +71,11 @@ Enemigo *EmpezarOleada(Enemigo *enemigo, int oleada,int malo);
 Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador);
 //void OrdenarEnemigos(Enemigo *enemigo);
 void LiberarMemoriaEnemigo(Enemigo **enemigo);
+
+
+//torres
+void MejorarTorre(Torre **seleccionada);
+void Proyectil(Torre *primera);
+void DestruirTorre(Torre **seleccionada);
+void CrearTorre(Torre **primera);
+Enemigo* BuscarUltimoEnRadio(Enemigo *primero);

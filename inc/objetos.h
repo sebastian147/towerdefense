@@ -46,8 +46,8 @@ typedef struct ENEMIGO Enemigo;
 
 struct OLEADA
 {
-	struct ENEMIGO *Dragon;
-	struct ENEMIGO *Minotauro;
+	struct ENEMIGO *Enemigo;
+	struct ENEMIGO *Minota;
 };
 typedef struct OLEADA Oleada;
 
