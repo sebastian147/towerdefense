@@ -6,7 +6,7 @@ void IniciarEnemigo1(Enemigo **enemigo)
         al_convert_mask_to_alpha((*enemigo)->imagen, al_map_rgb(120, 195, 128));
 	(*enemigo)->vida.x=5;
 	(*enemigo)->vida.y=5;
-	(*enemigo)->velocidad=2;
+	(*enemigo)->velocidad=7;
 	(*enemigo)->danio=2;
 	(*enemigo)->pocicion.x=320;
 	(*enemigo)->pocicion.y=0;
@@ -52,8 +52,8 @@ void LiberarMemoriaEnemigo(Enemigo **enemigo)
   {
 
     printf("ok1\n");
-    aux2=aux2->siguiente;
-    aux2->anterior=aux->anterior;
+    aux2=(*enemigo)->siguiente;
+    aux2->anterior=NULL;
     *enemigo=aux2;
   }//si es el primero
   else if(aux->siguiente!=NULL && aux->anterior!=NULL)
