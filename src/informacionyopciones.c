@@ -1,4 +1,19 @@
 #include"header.h"
+void OpcionesTorre(ALLEGRO_FONT *fuente)
+{
+	al_draw_rectangle(12*CUADRADOX,CUADRADOY, 15*CUADRADOX, 2*CUADRADOY, al_map_rgb(255, 255, 255),0);
+	al_draw_rectangle(12*CUADRADOX,CUADRADOY, 14*CUADRADOX, 2*CUADRADOY, al_map_rgb(255, 255, 255),0);
+	al_draw_rectangle(12*CUADRADOX,CUADRADOY, 13*CUADRADOX, 2*CUADRADOY, al_map_rgb(255, 255, 255),0);
+	al_draw_rectangle(12*CUADRADOX,2*CUADRADOY, 15*CUADRADOX, 3*CUADRADOY, al_map_rgb(255, 255, 255),0);
+	al_draw_rectangle(12*CUADRADOX,2*CUADRADOY, 14*CUADRADOX, 3*CUADRADOY, al_map_rgb(255, 255, 255),0);
+	al_draw_rectangle(12*CUADRADOX,2*CUADRADOY, 13*CUADRADOX, 3*CUADRADOY, al_map_rgb(255, 255, 255),0);
+	al_draw_textf(fuente,al_map_rgb(100,100,255),12*CUADRADOX+18,CUADRADOY+15,0,"1");
+	al_draw_textf(fuente,al_map_rgb(100,100,255),13*CUADRADOX+18,CUADRADOY+15,0,"2");
+	al_draw_textf(fuente,al_map_rgb(100,100,255),14*CUADRADOX+18,CUADRADOY+15,0,"3");
+	al_draw_textf(fuente,al_map_rgb(100,100,255),12*CUADRADOX+18,2*CUADRADOY+15,0,"4");
+	al_draw_textf(fuente,al_map_rgb(100,100,255),13*CUADRADOX+18,2*CUADRADOY+15,0,"5");
+	al_draw_textf(fuente,al_map_rgb(100,100,255),14*CUADRADOX+18,2*CUADRADOY+15,0,"6");
+}
 void Informacion(ALLEGRO_FONT *fuente,Jugador *jugador)
 {
 	al_draw_textf(fuente,al_map_rgb(0,0,255),LARGO-150,ALTO-60,0,"vida:%d",jugador->vida);

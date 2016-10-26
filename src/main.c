@@ -91,6 +91,9 @@ int main(int argc, char **argv)
 				MoverCuadradoIzquierda(&cuadrado);
 			if(teclas[DERECHA])
 				MoverCuadradoDerecha(&cuadrado);
+			if(teclas[UNO])
+				OpcionesTorre(iniciar.fuente);
+
 
 			//reloj
 			if(!RelojSalida && enemigo==NULL)
@@ -130,6 +133,16 @@ int main(int argc, char **argv)
                   	      case ALLEGRO_KEY_RIGHT:
                         	        teclas[DERECHA] = true;
                                		 break;
+													case ALLEGRO_KEY_1:
+																	if(teclas[UNO]==true)
+																	{
+																		teclas[UNO] = false;
+																	}
+																	else
+																	{
+																		teclas[UNO] = true;
+																	}
+															  	 break;
                         }
                 }//cambia los botones mientras los aprieto
 		else if(ev.type == ALLEGRO_EVENT_KEY_UP)
@@ -162,7 +175,9 @@ int main(int argc, char **argv)
 			DibujarCuadrado(&cuadrado);
 
 			al_flip_display();
+
 			//al_draw_bitmap(iniciar.mapa,0,0,0);
+			al_clear_to_color(al_map_rgb(0,0,0));
 			ImprimirMapa(&iniciar);
 		}//si no recibe ningun evento hace esto
 

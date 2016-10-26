@@ -27,7 +27,7 @@ enum MYKEYS
 {
 	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
 };
-enum TECLAS{ARRIBA, ABAJO, IZQUIERDA, DERECHA, SPACE};
+enum TECLAS{ARRIBA, ABAJO, IZQUIERDA, DERECHA, SPACE, UNO};
 
 //iniciar
 void InicializarIniciar(Iniciar *iniciar);
@@ -40,6 +40,8 @@ bool EmpezarReloj(ALLEGRO_FONT *fuente,Reloj *reloj);
 void Reloj0(ALLEGRO_FONT *fuente);
 void IniciarReloj(Reloj *reloj);
 void Informacion(ALLEGRO_FONT *fuente,Jugador *jugador);
+void OpcionesTorre(ALLEGRO_FONT *fuente);
+
 
 
 

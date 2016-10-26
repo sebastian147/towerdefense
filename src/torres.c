@@ -1,8 +1,13 @@
 #include "header.h"
 void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado)
 {
-  al_convert_mask_to_alpha((*seleccionada)->imagen, al_map_rgb(120, 195, 128));
-
+  (*seleccionada)->imagen = al_load_bitmap("./assets/PromoImages.jpg");
+  (*seleccionada)->rango=3;
+  (*seleccionada)->danio=5;
+  (*seleccionada)->pocicion.x=cuadrado->x;
+  (*seleccionada)->pocicion.y=cuadrado->y;
+  (*seleccionada)->cadencia=1;
+  al_draw_bitmap_region((*seleccionada)->imagen,100,70,140,32,(*seleccionada)->pocicion.x,(*seleccionada)->pocicion.y,0);
 }
 void MejorarTorre(Torre **seleccionada)
 {

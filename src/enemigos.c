@@ -279,6 +279,7 @@ Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador)
 	if(enemigo!=NULL)
 	{
 		//mueve a los enemigos recorriendo la lista
+    aux=enemigo;
 		for(aux=enemigo;aux!=NULL;aux=aux->siguiente)
 		{
 			MoverEnemigo(&aux,jugador);
@@ -295,5 +296,11 @@ Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador)
 		jugador->malo++;
 		jugador->relojito=10;
 	}
+  if(enemigo==NULL)
+  {
+    jugador->oleada++;
+    jugador->malo=0;
+    jugador->relojito=1;
+  }
 	return enemigo;
 }
