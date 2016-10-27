@@ -29,6 +29,6 @@ void MoverCuadradoIzquierda(Cuadrado *cuadrado)
 void MoverCuadradoDerecha(Cuadrado *cuadrado)
 {
         cuadrado->x += CUADRADOX;
-        if(cuadrado->x > LARGO-CUADRADOX)
-                cuadrado->x = LARGO-CUADRADOX;
+        if(cuadrado->x > LARGO-4*CUADRADOX)
+                cuadrado->x = LARGO-4*CUADRADOX;
 }

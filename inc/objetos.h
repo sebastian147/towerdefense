@@ -57,6 +57,7 @@ struct RELOJ
 	int minutos;
 	int segundos;
 	int milisegundos;
+	int DentroDeFuncion;
 };
 typedef struct RELOJ Reloj;
 
@@ -94,6 +95,7 @@ struct TORRE
 	int danio;
 	xy pocicion;
 	int cadencia;
+	int tiempo;
 	struct TORRE *siguiente;
 	struct TORRE *anterior;
 	ALLEGRO_BITMAP *imagen;

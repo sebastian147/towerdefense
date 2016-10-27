@@ -170,7 +170,6 @@ void MoverEnemigoIzquierda(int final,Enemigo **enemigo,int bandera)
 {
 	if ((*enemigo)->bandera==bandera)//compara el flag para elegir que orden hace
 	{
-			printf("%d\n",(*enemigo)->bandera);
 		(*enemigo)->FrameActual.y=1;//mueve el sprite en el eje y
 		if(++(*enemigo)->contador >= 3)
 		{
@@ -182,7 +181,6 @@ void MoverEnemigoIzquierda(int final,Enemigo **enemigo,int bandera)
 		(*enemigo)->pocicion.x-=(*enemigo)->velocidad;//cambia el valor de la pocicion del enemigo
 		if((*enemigo)->pocicion.x <= CUADRADOX*final)
 			(*enemigo)->bandera=bandera+1;
-			printf("%d\n",(*enemigo)->bandera);
 	}
 }
 void MoverEnemigoDerecha(int final,Enemigo **enemigo,int bandera)
@@ -301,6 +299,14 @@ Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador)
     jugador->oleada++;
     jugador->malo=0;
     jugador->relojito=1;
-  }
+  }//agregado revisar
 	return enemigo;
+}
+Enemigo * BuscarUltimoEnLaLista(Enemigo *primero)
+{
+  while(primero->siguiente!=NULL)
+  {
+      primero=primero->siguiente;
+  }
+  return primero;
 }

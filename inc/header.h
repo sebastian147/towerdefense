@@ -7,6 +7,8 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
+#include <stdlib.h>
 #include "objetos.h"
 
 #include <allegro5/allegro.h>
@@ -23,11 +25,19 @@
 #define CUADRADOY 50
 #define CUADRADOX 50
 
+
+#define PI 3.141592
+#define ERROR -1
+#define OK 0
+
 enum MYKEYS
 {
 	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
 };
-enum TECLAS{ARRIBA, ABAJO, IZQUIERDA, DERECHA, SPACE, UNO};
+enum TECLAS
+{
+	ARRIBA, ABAJO, IZQUIERDA, DERECHA, SPACE, UNO,B
+};
 
 //iniciar
 void InicializarIniciar(Iniciar *iniciar);
@@ -73,6 +83,7 @@ Enemigo *EmpezarOleada(Enemigo *enemigo, int oleada,int malo);
 Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador);
 //void OrdenarEnemigos(Enemigo *enemigo);
 void LiberarMemoriaEnemigo(Enemigo **enemigo);
+Enemigo * BuscarUltimoEnLaLista(Enemigo *primero);
 
 
 //torres
@@ -80,9 +91,11 @@ void MejorarTorre(Torre **seleccionada);
 void Proyectil(Torre *primera);
 void DestruirTorre(Torre **seleccionada);
 void CrearTorre(Torre **primera);
-Enemigo* BuscarUltimoEnRadio(Enemigo *primero);
+int BuscarUltimoEnRadio(Enemigo **primero,Torre *torre);
 void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado);
-void ActualizarTorre(Torre **primera);
+void ActualizarTorre(Torre **primera,Cuadrado *cuadrado,Enemigo **primero, Reloj *reloj);
+void DispararAlUltimo(Torre *seleccionada,Enemigo **ultimo);
+
 
 
 //mapa
