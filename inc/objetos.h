@@ -88,6 +88,17 @@ struct JUGADOR
 typedef struct JUGADOR Jugador;
 
 
+struct BALA
+{
+	xy pocicion;
+	int velocidad;
+	xy pocicionenemigo;
+	struct BALA *siguiente;
+	ALLEGRO_BITMAP *imagen;
+
+};
+typedef struct BALA Bala;
+
 
 struct TORRE
 {
@@ -96,8 +107,11 @@ struct TORRE
 	xy pocicion;
 	int cadencia;
 	int tiempo;
+	int velocidad;
+	int tiros;
 	struct TORRE *siguiente;
 	struct TORRE *anterior;
+	struct BALA disparo[5];
 	ALLEGRO_BITMAP *imagen;
 };
 typedef struct TORRE Torre;

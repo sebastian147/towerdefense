@@ -2,10 +2,10 @@
 void IniciarEnemigo1(Enemigo **enemigo)
 {
 //	enemigo->nombre={'D','r','a','g','o','n'};
-  (*enemigo)->imagen = al_load_bitmap("./assets/dsm12set.png");
-  al_convert_mask_to_alpha((*enemigo)->imagen, al_map_rgb(120, 195, 128));
-	(*enemigo)->vida.x=5;
-	(*enemigo)->vida.y=5;
+	(*enemigo)->imagen = al_load_bitmap("./assets/dsm12set.png");
+	 al_convert_mask_to_alpha((*enemigo)->imagen, al_map_rgb(120, 195, 128));
+	(*enemigo)->vida.x=100;
+	(*enemigo)->vida.y=100;
 	(*enemigo)->velocidad=7;
 	(*enemigo)->danio=2;
 	(*enemigo)->pocicion.x=320;
@@ -26,9 +26,9 @@ void IniciarEnemigo2(Enemigo **enemigo)
 //	enemigo->nombre={'D','r','a','g','o','n'};
   (*enemigo)->imagen = al_load_bitmap("./assets/dsm12set.png");
   al_convert_mask_to_alpha((*enemigo)->imagen, al_map_rgb(120, 195, 128));
-	(*enemigo)->vida.x=5;
-	(*enemigo)->vida.y=5;
-	(*enemigo)->velocidad=7;
+	(*enemigo)->vida.x=100;
+	(*enemigo)->vida.y=100;
+	(*enemigo)->velocidad=5;
 	(*enemigo)->danio=2;
 	(*enemigo)->pocicion.x=320;
 	(*enemigo)->pocicion.y=0;
@@ -43,7 +43,7 @@ void IniciarEnemigo2(Enemigo **enemigo)
 	(*enemigo)->spritey=4;
 //le doy valor al enemigo
 }
-void LiberarMemoriaEnemigo(Enemigo **enemigo)
+void LiberarMemoriaEnemigo(Enemigo **enemigo,Enemigo **primero)
 {
   Enemigo *aux,*aux2;
   aux=*enemigo;
@@ -51,14 +51,13 @@ void LiberarMemoriaEnemigo(Enemigo **enemigo)
   if(aux->anterior==NULL && aux->siguiente!=NULL)
   {
 
-    printf("ok1\n");
     aux2=(*enemigo)->siguiente;
     aux2->anterior=NULL;
+    *primero=aux2;
     *enemigo=aux2;
   }//si es el primero
   else if(aux->siguiente!=NULL && aux->anterior!=NULL)
   {
-    printf("ok2\n");
     aux2->anterior->siguiente=aux2->siguiente;
     aux2->siguiente->anterior=aux2->anterior;
     aux2=aux2->anterior;
@@ -66,7 +65,6 @@ void LiberarMemoriaEnemigo(Enemigo **enemigo)
   }//si es alguno del medio
   else if(aux->anterior!=NULL&&aux->siguiente==NULL)
   {
-    printf("ok3\n");
     aux2=aux2->anterior;
     aux2->siguiente=NULL;
     *enemigo=aux2;
@@ -74,38 +72,11 @@ void LiberarMemoriaEnemigo(Enemigo **enemigo)
   else if(aux->anterior==NULL&&aux->siguiente==NULL)
   {
     *enemigo=NULL;
-    printf("ok44444\n");
+    *primero=NULL;
   }
   al_destroy_bitmap(aux->imagen);//libero la imagen
   free(aux);//libero el auxiliar
-}/*
-void LiberarMemoriaEnemigo(Enemigo **enemigo)
-{
-	Enemigo *aux;
-	if((*enemigo)->anterior==NULL&&(*enemigo)->siguiente!=NULL)
-	{
-		aux=(*enemigo)->siguiente;
-		aux->anterior=NULL;
-		free(*enemigo);
-	}
-	else if((*enemigo)->anterior!=NULL&&(*enemigo)->siguiente==NULL)
-	{
-		aux=(*enemigo)->anterior;
-		aux->siguiente=NULL;
-		free(*enemigo);
-	}
-	else if((*enemigo)->siguiente==NULL &&(*enemigo)->anterior==NULL)
-	{
-		free(*enemigo);
-	}
-	else if((*enemigo)->siguiente!=NULL && (*enemigo)->anterior!=NULL)
-	{
-		aux=(*enemigo);
-		(*enemigo)->anterior->siguiente=(*enemigo)->siguiente;
-		(*enemigo)->siguiente->anterior=(*enemigo)->anterior;
-		free(aux);
-	}
-}*/
+}
 void BarraDeVida(Enemigo **enemigo)
 {
 	float porcentaje=(32.0)/((*enemigo)->vida.y);//saco el porcentaje de la barra de vida
@@ -138,7 +109,7 @@ Enemigo * NuevoEnemigo(Enemigo *enemigo)
 	else//agrego el nuevo nodo de la lista al principio|
 	{
 		nuevoEnemigo->siguiente=aux;
-    aux->anterior=nuevoEnemigo;
+		aux->anterior=nuevoEnemigo;
 		nuevoEnemigo->anterior=NULL;
 	}
 	return nuevoEnemigo;//retorno el puntero al principio
@@ -219,7 +190,6 @@ void MoverEnemigoArriba(int final,Enemigo **enemigo,int bandera)
 void MoverEnemigo(Enemigo **enemigo, Jugador *jugador)
 {
 
-
 	MoverEnemigoAbajo(1,enemigo,0);
 	MoverEnemigoIzquierda(1,enemigo,1);
 	MoverEnemigoAbajo(10,enemigo,2);
@@ -232,21 +202,12 @@ void MoverEnemigo(Enemigo **enemigo, Jugador *jugador)
 	MoverEnemigoDerecha(10,enemigo,9);
 	MoverEnemigoAbajo(12,enemigo,10);
 
-	if((*enemigo)->bandera==11)
-	{
-		jugador->vida-=(*enemigo)->danio;
-		LiberarMemoriaEnemigo(enemigo);
-	}
-	else if((*enemigo)->bandera==12)
-	{
-		LiberarMemoriaEnemigo(enemigo);
-	}
-	else
-	{
-		//dibuja al enemigo
-		BarraDeVida(enemigo);
-		al_draw_bitmap_region((*enemigo)->imagen,(*enemigo)->FrameActual.x*(*enemigo)->DistanciaFrames.x,((*enemigo)->spritey+(*enemigo)->FrameActual.y)*(*enemigo)->DistanciaFrames.y, (*enemigo)->DistanciaFrames.x, (*enemigo)->DistanciaFrames.y, (*enemigo)->pocicion.x, (*enemigo)->pocicion.y, 0);
-	}
+
+	//dibuja al enemigo
+	BarraDeVida(enemigo);
+	al_draw_bitmap_region((*enemigo)->imagen,(*enemigo)->FrameActual.x*(*enemigo)->DistanciaFrames.x,((*enemigo)->spritey+(*enemigo)->FrameActual.y)*(*enemigo)->DistanciaFrames.y, (*enemigo)->DistanciaFrames.x, (*enemigo)->DistanciaFrames.y, (*enemigo)->pocicion.x, (*enemigo)->pocicion.y, 0);
+
+
 }
 Enemigo *EmpezarOleada(Enemigo *enemigo, int oleada,int malo)
 {
@@ -263,11 +224,25 @@ Enemigo *EmpezarOleada(Enemigo *enemigo, int oleada,int malo)
 			IniciarEnemigo2(&enemigo);//inicia el enemigo con sus valores
 		}
 	}
+	else if(oleada==2)//hace esto para la oleada
+	{
+			enemigo=NuevoEnemigo(enemigo);//pide memoria para el enemigio en la lista
+			IniciarEnemigo1(&enemigo);//inicia el enemigo con sus valores
+	}
+	else if(oleada==3)//hace esto para la oleada
+	{
+			enemigo=NuevoEnemigo(enemigo);//pide memoria para el enemigio en la lista
+			IniciarEnemigo2(&enemigo);//inicia el enemigo con sus valores
+	}
+	else
+	{
+			enemigo=NuevoEnemigo(enemigo);//pide memoria para el enemigio en la lista
+			IniciarEnemigo2(&enemigo);//inicia el enemigo con sus valores
+	}
 	return enemigo;
 }
-Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador)
+Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador,bool *RelojSalida)
 {
-
 	Enemigo *aux;
 	if(jugador->relojito==0&&jugador->malo!=15)
 	{
@@ -277,10 +252,26 @@ Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador)
 	if(enemigo!=NULL)
 	{
 		//mueve a los enemigos recorriendo la lista
-    aux=enemigo;
-		for(aux=enemigo;aux!=NULL;aux=aux->siguiente)
+    		aux=enemigo;
+		while(aux!=NULL)
 		{
 			MoverEnemigo(&aux,jugador);
+
+			if(aux->bandera==11)
+			{
+				jugador->vida-=aux->danio;
+				LiberarMemoriaEnemigo(&aux,&enemigo);
+			}//si llega al final resta vida
+			else if(aux->bandera==12)
+			{
+				LiberarMemoriaEnemigo(&aux,&enemigo);
+			}//muere en el camino
+			if(aux!=NULL)
+			{
+				aux=aux->siguiente;
+			}//me crashaba asi que le puse esta condicion para que solo lo haga
+
+
 		}
 		jugador->relojito++;//reloj cuando pasa 10 veces, spawnea al enemigo(pasa 1 segundo)
 	}
@@ -288,25 +279,71 @@ Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador)
 	{
 		jugador->relojito=0;//lo pone en 0 para pasar a la proxima lista
 	}
-	if(enemigo!=NULL && jugador->malo==15)
+/*	if(enemigo!=NULL && jugador->malo==15)
 	{
 		jugador->oleada++;
 		jugador->malo++;
 		jugador->relojito=10;
-	}
-  if(enemigo==NULL)
-  {
-    jugador->oleada++;
-    jugador->malo=0;
-    jugador->relojito=1;
-  }//agregado revisar
+	}*///no se si es util me olvide que hace
+	  if(enemigo==NULL&&jugador->malo==15)
+	  {
+	    jugador->oleada++;
+	    jugador->malo=0;
+	    *RelojSalida=false;
+	  }//vuelve a los valores iniciales y avanza de oleada
 	return enemigo;
 }
-Enemigo * BuscarUltimoEnLaLista(Enemigo *primero)
+void BuscarUltimoEnLaLista(Enemigo *primero)
 {
-  while(primero->siguiente!=NULL)
+  while(primero!=NULL)
   {
+	printf("%dbandera\n\n",primero->bandera);
       primero=primero->siguiente;
   }
-  return primero;
+printf("\n\n\n");
+}
+//lo uso para debuguear imprime las banderas de los enemigos
+void PredecirMovimiento(Enemigo *aux, Torre *torre)
+{
+	Enemigo *enemigo=aux;
+	int i=0;
+	/*for(i=1;fabs(sqrt(pow(enemigo->pocicion.x+enemigo->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(enemigo->pocicion.y+enemigo->DistanciaFrames.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(enemigo->pocicion.x-(torre->pocicion.x+25),2)+pow(enemigo->pocicion.y-(torre->pocicion.y+25),2))) < (torre->rango*CUADRADOX) || fabs(sqrt(pow(enemigo->pocicion.x+enemigo->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(enemigo->pocicion.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(enemigo->pocicion.x-(torre->pocicion.x+25),2)+pow(enemigo->pocicion.y+enemigo->DistanciaFrames.y-(torre->pocicion.y+25),2))) < (torre->rango*CUADRADOX) /(i*torre->velocidad*torre->cadencia*10)>2;i++)
+	{	*/for(i=1;fabs(sqrt(pow(enemigo->pocicion.x+enemigo->DistanciaFrames.x/2-(torre->pocicion.x+25),2)+pow(enemigo->pocicion.y+enemigo->DistanciaFrames.y/2-(torre->pocicion.y+25),2)))/(i*torre->velocidad*torre->cadencia)>1;i++)
+	{
+		MoverEnemigoAbajo(1,&enemigo,0);
+		MoverEnemigoIzquierda(1,&enemigo,1);
+		MoverEnemigoAbajo(10,&enemigo,2);
+		MoverEnemigoDerecha(7,&enemigo,3);
+		MoverEnemigoArriba(5,&enemigo,4);
+		MoverEnemigoIzquierda(5,&enemigo,5);
+		MoverEnemigoAbajo(8,&enemigo,6);
+		MoverEnemigoIzquierda(3,&enemigo,7);
+		MoverEnemigoArriba(3,&enemigo,8);
+		MoverEnemigoDerecha(10,&enemigo,9);
+		MoverEnemigoAbajo(12,&enemigo,10);
+	}
+	/*while(fabs(sqrt(pow(enemigo->pocicion.x+enemigo->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(enemigo->pocicion.y+enemigo->DistanciaFrames.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(enemigo->pocicion.x-(torre->pocicion.x+25),2)+pow(enemigo->pocicion.y-(torre->pocicion.y+25),2))) < (torre->rango*CUADRADOX) || fabs(sqrt(pow(enemigo->pocicion.x+enemigo->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(enemigo->pocicion.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(enemigo->pocicion.x-(torre->pocicion.x+25),2)+pow(enemigo->pocicion.y+enemigo->DistanciaFrames.y-(torre->pocicion.y+25),2))) > (torre->rango*CUADRADOX))
+	{*/
+
+		/*else
+		{
+			(enemigo)=enemigo->anterior;
+			x=enemigo->pocicion.x;
+			y=enemigo->pocicion.y;
+			z=enemigo->bandera;
+	
+	
+			MoverEnemigoAbajo(1,&enemigo,0);
+			MoverEnemigoIzquierda(1,&enemigo,1);
+			MoverEnemigoAbajo(10,&enemigo,2);
+			MoverEnemigoDerecha(7,&enemigo,3);
+			MoverEnemigoArriba(5,&enemigo,4);
+			MoverEnemigoIzquierda(5,&enemigo,5);
+			MoverEnemigoAbajo(8,&enemigo,6);
+			MoverEnemigoIzquierda(3,&enemigo,7);
+			MoverEnemigoArriba(3,&enemigo,8);
+			MoverEnemigoDerecha(10,&enemigo,9);
+			MoverEnemigoAbajo(12,&enemigo,10);
+		}
+	}*/
 }

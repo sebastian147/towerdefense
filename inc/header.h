@@ -80,22 +80,25 @@ void IniciarEnemigo2(Enemigo **enemigo);
 Enemigo * NuevoEnemigo(Enemigo *anterior);
 void BarraDeVida(Enemigo **enemigo);
 Enemigo *EmpezarOleada(Enemigo *enemigo, int oleada,int malo);
-Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador);
+Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador,bool *RelojSalida);
 //void OrdenarEnemigos(Enemigo *enemigo);
-void LiberarMemoriaEnemigo(Enemigo **enemigo);
-Enemigo * BuscarUltimoEnLaLista(Enemigo *primero);
+void LiberarMemoriaEnemigo(Enemigo **enemigo,Enemigo **primero);
+void BuscarUltimoEnLaLista(Enemigo *primero);
+void PredecirMovimiento(Enemigo *enemigo, Torre *torre);
 
 
 //torres
 void MejorarTorre(Torre **seleccionada);
-void Proyectil(Torre *primera);
+void NuevoProyectil(Torre **primera);
 void DestruirTorre(Torre **seleccionada);
 void CrearTorre(Torre **primera);
 int BuscarUltimoEnRadio(Enemigo **primero,Torre *torre);
 void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado);
 void ActualizarTorre(Torre **primera,Cuadrado *cuadrado,Enemigo **primero, Reloj *reloj);
-void DispararAlUltimo(Torre *seleccionada,Enemigo **ultimo);
-
+void DispararAlUltimo(Torre **seleccionada,Enemigo **ultimo,Reloj *reloj);
+int HayTorre(Cuadrado *cuadrado,Torre *torre);
+int CantidadDeBalas(Torre *seleccionada);
+void ActualizarProyectil(Torre **seleccionada, Enemigo **ultimo);
 
 
 //mapa

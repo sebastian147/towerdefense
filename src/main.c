@@ -102,6 +102,10 @@ int main(int argc, char **argv)
 					{//si es el camino imprime un errror
 						//tengo que imprimir un error
 					}
+					else if(HayTorre(&cuadrado,torre)==0)// si ya hay una torre ahi
+					{
+						//tengo que imprimir un error
+					}
 					else
 					{
 						CrearTorre(&torre);
@@ -120,8 +124,9 @@ int main(int argc, char **argv)
 			else if(RelojSalida)
 			{
 				//Crea al enemigo
-				enemigo=SpawnearEnemigos(enemigo,&jugador);
+				enemigo=SpawnearEnemigos(enemigo,&jugador,&RelojSalida);
 				//pone el reloj en 0
+				printf("%d",jugador.oleada);
 				Reloj0(iniciar.fuente);
 				aux=enemigo;
 			}
