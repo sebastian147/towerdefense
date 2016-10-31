@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 /*********************inicio los structs******************************************/
 
 	IniciarReloj(&reloj);
-  IniciarCuadrado(&cuadrado);
+	IniciarCuadrado(&cuadrado);
 	IniciarJugador(&jugador);
 
 /********************************comienza el juego**********************************/
@@ -132,6 +132,7 @@ int main(int argc, char **argv)
 			}
 			Informacion(iniciar.fuente,&jugador);//dibuja la informacion del jugador
 			ActualizarTorre(&torre,&cuadrado,&aux,&reloj);
+			printf("hola");
 		}//de acuero a la tecla que oprimi se mueve
 		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
@@ -211,7 +212,7 @@ int main(int argc, char **argv)
 
 	}
 /*************************************Libera la memoria************************************/
-	IniciarLiberarMemoria(&iniciar);
+	IniciarLiberarMemoria(&iniciar,&torre,&enemigo);
 
 
 	return 0;

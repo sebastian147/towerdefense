@@ -42,7 +42,7 @@ enum TECLAS
 //iniciar
 void InicializarIniciar(Iniciar *iniciar);
 int IniciarYErrores(Iniciar *iniciar);
-void IniciarLiberarMemoria(Iniciar *iniciar);
+void IniciarLiberarMemoria(Iniciar *iniciar,Torre **torre,Enemigo **enemigo);
 
 
 //reloj
@@ -84,7 +84,7 @@ Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador,bool *RelojSalida);
 //void OrdenarEnemigos(Enemigo *enemigo);
 void LiberarMemoriaEnemigo(Enemigo **enemigo,Enemigo **primero);
 void BuscarUltimoEnLaLista(Enemigo *primero);
-void PredecirMovimiento(Enemigo *enemigo, Torre *torre);
+void PredecirMovimiento(Enemigo **enemigo, Torre *torre);
 
 
 //torres
@@ -92,7 +92,7 @@ void MejorarTorre(Torre **seleccionada);
 void NuevoProyectil(Torre **primera);
 void DestruirTorre(Torre **seleccionada);
 void CrearTorre(Torre **primera);
-int BuscarUltimoEnRadio(Enemigo **primero,Torre *torre);
+int BuscarUltimoEnRadio(Enemigo **primero,Torre **torre);
 void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado);
 void ActualizarTorre(Torre **primera,Cuadrado *cuadrado,Enemigo **primero, Reloj *reloj);
 void DispararAlUltimo(Torre **seleccionada,Enemigo **ultimo,Reloj *reloj);

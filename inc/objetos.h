@@ -108,6 +108,7 @@ struct TORRE
 	int cadencia;
 	int tiempo;
 	int velocidad;
+	xy pocicionenemigo;
 	int tiros;
 	struct TORRE *siguiente;
 	struct TORRE *anterior;
