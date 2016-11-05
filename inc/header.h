@@ -39,11 +39,21 @@ enum TECLAS
 	ARRIBA, ABAJO, IZQUIERDA, DERECHA, SPACE, UNO,B
 };
 
+
+//jugar
+int jugar(Iniciar *iniciar);
+int menu(Iniciar *iniciar);
+
+
+
+
+
 //iniciar
 void InicializarIniciar(Iniciar *iniciar);
 int IniciarYErrores(Iniciar *iniciar);
-void IniciarLiberarMemoria(Iniciar *iniciar,Torre **torre,Enemigo **enemigo);
-
+void IniciarLiberarMemoria(Torre **torre,Enemigo **enemigo);
+void IniciarLiberarMemoriaCierre(Iniciar *iniciar);
+void  DibujarMenu(ALLEGRO_FONT *fuente);
 
 //reloj
 bool EmpezarReloj(ALLEGRO_FONT *fuente,Reloj *reloj);

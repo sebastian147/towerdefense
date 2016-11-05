@@ -1,14 +1,16 @@
 #include "header.h"
-void IniciarLiberarMemoria(Iniciar *iniciar,Torre **torre,Enemigo **enemigo)
+void IniciarLiberarMemoriaCierre(Iniciar *iniciar)
 {
-	Enemigo *aux=*enemigo, *aux2;
-	//Terminamos el programa
 	al_destroy_bitmap(iniciar->mapa);
 	al_destroy_timer(iniciar->timer);
 	al_destroy_display(iniciar->display);
 	al_destroy_event_queue(iniciar->event_queue);
 	al_destroy_font(iniciar->fuente);
- //       al_destroy_bitmap(enemigo1.imagen);
+}
+void IniciarLiberarMemoria(Torre **torre,Enemigo **enemigo)
+{
+	Enemigo *aux=*enemigo, *aux2;
+	//Terminamos el programa
 	while(aux->siguiente!=NULL)
 	{
 		aux2=aux->siguiente;

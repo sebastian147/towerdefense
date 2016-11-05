@@ -73,7 +73,7 @@ void NuevoProyectil(Torre **primera)
 	for(i=250,j=250,l=250;l!=255;l++,j++,i++)
 	{
 		al_convert_mask_to_alpha(nueva->imagen, al_map_rgb(j, i, l));
-	}	
+	}
 	(*primera)->tiros++;
 */
 }
@@ -119,7 +119,7 @@ void ActualizarProyectil(Torre **primera,Enemigo **ultimo)
 					//al_destroy_bitmap((*primera)->disparo[i].imagen);
 					(*ultimo)->vida.x-=(*primera)->danio;
 					(*primera)->tiros--;
-					
+
 			}
 		}
 	}
@@ -129,7 +129,7 @@ void ActualizarProyectil(Torre **primera,Enemigo **ultimo)
 		while(aux!=NULL)
 		{
 
-		
+
 			if(aux->pocicion.x == aux->pocicionenemigo.x)
 			{
 			}
@@ -205,7 +205,7 @@ void ActualizarProyectil(Torre **primera,Enemigo **ultimo)
 					//printf("oK312312\n");
 				}//revisar
 			}
-			aux2=aux;	
+			aux2=aux;
 			if(aux!=NULL)
 			{
 				aux=aux->siguiente;//voy al siguiente tiro
@@ -313,8 +313,8 @@ int BuscarUltimoEnRadio(Enemigo **primero,Torre **seleccionada)
 /*
   int j=ERROR;
   Enemigo *ultimo=*primero, *aux=*primero;
-  		
-  
+
+
   while(aux!=NULL)
   {	//elchoclo es para calcular la distancia
       if(fabs(sqrt(pow(aux->pocicion.x+aux->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y+aux->DistanciaFrames.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(aux->pocicion.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y-(torre->pocicion.y+25),2))) < (torre->rango*CUADRADOX) || fabs(sqrt(pow(aux->pocicion.x+aux->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(aux->pocicion.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y+aux->DistanciaFrames.y-(torre->pocicion.y+25),2))) < (torre->rango*CUADRADOX))

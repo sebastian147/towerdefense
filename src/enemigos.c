@@ -322,8 +322,8 @@ void PredecirMovimiento(Enemigo **aux, Torre *torre)
 		MoverEnemigoDerecha(10,&enemigo,9);
 		MoverEnemigoAbajo(12,&enemigo,10);
 	}
-			enemigo->pocicion.x-=4;
-			enemigo->pocicion.y-=4;
+			//enemigo->pocicion.x-=4;
+			//enemigo->pocicion.y-=4;
 
 	/*while(fabs(sqrt(pow(enemigo->pocicion.x+enemigo->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(enemigo->pocicion.y+enemigo->DistanciaFrames.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(enemigo->pocicion.x-(torre->pocicion.x+25),2)+pow(enemigo->pocicion.y-(torre->pocicion.y+25),2))) < (torre->rango*CUADRADOX) || fabs(sqrt(pow(enemigo->pocicion.x+enemigo->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(enemigo->pocicion.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(enemigo->pocicion.x-(torre->pocicion.x+25),2)+pow(enemigo->pocicion.y+enemigo->DistanciaFrames.y-(torre->pocicion.y+25),2))) > (torre->rango*CUADRADOX))
 	{*/
