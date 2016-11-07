@@ -1,46 +1,77 @@
 #include "header.h"
-void IniciarEnemigo1(Enemigo **enemigo)
+void IniciarEnemigo(Enemigo **enemigo,int a)
 {
 //	enemigo->nombre={'D','r','a','g','o','n'};
-	(*enemigo)->imagen = al_load_bitmap("./assets/dsm12set.png");
-	 al_convert_mask_to_alpha((*enemigo)->imagen, al_map_rgb(120, 195, 128));
-	(*enemigo)->vida.x=100;
-	(*enemigo)->vida.y=100;
-	(*enemigo)->velocidad=7;
-	(*enemigo)->danio=2;
-	(*enemigo)->pocicion.x=320;
-	(*enemigo)->pocicion.y=0;
-	(*enemigo)->FrameActual.x=0;
-	(*enemigo)->FrameActual.y=0;
-	(*enemigo)->DistanciaFrames.x=32;
-	(*enemigo)->DistanciaFrames.y=32;
-	(*enemigo)->CantidadFrames.x=3;
-	(*enemigo)->CantidadFrames.y=4;
-	(*enemigo)->contador=0;
-	(*enemigo)->bandera=0;
-	(*enemigo)->spritey=0;
-//le doy valor al enemigo
-}
-void IniciarEnemigo2(Enemigo **enemigo)
-{
-//	enemigo->nombre={'D','r','a','g','o','n'};
-  (*enemigo)->imagen = al_load_bitmap("./assets/dsm12set.png");
-  al_convert_mask_to_alpha((*enemigo)->imagen, al_map_rgb(120, 195, 128));
-	(*enemigo)->vida.x=100;
-	(*enemigo)->vida.y=100;
-	(*enemigo)->velocidad=5;
-	(*enemigo)->danio=2;
-	(*enemigo)->pocicion.x=320;
-	(*enemigo)->pocicion.y=0;
-	(*enemigo)->FrameActual.x=0;
-	(*enemigo)->FrameActual.y=4;
-	(*enemigo)->DistanciaFrames.x=32;
-	(*enemigo)->DistanciaFrames.y=32;
-	(*enemigo)->CantidadFrames.x=3;
-	(*enemigo)->CantidadFrames.y=4;
-	(*enemigo)->contador=0;
-	(*enemigo)->bandera=0;
-	(*enemigo)->spritey=4;
+	FILE *f;
+	char buff[100];
+	char *token;
+	char aux[20];
+	int i=0;
+	f=fopen("./datos/enemigos","r");
+	if(f==NULL)
+	{
+		fprintf(stdin,"Error al abrir el archivo\n");
+	}
+	while(i!=a)
+	{
+		fscanf(f,"%s",buff);
+		i++;
+	}
+	token = strtok(buff, ";"); // token = "producto";
+	(*enemigo)->imagen = al_load_bitmap(token);
+	al_convert_mask_to_alpha((*enemigo)->imagen, al_map_rgb(120, 195, 128));
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->vida.x=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->vida.y=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->velocidad=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->danio=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->pocicion.x=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->pocicion.y=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->FrameActual.x=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->FrameActual.y=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->DistanciaFrames.x=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->DistanciaFrames.y=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->CantidadFrames.x=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->CantidadFrames.y=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->bandera=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->contador=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->spritey=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*enemigo)->dinero=atoi(aux);
+	token = strtok(NULL, "\0");
+	strcpy(aux,token);
+	(*enemigo)->puntaje=atoi(aux);
+
 //le doy valor al enemigo
 }
 void LiberarMemoriaEnemigo(Enemigo **enemigo,Enemigo **primero)
@@ -82,7 +113,7 @@ void BarraDeVida(Enemigo **enemigo)
 	float porcentaje=(32.0)/((*enemigo)->vida.y);//saco el porcentaje de la barra de vida
 	if(porcentaje*(*enemigo)->vida.x>0)
 	{
-       		al_draw_filled_rectangle((*enemigo)->pocicion.x,(*enemigo)->pocicion.y-5,(*enemigo)->pocicion.x+32,(*enemigo)->pocicion.y,al_map_rgb(0, 255, 0));//dibujo la barra verde
+    al_draw_filled_rectangle((*enemigo)->pocicion.x,(*enemigo)->pocicion.y-5,(*enemigo)->pocicion.x+32,(*enemigo)->pocicion.y,al_map_rgb(0, 255, 0));//dibujo la barra verde
 		al_draw_filled_rectangle((*enemigo)->pocicion.x+(porcentaje*(*enemigo)->vida.x),(*enemigo)->pocicion.y-5,(*enemigo)->pocicion.x+32,(*enemigo)->pocicion.y,al_map_rgb(255, 0, 0));//dibujo la barra roja
 	}
 	else
@@ -216,28 +247,28 @@ Enemigo *EmpezarOleada(Enemigo *enemigo, int oleada,int malo)
 		if(malo%2)//si es impar
 		{
 			enemigo=NuevoEnemigo(enemigo);//pide memoria para el enemigio en la lista
-			IniciarEnemigo1(&enemigo);//inicia el enemigo con sus valores
+			IniciarEnemigo(&enemigo,1);//inicia el enemigo con sus valores
 		}
 		else
 		{
 			enemigo=NuevoEnemigo(enemigo);//pide memoria para el enemigio en la lista
-			IniciarEnemigo2(&enemigo);//inicia el enemigo con sus valores
+			IniciarEnemigo(&enemigo,2);//inicia el enemigo con sus valores
 		}
 	}
 	else if(oleada==2)//hace esto para la oleada
 	{
 			enemigo=NuevoEnemigo(enemigo);//pide memoria para el enemigio en la lista
-			IniciarEnemigo1(&enemigo);//inicia el enemigo con sus valores
+			IniciarEnemigo(&enemigo,1);//inicia el enemigo con sus valores
 	}
 	else if(oleada==3)//hace esto para la oleada
 	{
 			enemigo=NuevoEnemigo(enemigo);//pide memoria para el enemigio en la lista
-			IniciarEnemigo2(&enemigo);//inicia el enemigo con sus valores
+			IniciarEnemigo(&enemigo,2);//inicia el enemigo con sus valores
 	}
 	else
 	{
 			enemigo=NuevoEnemigo(enemigo);//pide memoria para el enemigio en la lista
-			IniciarEnemigo2(&enemigo);//inicia el enemigo con sus valores
+			IniciarEnemigo(&enemigo,2);//inicia el enemigo con sus valores
 	}
 	return enemigo;
 }
@@ -264,6 +295,8 @@ Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador,bool *RelojSalida)
 			}//si llega al final resta vida
 			else if(aux->bandera==12)
 			{
+				jugador->plata+=aux->dinero;
+				jugador->score+=aux->puntaje;
 				LiberarMemoriaEnemigo(&aux,&enemigo);
 			}//muere en el camino
 			if(aux!=NULL)
@@ -287,8 +320,9 @@ Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador,bool *RelojSalida)
 	}*///no se si es util me olvide que hace
 	  if(enemigo==NULL&&jugador->malo==15)
 	  {
-	    jugador->oleada++;
+	    jugador->oleada+=1;
 	    jugador->malo=0;
+			jugador->relojito=0;
 	    *RelojSalida=false;
 	  }//vuelve a los valores iniciales y avanza de oleada
 	return enemigo;
@@ -297,7 +331,7 @@ void BuscarUltimoEnLaLista(Enemigo *primero)
 {
   while(primero!=NULL)
   {
-	printf("%dbandera\n\n",primero->bandera);
+	//printf("%dbandera\n\n",primero->bandera);
       primero=primero->siguiente;
   }
 printf("\n\n\n");

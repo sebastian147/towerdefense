@@ -14,7 +14,7 @@ int jugar(Iniciar *iniciar)
   //declaro bools
   bool salir = false;//para salir del while
   bool redraw = true;//hace que entre al if de volver a dibujar
-  bool teclas[7] = {false, false, false, false, false, false , false};//le dice como estan las teclas
+  bool teclas[8] = {false, false, false, false, false, false , false, false};//le dice como estan las teclas
   bool RelojSalida=false;//reloj
   int oleada=0;//para saber donde esta
   /*********************inicio los structs******************************************/
@@ -56,12 +56,17 @@ int jugar(Iniciar *iniciar)
           else
           {
             CrearTorre(&torre);
-            IniciarTorre(&torre,&cuadrado);
+            IniciarTorre(&torre,&cuadrado,1);
           }//pone la torre
           teclas[B] = false;
         }
       }
       // printf("%d\n",teclas[UNO]);
+      if(teclas[DOS])
+      {
+        DestruirTorre(&torre,&cuadrado);
+      }
+
 
       // reloj
       if(!RelojSalida && enemigo==NULL)
@@ -73,13 +78,11 @@ int jugar(Iniciar *iniciar)
         //Crea al enemigo
         enemigo=SpawnearEnemigos(enemigo,&jugador,&RelojSalida);
         //pone el reloj en 0
-        printf("%d",jugador.oleada);
         Reloj0(iniciar->fuente);
       aux=enemigo;
     }
     Informacion(iniciar->fuente,&jugador);//dibuja la informacion del jugador
     ActualizarTorre(&torre,&cuadrado,&aux,&reloj);
-    printf("hola");
   }//de acuero a la tecla que oprimi se mueve
   else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
   {
@@ -94,7 +97,6 @@ int jugar(Iniciar *iniciar)
         break;
       case ALLEGRO_KEY_UP:
         teclas[ARRIBA] = true;
-        enemigo->vida.x--;
         break;
       case ALLEGRO_KEY_DOWN:
         teclas[ABAJO] = true;
@@ -114,6 +116,9 @@ int jugar(Iniciar *iniciar)
         {
           teclas[UNO] = true;
         }
+        break;
+      case ALLEGRO_KEY_2:
+        teclas[DOS] = true;
         break;
       case ALLEGRO_KEY_B:
         if(teclas[UNO])
@@ -140,6 +145,9 @@ int jugar(Iniciar *iniciar)
       case ALLEGRO_KEY_RIGHT:
         teclas[DERECHA] = false;
         break;
+      case ALLEGRO_KEY_2:
+        teclas[DOS] = false;
+        break;
     }
   }//cambia los botones cuando los suelto
 
@@ -156,8 +164,9 @@ int jugar(Iniciar *iniciar)
       ImprimirMapa(iniciar);
     }//si no recibe ningun evento hace esto
   }
-  IniciarLiberarMemoria(&torre,&enemigo);
-  return 1;
+  //IniciarLiberarMemoria(&torre,&enemigo);
+  al_clear_to_color(al_map_rgb(0,0,0));
+  return jugador.score;
 }
 int menu(Iniciar *iniciar)
 {
@@ -174,7 +183,7 @@ int menu(Iniciar *iniciar)
 
     ALLEGRO_EVENT ev;
     al_wait_for_event(iniciar->event_queue, &ev);
-      DibujarMenu(iniciar->fuente);
+      DibujarMenu(iniciar);
       al_flip_display();
 
     if(teclas[ARRIBA]){}
@@ -213,9 +222,9 @@ int menu(Iniciar *iniciar)
     {
       switch(ev.keyboard.keycode)
       {
-        case ALLEGRO_KEY_ESCAPE:
+        /*case ALLEGRO_KEY_ESCAPE:
           salir = true;
-          break;
+          break;*/
         case ALLEGRO_KEY_ENTER:
           teclas[IZQUIERDA]=false;//es enter pero para no crear orea variable
           break;
@@ -228,5 +237,58 @@ int menu(Iniciar *iniciar)
       }
     }
   }
-  return 1;
+  return 0;
+}
+void sockets(int puntaje, int puerto,char iniciales)
+{
+     int sockfd, newsockfd, portno;
+     socklen_t clilen;
+     char buffer[256];
+     struct sockaddr_in serv_addr, cli_addr;
+     int n;
+     FILE *f,*puntaje;
+     f=fopen("errores","w");
+     puntaje=fopen("scores","w");
+//agregar condicion de error al abrir
+     sockfd = socket(AF_INET, SOCK_STREAM, 0);
+
+     if (sockfd < 0)
+        fprintf(f,"Error al abrir el socket");
+
+     // Armando la estructura "sockaddr_in"
+     portno = atoi(argv[1]);
+     serv_addr.sin_family = AF_INET;
+     serv_addr.sin_addr.s_addr = INADDR_ANY;
+     serv_addr.sin_port = htons(portno);
+     memset((void *) &(serv_addr.sin_zero), '\0', 8); // Poner a cero el resto de la estructura
+
+     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
+              fprintf(f,"Error en binding");
+     listen(sockfd,5);
+
+     clilen = sizeof(cli_addr);
+     // Llamado bloqueante a accept()
+     newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
+     if (newsockfd < 0)
+          fprintf(f,"Error en aceptar");
+     memset((void *) buffer, '\0', 256);
+
+     n = read(newsockfd,buffer,255);
+
+     if (n < 0)
+            fprintf(f,"Error leyendo del socket");
+
+    printf("Este es su mensaje: %s\n",buffer);
+     n = fwrite("Recibí tu mensaje!",18,newsockfd,puntaje);
+
+     if (n < 0) error("ERROR writing to socket");
+
+     close(newsockfd);
+
+     close(sockfd);
+     close(f);
+     close(puntaje);
+
+
+     return 0;
 }

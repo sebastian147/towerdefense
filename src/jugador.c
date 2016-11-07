@@ -10,3 +10,7 @@ void IniciarJugador(Jugador *jugador)
 	jugador->relojito=0;
 	jugador->malo=0;
 }
+void MeterIniciales()
+{
+	dibujar 
+}

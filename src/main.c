@@ -70,13 +70,21 @@ int main(int argc, char **argv)
 
 		switch(opcion)
 		{
+			case 0:
+						salir=true;
+						break;
 			case 1:
 						opcion=menu(&iniciar);
 						break;
 			case 2:
 						opcion=jugar(&iniciar);
+						opcion=1;
 						break;
 			}
+			/*if para retornar el score si hay a sockets
+				if()
+			*/
+
 
 	}
 /*************************************Libera la memoria************************************/

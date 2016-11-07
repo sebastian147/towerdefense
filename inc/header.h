@@ -18,6 +18,12 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+
 #define LARGO 750
 #define ALTO 600
 #define FPS 10
@@ -36,7 +42,7 @@ enum MYKEYS
 };
 enum TECLAS
 {
-	ARRIBA, ABAJO, IZQUIERDA, DERECHA, SPACE, UNO,B
+	ARRIBA, ABAJO, IZQUIERDA, DERECHA, SPACE, UNO,DOS, B
 };
 
 
@@ -53,7 +59,7 @@ void InicializarIniciar(Iniciar *iniciar);
 int IniciarYErrores(Iniciar *iniciar);
 void IniciarLiberarMemoria(Torre **torre,Enemigo **enemigo);
 void IniciarLiberarMemoriaCierre(Iniciar *iniciar);
-void  DibujarMenu(ALLEGRO_FONT *fuente);
+void  DibujarMenu(Iniciar *iniciar);
 
 //reloj
 bool EmpezarReloj(ALLEGRO_FONT *fuente,Reloj *reloj);
@@ -81,12 +87,11 @@ void IniciarJugador(Jugador *jugador);
 
 //enemigos
 void MoverEnemigo(Enemigo **enemigo, Jugador *jugador);
-void IniciarEnemigo1(Enemigo **enemigo);
+void IniciarEnemigo(Enemigo **enemigo,int a);
 void MoverEnemigoAbajo(int final,Enemigo **enemigo,int bandera);
 void MoverEnemigoIzquierda(int final,Enemigo **enemigo,int bandera);
 void MoverEnemigoDerecha(int final,Enemigo **enemigo,int bandera);
 void MoverEnemigoArriba(int final,Enemigo **enemigo,int bandera);
-void IniciarEnemigo2(Enemigo **enemigo);
 Enemigo * NuevoEnemigo(Enemigo *anterior);
 void BarraDeVida(Enemigo **enemigo);
 Enemigo *EmpezarOleada(Enemigo *enemigo, int oleada,int malo);
@@ -100,10 +105,11 @@ void PredecirMovimiento(Enemigo **enemigo, Torre *torre);
 //torres
 void MejorarTorre(Torre **seleccionada);
 void NuevoProyectil(Torre **primera);
-void DestruirTorre(Torre **seleccionada);
+int DestruirTorre(Torre **seleccionada,Cuadrado *cuadrado);
+void LiberarMemoriaTorres(Torre **seleccionada, Torre **primera);
 void CrearTorre(Torre **primera);
 int BuscarUltimoEnRadio(Enemigo **primero,Torre **torre);
-void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado);
+void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado,int a);
 void ActualizarTorre(Torre **primera,Cuadrado *cuadrado,Enemigo **primero, Reloj *reloj);
 void DispararAlUltimo(Torre **seleccionada,Enemigo **ultimo,Reloj *reloj);
 int HayTorre(Cuadrado *cuadrado,Torre *torre);

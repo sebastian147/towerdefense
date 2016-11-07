@@ -151,6 +151,19 @@ int IniciarYErrores(Iniciar *iniciar)
 	//verifico si puede abrir el archivo de texto para leer fuentes
 	}
 
-        iniciar->fuente =al_load_ttf_font("./assets/fuente1.ttf",20,0);//cargo el archivo con las funtes de texto
+  iniciar->fuente =al_load_ttf_font("./assets/fuente1.ttf",20,0);//cargo el archivo con las funtes de texto
+
+	iniciar->fondo = al_load_bitmap("./assets/FondoMenu.bmp");
+	if(!iniciar->fondo)
+	{
+          fprintf(stderr, "Fallo al iniciar el archivo .ttf\n");
+          al_destroy_bitmap(iniciar->mapa);
+          al_destroy_display(iniciar->display);
+          al_destroy_timer(iniciar->timer);
+	        al_destroy_event_queue(iniciar->event_queue);
+
+		return -1;
+	//verifico si puede abrir el archivo de texto para leer fuentes
+	}
 	return 0;
 }

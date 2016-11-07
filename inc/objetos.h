@@ -37,6 +37,8 @@ struct ENEMIGO
 	xy CantidadFrames;
 	int contador;
 	int bandera;
+	int puntaje;
+	int dinero;
 	struct ENEMIGO *siguiente;
 	struct ENEMIGO *anterior;
 	int spritey;
@@ -69,6 +71,7 @@ struct INICIAR
 	ALLEGRO_EVENT_QUEUE *event_queue;
 	ALLEGRO_TIMER *timer;
 	ALLEGRO_BITMAP *mapa;
+	ALLEGRO_BITMAP *fondo;
 	ALLEGRO_FONT *fuente;
 
 };
@@ -78,6 +81,7 @@ typedef struct INICIAR Iniciar;
 
 struct JUGADOR
 {
+	char iniciales[3];
 	int vida;
 	int score;
 	int plata;

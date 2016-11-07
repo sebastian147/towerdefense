@@ -1,19 +1,47 @@
 
 #include "header.h"
-void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado)
+void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado,int a)
 {
-    (*seleccionada)->imagen = al_load_bitmap("./assets/BigPreviewThree.png");
-    al_convert_mask_to_alpha((*seleccionada)->imagen, al_map_rgb(0, 0, 0));
-    (*seleccionada)->rango=3;
-    (*seleccionada)->danio=2;
-    (*seleccionada)->pocicion.x=cuadrado->x;
-    (*seleccionada)->pocicion.y=cuadrado->y;
-    (*seleccionada)->cadencia=2;
-    (*seleccionada)->tiempo=0;
-    memset((*seleccionada)->disparo,0,5);
-    (*seleccionada)->velocidad=10;
-    (*seleccionada)->tiros=0;
-
+  FILE *f;
+	char buff[100];
+	char *token;
+	char aux[20];
+	int i=0;
+	f=fopen("./datos/torres","r");
+	if(f==NULL)
+	{
+		fprintf(stdin,"Error al abrir el archivo\n");
+	}
+	while(i!=a)
+	{
+		fscanf(f,"%s",buff);
+		i++;
+	}
+	token = strtok(buff, ";"); // token = "producto";
+	(*seleccionada)->imagen = al_load_bitmap(token);
+	al_convert_mask_to_alpha((*seleccionada)->imagen, al_map_rgb(0, 0, 0));
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*seleccionada)->rango=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*seleccionada)->danio=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*seleccionada)->cadencia=atoi(aux);
+	token = strtok(NULL, ";"); 
+	strcpy(aux,token);
+	(*seleccionada)->tiempo=atoi(aux);
+	token = strtok(NULL, ";");
+	strcpy(aux,token);
+	(*seleccionada)->velocidad=atoi(aux);
+	token = strtok(NULL, "\n");
+	strcpy(aux,token);
+	(*seleccionada)->tiros=atoi(aux);
+	memset((*seleccionada)->disparo,0,5);
+  (*seleccionada)->pocicion.x=cuadrado->x;
+  (*seleccionada)->pocicion.y=cuadrado->y;
+//le doy valor al enemigo
 }
 int HayTorre(Cuadrado *cuadrado,Torre *torre)
 {
@@ -31,59 +59,67 @@ void MejorarTorre(Torre **seleccionada)
 }
 void NuevoProyectil(Torre **primera)
 {
+
+
 	if((*primera)->tiros<4)
 	{
-	int i,j,l;
-	(*primera)->disparo[(*primera)->tiros].pocicion.x=(*primera)->pocicion.x;
-	(*primera)->disparo[(*primera)->tiros].pocicion.y=(*primera)->pocicion.y;
-	(*primera)->disparo[(*primera)->tiros].pocicionenemigo.x=(*primera)->pocicionenemigo.x;
-	(*primera)->disparo[(*primera)->tiros].pocicionenemigo.y=(*primera)->pocicionenemigo.y;
-	(*primera)->disparo[(*primera)->tiros].velocidad=(*primera)->velocidad;
-	(*primera)->disparo[(*primera)->tiros].imagen = al_load_bitmap("./assets/BigPreviewFourds2.jpg");
-	for(i=250,j=250,l=250;l!=255;l++,j++,i++)
-	{
-		al_convert_mask_to_alpha((*primera)->disparo[(*primera)->tiros].imagen, al_map_rgb(j, i, l));
+   (*primera)->disparo[(*primera)->tiros].pocicion.x=(*primera)->pocicion.x;
+	 (*primera)->disparo[(*primera)->tiros].pocicion.y=(*primera)->pocicion.y;
+	 (*primera)->disparo[(*primera)->tiros].pocicionenemigo.x=(*primera)->pocicionenemigo.x;
+	 (*primera)->disparo[(*primera)->tiros].pocicionenemigo.y=(*primera)->pocicionenemigo.y;
+	 (*primera)->disparo[(*primera)->tiros].velocidad=(*primera)->velocidad;
+	 (*primera)->disparo[(*primera)->tiros].imagen = al_load_bitmap("./assets/BigPreviewFourds2.jpg");
+	 al_convert_mask_to_alpha((*primera)->disparo[(*primera)->tiros].imagen, al_map_rgb(0, 0, 0));
+	 (*primera)->tiros++;
 	}
-	(*primera)->tiros++;
-	}
-/*	int i,j,l;
-	Bala *nueva=NULL;
-	nueva=(Bala*)malloc(sizeof(Bala));
-	if(nueva==NULL)
-	{
-		printf("ERROR\n");//si no hay memoria imprimo error
-	}
-	if((*primera)->disparo==NULL)
-	{
-
-		(*primera)->disparo=nueva;
-
-		(*primera)->disparo->siguiente=NULL;
-
-	}//si es el primero lo agrego
-	else
-	{
-		nueva->siguiente=(*primera)->disparo;
-		(*primera)->disparo=nueva;
-	}//si ya hay lo pongo como el primero
-	nueva->pocicion.x=(*primera)->pocicion.x;
-	nueva->pocicion.y=(*primera)->pocicion.y;
-	nueva->velocidad=(*primera)->velocidad;
-	nueva->imagen = al_load_bitmap("./assets/BigPreviewFourds2.jpg");
-	for(i=250,j=250,l=250;l!=255;l++,j++,i++)
-	{
-		al_convert_mask_to_alpha(nueva->imagen, al_map_rgb(j, i, l));
-	}
-	(*primera)->tiros++;
-*/
 }
-void DestruirTorre(Torre **seleccionada)
+void LiberarMemoriaTorres(Torre **torre,Torre **primera)
 {
+  Torre *aux,*aux2;
+  aux=*torre;
+  aux2=*torre;
+  if(aux->anterior==NULL && aux->siguiente!=NULL)
+  {
 
+    aux2=(*torre)->siguiente;
+    aux2->anterior=NULL;
+    *primera=aux2;
+    *torre=aux2;
+  }//si es el primero
+  else if(aux->siguiente!=NULL && aux->anterior!=NULL)
+  {
+    aux2->anterior->siguiente=aux2->siguiente;
+    aux2->siguiente->anterior=aux2->anterior;
+    aux2=aux2->anterior;
+    *torre=aux2;
+  }//si es alguno del medio
+  else if(aux->anterior!=NULL&&aux->siguiente==NULL)
+  {
+    aux2=aux2->anterior;
+    aux2->siguiente=NULL;
+    *torre=aux2;
+  }//si es el ultimo
+  else if(aux->anterior==NULL&&aux->siguiente==NULL)
+  {
+    *torre=NULL;
+    *primera=NULL;
+  }
+  al_destroy_bitmap(aux->imagen);//libero la imagen
+  free(aux);//libero el auxiliar
 }
-int CantidadDeBalas(Torre *seleccionada)
+int DestruirTorre(Torre **seleccionada,Cuadrado *cuadrado)
 {
-	return OK;
+  Torre *aux=*seleccionada;
+  while(aux != NULL)
+  {
+    if((aux->pocicion.x == cuadrado->x && aux->pocicion.y == cuadrado->y))
+    {
+      LiberarMemoriaTorres(&aux, seleccionada);
+      return 0;
+    }
+    aux=aux->siguiente;
+  }
+  return -1;
 }
 void ActualizarProyectil(Torre **primera,Enemigo **ultimo)
 {
@@ -110,121 +146,28 @@ void ActualizarProyectil(Torre **primera,Enemigo **ultimo)
 				(*primera)->disparo[i].pocicion.y-=(*primera)->disparo[i].velocidad;
 
 			}
-		//printf("LLEGUE\n");
+		printf("%d\n",(*primera)->pocicion.x);
 
 			al_draw_bitmap_region((*primera)->disparo[i].imagen,15,60,18,9,(*primera)->disparo[i].pocicion.x,(*primera)->disparo[i].pocicion.y,0);
-
-			if((((*primera)->disparo[i].pocicion.y-9 > (*ultimo)->pocicion.y) && ((*primera)->disparo[i].pocicion.y < ((*ultimo)->pocicion.y + (*ultimo)->DistanciaFrames.y))) && (((*primera)->disparo[i].pocicion.x-18 > (*ultimo)->pocicion.x) && ((*primera)->disparo[i].pocicion.x < ((*ultimo)->pocicion.x + (*ultimo)->DistanciaFrames.x))))
+      if((((*primera)->disparo[i].pocicion.y+11 > (*ultimo)->pocicion.y) && ((*primera)->disparo[i].pocicion.y < ((*ultimo)->pocicion.y + (*ultimo)->DistanciaFrames.y))) && (((*primera)->disparo[i].pocicion.x+20 > (*ultimo)->pocicion.x) && ((*primera)->disparo[i].pocicion.x < ((*ultimo)->pocicion.x + (*ultimo)->DistanciaFrames.x))))
 			{
-					//al_destroy_bitmap((*primera)->disparo[i].imagen);
+					al_destroy_bitmap((*primera)->disparo[i].imagen);
 					(*ultimo)->vida.x-=(*primera)->danio;
 					(*primera)->tiros--;
 
 			}
 		}
 	}
-/*
-	if(aux!=NULL)
-	{
-		while(aux!=NULL)
-		{
-
-
-			if(aux->pocicion.x == aux->pocicionenemigo.x)
-			{
-			}
-			else if(aux->pocicion.x < aux->pocicionenemigo.x)
-			{
-				aux->pocicion.x+=aux->velocidad;
-			}
-			else if(aux->pocicion.x > aux->pocicionenemigo.x)
-			{
-				aux->pocicion.x-=aux->velocidad;
-
-			}
-			if(aux->pocicion.y == aux->pocicionenemigo.y)
-			{
-			}
-			else if(aux->pocicion.y < aux->pocicionenemigo.y)
-			{
-				aux->pocicion.y+=aux->velocidad;
-			}
-			else if(aux->pocicion.y > aux->pocicionenemigo.y)
-			{
-				aux->pocicion.y-=aux->velocidad;
-
-			}
-			if(aux->pocicion.x < (*ultimo)->pocicion.x)
-			{
-				aux->pocicion.x+=aux->velocidad;
-			}
-			else if(aux->pocicion.x > (*ultimo)->pocicion.x)
-			{
-				aux->pocicion.x-=aux->velocidad;
-
-			}
-			if(aux->pocicion.y < (*ultimo)->pocicion.y)
-			{
-				aux->pocicion.y+=aux->velocidad;
-			}
-			else if(aux->pocicion.y > (*ultimo)->pocicion.y)
-			{
-				aux->pocicion.y-=aux->velocidad;
-
-			}
-			    al_draw_bitmap_region(aux->imagen,15,60,18,9,aux->pocicion.x,aux->pocicion.y,0);
-
-			if(((aux->pocicion.y > (*ultimo)->pocicion.y) && (aux->pocicion.y < ((*ultimo)->pocicion.y + (*ultimo)->DistanciaFrames.y))) && ((aux->pocicion.x > (*ultimo)->pocicion.x) && (aux->pocicion.x < ((*ultimo)->pocicion.x + (*ultimo)->DistanciaFrames.x))))
-			//if(comets[i].x - comets[i].boundx < ship->x + ship->boundx &&
-			//	comets[i].x + comets[i].boundx > ship->x - ship->boundx &&
-			//	comets[i].y - comets[i].boundy < ship->y + ship->boundy &&
-			//	comets[i].y + comets[i].boundy > ship->y - ship->boundy)
-			{
-				(*ultimo)->vida.x-=(*seleccionada)->danio;
-				if(aux->siguiente==NULL)
-				{
-					al_destroy_bitmap(aux->imagen);
-					free(aux);
-					printf("oK2\n");
-					aux2->siguiente=NULL;
-					aux=aux2;
-					//printf("oK31231\n");
-					al_destroy_bitmap(aux->imagen);
-					(*seleccionada)->disparo=NULL;
-					free(aux);
-					aux=NULL;
-					//printf("oK2\n");
-				}
-				else if(aux == aux2 && aux != NULL)
-				{
-					//printf("oK31231\n");
-					al_destroy_bitmap(aux->imagen);
-					(*seleccionada)->disparo=NULL;
-					free(aux);
-					aux=NULL;
-					//printf("oK312312\n");
-				}//revisar
-			}
-			aux2=aux;
-			if(aux!=NULL)
-			{
-				aux=aux->siguiente;//voy al siguiente tiro
-			}
-		}
-	}
-*/
 }
 void DispararAlUltimo(Torre **seleccionada,Enemigo **ultimo,Reloj *reloj)
 {
 	Torre *aux=*seleccionada;
-	if(reloj->DentroDeFuncion==10*aux->cadencia && (*ultimo)->vida.x > aux->danio*aux->tiros)
+	if(reloj->DentroDeFuncion==10*aux->cadencia /*&& (*ultimo)->vida.x > aux->danio*aux->tiros*/)
 	{
 		NuevoProyectil(seleccionada);//crea un nuevo proyectil
 		reloj->DentroDeFuncion=0;//pone en 0 el reloj
 	}
 	ActualizarProyectil(seleccionada,ultimo);//actualiza el proyectil anterior
-
-
 }
 void CrearTorre(Torre **primera)
 {
@@ -310,52 +253,7 @@ int BuscarUltimoEnRadio(Enemigo **primero,Torre **seleccionada)
   *primero=ultimo;
   return j;
 
-/*
-  int j=ERROR;
-  Enemigo *ultimo=*primero, *aux=*primero;
 
-
-  while(aux!=NULL)
-  {	//elchoclo es para calcular la distancia
-      if(fabs(sqrt(pow(aux->pocicion.x+aux->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y+aux->DistanciaFrames.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(aux->pocicion.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y-(torre->pocicion.y+25),2))) < (torre->rango*CUADRADOX) || fabs(sqrt(pow(aux->pocicion.x+aux->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(aux->pocicion.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y+aux->DistanciaFrames.y-(torre->pocicion.y+25),2))) < (torre->rango*CUADRADOX))
-      {
-        if(aux->bandera==0 || aux->bandera==2 || aux->bandera==6 || aux->bandera==10)
-        {
-          if(aux->pocicion.y > ultimo->pocicion.y)
-          {
-            ultimo=aux;
-          }
-        }
-        else if(aux->bandera==1 || aux->bandera==5 || aux->bandera==7)
-        {
-          if(aux->pocicion.x < ultimo->pocicion.x)
-          {
-            ultimo=aux;
-          }
-        }
-
-        else if(aux->bandera==3 || aux->bandera==9)
-        {
-          if(aux->pocicion.x > ultimo->pocicion.x)
-          {
-            ultimo=aux;
-          }
-        }
-        else if(aux->bandera==4 || aux->bandera==8)
-        {
-          if(aux->pocicion.y < ultimo->pocicion.y)
-          {
-            ultimo=aux;
-          }
-        }//busco segun el camino el ultimo
-
-     j=OK;
-     }
-     aux=aux->siguiente;
-  }
-  *primero=ultimo;
-  return j;
-*/
 }
 void ActualizarTorre(Torre **primera,Cuadrado *cuadrado,Enemigo **primero,Reloj *reloj)
 {
@@ -373,10 +271,9 @@ void ActualizarTorre(Torre **primera,Cuadrado *cuadrado,Enemigo **primero,Reloj 
     {
       if(/*aux->tiempo==aux->cadencia && agregarle cadencia*/ OK==BuscarUltimoEnRadio(&atacar,&aux))
       {
-		DispararAlUltimo(&aux,&atacar,reloj);
- 		//dispara
-	               //atacar->vida.x-=aux->danio;
-		    reloj->DentroDeFuncion++;//avanzo el tiempo
+		      DispararAlUltimo(&aux,&atacar,reloj);
+ 		       //dispara
+		         reloj->DentroDeFuncion++;//avanzo el tiempo
       }
       atacar=*primero;
     }
