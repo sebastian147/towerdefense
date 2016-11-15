@@ -1,7 +1,7 @@
 #include "header.h"
 void IniciarJugador(Jugador *jugador)
 {
-
+	strcpy(jugador->iniciales,"seb");
 	jugador->vida=50;
 	jugador->score=0;
 	jugador->plata=300;
@@ -12,5 +12,5 @@ void IniciarJugador(Jugador *jugador)
 }
 void MeterIniciales()
 {
-	dibujar 
+	//dibujar
 }

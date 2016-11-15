@@ -40,6 +40,10 @@ int main(int argc, char **argv)
 
 	int opcion =1;
 
+
+
+	char IP[]="127.0.0.1";
+
 /**************************************Inicia Allegro y analiza errores*********************************/
 
 	if(IniciarYErrores(&iniciar))
@@ -78,16 +82,18 @@ int main(int argc, char **argv)
 						break;
 			case 2:
 						opcion=jugar(&iniciar);
+						//funcion para ingresar iniciales
+						MandarPuntaje(opcion,PUERTO,"seb",IP,iniciar.fuente);
 						opcion=1;
 						break;
 			}
-			/*if para retornar el score si hay a sockets
-				if()
-			*/
+
 
 
 	}
 /*************************************Libera la memoria************************************/
+
+
 	IniciarLiberarMemoriaCierre(&iniciar);
 
 

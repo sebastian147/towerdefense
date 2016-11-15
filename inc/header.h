@@ -36,6 +36,9 @@
 #define ERROR -1
 #define OK 0
 
+#define PUERTO 8888
+
+
 enum MYKEYS
 {
 	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
@@ -48,10 +51,15 @@ enum TECLAS
 
 //jugar
 int jugar(Iniciar *iniciar);
+
+
+//menu
 int menu(Iniciar *iniciar);
 
 
-
+//puntaje
+int MandarPuntaje(int puntaje, int puerto,char *iniciales,char *ip, ALLEGRO_FONT *fuente);
+int MostrarPuntaje(int sockfd, ALLEGRO_FONT *fuente);
 
 
 //iniciar
