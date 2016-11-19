@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 	al_start_timer(iniciar.timer);
 
 
-/********************************comienza el juego**********************************/
+/********************************comienza el programa**********************************/
 
 	while(!salir)
 	{

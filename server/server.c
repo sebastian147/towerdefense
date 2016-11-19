@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
      char salir[6]="salir";
      struct sockaddr_in serv_addr, cli_addr;
      int n,arch;
-     int uno=1;
+     int uno=1,i=0;
 	FILE *f;
 //	arch=open("mensaje",O_APPEND);
 	f=fopen("puntajes","a+");
@@ -76,16 +76,25 @@ int main(int argc, char *argv[])
      fputs("\n",f);
      rewind(f);
 
-    while(!feof(f))
+    while(!feof(f) /*&& i<20*/ )
      {
+	//memset(buffer,0,20);
        fgets(buffer,20,f);
        fprintf(stderr, "%s\n\n\n",buffer);
-       n = write(newsockfd,buffer,strlen(buffer));
+       if(strncmp("OK",buffer,2)==0)
+		break;
+	n = write(newsockfd,buffer,strlen(buffer));
        if (n < 0) error("ERROR writing to socket");
-       //fprintf(stderr, "%d\n", n);
+       n=read(newsockfd,buffer,2);
+	fprintf(stderr,"%s\n\n",buffer);
+	if(strncmp("OK",buffer,2)!=0)
+		fprintf(stderr,"error\n\n");
+	//fprintf(stderr, "%d\n", n);
+	//i++;
      }
-     fprintf(stderr, "hola");
+     //fprintf(stderr, "hola");
      n = write(newsockfd,salir,strlen(salir));
+     fprintf(stderr, "%s\n\n",salir);
 
 	close(newsockfd);
 	close(sockfd);

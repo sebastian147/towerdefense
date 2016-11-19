@@ -1,9 +1,101 @@
 #include "header.h"
+bool TeclasOprimidasJugar(bool *teclas, bool salir, ALLEGRO_EVENT *ev)
+{
+  if(ev->type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+  {
+    salir = true;
+  }//cierra el display
+  else if(ev->type == ALLEGRO_EVENT_KEY_DOWN)
+  {
+    switch(ev->keyboard.keycode)
+    {
+      case ALLEGRO_KEY_ESCAPE:
+        salir = true;
+        break;
+      case ALLEGRO_KEY_UP:
+        teclas[ARRIBA] = true;
+        break;
+      case ALLEGRO_KEY_DOWN:
+        teclas[ABAJO] = true;
+        break;
+      case ALLEGRO_KEY_LEFT:
+        teclas[IZQUIERDA] = true;
+        break;
+      case ALLEGRO_KEY_RIGHT:
+        teclas[DERECHA] = true;
+        break;
+      case ALLEGRO_KEY_1:
+        if(teclas[UNO]==true)
+        {
+          teclas[UNO] = false;
+        }//si la tecla esta apretada de antes cierra la pestania
+        else if(teclas[UNO] == false)
+        {
+          teclas[UNO] = true;
+        }
+        break;
+      case ALLEGRO_KEY_2:
+        teclas[DOS] = true;
+        break;
+      case ALLEGRO_KEY_B:
+        if(teclas[UNO])
+          teclas[B] = true;
+          break;
+    }
+  }//cambia los botones mientras los aprieto
+  else if(ev->type == ALLEGRO_EVENT_KEY_UP)
+  {
+    switch(ev->keyboard.keycode)
+    {
+      case ALLEGRO_KEY_ESCAPE:
+        salir = true;
+        break;
+      case ALLEGRO_KEY_UP:
+        teclas[ARRIBA] = false;
+        break;
+      case ALLEGRO_KEY_DOWN:
+        teclas[ABAJO] = false;
+        break;
+      case ALLEGRO_KEY_LEFT:
+        teclas[IZQUIERDA] = false;
+        break;
+      case ALLEGRO_KEY_RIGHT:
+        teclas[DERECHA] = false;
+        break;
+      case ALLEGRO_KEY_2:
+        teclas[DOS] = false;
+        break;
+    }
+  }//cambia los botones cuando los suelto
+  return salir;
 
+}
+bool ActualizarDibujosJuegar(Iniciar *iniciar,Cuadrado *cuadrado,Jugador *jugador,bool redraw)
+{
+  if(redraw && al_is_event_queue_empty(iniciar->event_queue))
+  {
+    redraw = false;
+
+
+    // al_draw_bitmap(iniciar.mapa,0,0,0);
+
+    DibujarCuadrado(cuadrado);
+    Informacion(iniciar->fuente,jugador);//dibuja la informacion del jugador
+
+    al_flip_display();
+    al_clear_to_color(al_map_rgb(0,0,0));
+
+    ImprimirMapa(iniciar);
+
+
+  }//si no recibe ningun evento hace esto
+  return redraw;
+}
 int Jugar(Iniciar *iniciar)
 {
 
   /*********************************************variables*************************************/
+
   //declaro las estructuras
   Cuadrado cuadrado;//el cuadrado que se mueve por la pantalla
   Enemigo *enemigo=NULL,*aux=NULL;//declaro los punteros de enemigos para trabajarlos en forma de lista
@@ -17,11 +109,14 @@ int Jugar(Iniciar *iniciar)
   bool teclas[8] = {false, false, false, false, false, false , false, false};//le dice como estan las teclas
   bool RelojSalida=false;//reloj
   int oleada=0;//para saber donde esta
+
   /*********************inicio los structs******************************************/
 
   IniciarReloj(&reloj);
   IniciarCuadrado(&cuadrado);
   IniciarJugador(&jugador);
+
+  /********************************comienza el juego**********************************/
 
 
   while(!salir)
@@ -42,6 +137,7 @@ int Jugar(Iniciar *iniciar)
         MoverCuadradoIzquierda(&cuadrado);
       if(teclas[DERECHA])
         MoverCuadradoDerecha(&cuadrado);
+
       if(teclas[UNO])
       {
         OpcionesTorre(iniciar->fuente);
@@ -81,99 +177,13 @@ int Jugar(Iniciar *iniciar)
         enemigo=SpawnearEnemigos(enemigo,&jugador,&RelojSalida);
         //pone el reloj en 0
         Reloj0(iniciar->fuente);
-      aux=enemigo;
     }
-    Informacion(iniciar->fuente,&jugador);//dibuja la informacion del jugador
-    ActualizarTorre(&torre,&cuadrado,&aux,&reloj);
+    ActualizarTorre(&torre,&cuadrado,&enemigo,&reloj);
   }//de acuero a la tecla que oprimi se mueve
-  else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
-  {
-    salir = true;
-  }//cierra el display
-  else if(ev.type == ALLEGRO_EVENT_KEY_DOWN)
-  {
-    switch(ev.keyboard.keycode)
-    {
-      case ALLEGRO_KEY_ESCAPE:
-        salir = true;
-        break;
-      case ALLEGRO_KEY_UP:
-        teclas[ARRIBA] = true;
-        break;
-      case ALLEGRO_KEY_DOWN:
-        teclas[ABAJO] = true;
-        break;
-      case ALLEGRO_KEY_LEFT:
-        teclas[IZQUIERDA] = true;
-        break;
-      case ALLEGRO_KEY_RIGHT:
-        teclas[DERECHA] = true;
-        break;
-      case ALLEGRO_KEY_1:
-        if(teclas[UNO]==true)
-        {
-          teclas[UNO] = false;
-        }//si la tecla esta apretada de antes cierra la pestania
-        else if(teclas[UNO] == false)
-        {
-          teclas[UNO] = true;
-        }
-        break;
-      case ALLEGRO_KEY_2:
-        teclas[DOS] = true;
-        break;
-      case ALLEGRO_KEY_B:
-        if(teclas[UNO])
-          teclas[B] = true;
-          break;
-    }
-  }//cambia los botones mientras los aprieto
-  else if(ev.type == ALLEGRO_EVENT_KEY_UP)
-  {
-    switch(ev.keyboard.keycode)
-    {
-      case ALLEGRO_KEY_ESCAPE:
-        salir = true;
-        break;
-      case ALLEGRO_KEY_UP:
-        teclas[ARRIBA] = false;
-        break;
-      case ALLEGRO_KEY_DOWN:
-        teclas[ABAJO] = false;
-        break;
-      case ALLEGRO_KEY_LEFT:
-        teclas[IZQUIERDA] = false;
-        break;
-      case ALLEGRO_KEY_RIGHT:
-        teclas[DERECHA] = false;
-        break;
-      case ALLEGRO_KEY_2:
-        teclas[DOS] = false;
-        break;
-    }
-  }//cambia los botones cuando los suelto
+  salir =TeclasOprimidasJugar(teclas, salir, &ev);
+  redraw=ActualizarDibujosJuegar(iniciar,&cuadrado,&jugador,redraw);
 
-
-    if(redraw && al_is_event_queue_empty(iniciar->event_queue))
-    {
-      redraw = false;
-
-
-      // al_draw_bitmap(iniciar.mapa,0,0,0);
-
-      DibujarCuadrado(&cuadrado);
-
-      al_flip_display();
-      al_clear_to_color(al_map_rgb(0,0,0));
-      ImprimirMapa(iniciar);
-
-
-
-
-
-    }//si no recibe ningun evento hace esto
-  }
+}
   //IniciarLiberarMemoria(&torre,&enemigo);
-  al_clear_to_color(al_map_rgb(0,0,0));
   return jugador.score;
 }

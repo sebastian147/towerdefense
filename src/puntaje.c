@@ -1,39 +1,77 @@
 #include "header.h"
+void OrdenarPuntaje(Puntaje *puntaje)
+{
+
+  int i=1,A=100,j=0,s=0,n;
+
+
+  do
+  {
+    j=0;
+    do
+    {
+      if(puntaje[j].score<puntaje[j+1].score)
+      {
+        n=puntaje[j].score;
+        puntaje[j].score=puntaje[j+1].score;
+        puntaje[j+1].score=n;
+      }
+
+      j++;
+    }while(j<A-i);
+
+  i++;
+  }while(i<=A );
+    fprintf(stderr, "hola");
+
+}
 int MostrarPuntaje(int sockfd, ALLEGRO_FONT *fuente)
 {
   FILE *error;
   error=fopen("./datos/errores","a");
   int i=0,a=20,b=20,n;
   char buffer[20]="pepe",salir[6]="salir";
+  Puntaje puntaje[100];
+	for(i=0;i<100;i++)
+	{
+		puntaje[i].score=0;	
+	}
+	i=0;
   al_clear_to_color(al_map_rgb(0,0,0));
 //  fprintf(stderr, "hola");
- while(strcmp(buffer,salir)!=0)
+   while(strcmp(buffer,salir)!=0 && i!=100)
   {
 //  fprintf(stderr, "hola");
 
     memset(buffer,0,20);
  // fprintf(stderr, "hola");
-    n=read(sockfd,buffer,strlen(buffer));
+    n=read(sockfd,buffer,10);
+   if(strncmp(buffer,salir,5)==0)
+	break;
+    n=write(sockfd,"OK",2);
 //  fprintf(stderr, "hola");
     fprintf(stderr, "%s\n\n\n\n",buffer);
 //	fgets(buffer,5,f);
     if (n < 0)
     {
           fprintf(error,"Error escribiendo al socket \n");
-          return ERROR;
+ 	        return ERROR;
     }
 
-    al_draw_textf(fuente,al_map_rgb(100,100,255),a,b,0,buffer);
-    i++;
-    a+=20;
+   // al_draw_textf(fuente,al_map_rgb(100,100,255),a,b,0,buffer);
+   puntaje[i].score=atoi(strtok(buffer,";"));
+    strcpy(puntaje[i].nombre,strtok(NULL,"\n"));
+  i++;
+   // b+=20;
   //  b+=20;
   }
-  while(i<20)
+  OrdenarPuntaje(puntaje);
+  i=0;
+ while(i<20)
   {
-    printf("2\n\n\n\n\n");
-
-    al_draw_textf(fuente,al_map_rgb(100,100,255),a,b,0,"..");
-        a+=20;
+    al_draw_textf(fuente,al_map_rgb(100,100,255),a,b,0,"%s: %d",puntaje[i].nombre,puntaje[i].score);
+        b+=20;
+        i++;
   }
   al_flip_display();
 printf("llegure\n\n\n\n\n");

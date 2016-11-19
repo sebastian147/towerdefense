@@ -120,3 +120,10 @@ struct TORRE
 	ALLEGRO_BITMAP *imagen;
 };
 typedef struct TORRE Torre;
+
+struct PUNTAJE
+{
+	char nombre[5];
+	int score;
+};
+typedef struct PUNTAJE Puntaje;

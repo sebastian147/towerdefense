@@ -60,15 +60,21 @@ enum TECLAS
 
 //jugar
 int Jugar(Iniciar *iniciar);
+bool TeclasOprimidasJugar(bool *teclas, bool salir, ALLEGRO_EVENT *ev);
+bool ActualizarDibujosJuegar(Iniciar *iniciar,Cuadrado *cuadrado,Jugador *jugador,bool redraw);
+
 
 
 //menu
 int Menu(Iniciar *iniciar);
+bool TeclasOprimidasMenu(bool *teclas, bool salir, ALLEGRO_EVENT *ev);
+
 
 
 //puntaje
 int MandarPuntaje(int puntaje, int puerto,char *iniciales,char *ip, ALLEGRO_FONT *fuente);
 int MostrarPuntaje(int sockfd, ALLEGRO_FONT *fuente);
+void OrdenarPuntaje(Puntaje *puntaje);
 
 
 //iniciar

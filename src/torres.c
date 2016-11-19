@@ -151,7 +151,7 @@ void ActualizarProyectil(Torre **primera,Enemigo **ultimo)
 			al_draw_bitmap_region((*primera)->disparo[i].imagen,15,60,18,9,(*primera)->disparo[i].pocicion.x,(*primera)->disparo[i].pocicion.y,0);
       if((((*primera)->disparo[i].pocicion.y+11 > (*ultimo)->pocicion.y) && ((*primera)->disparo[i].pocicion.y < ((*ultimo)->pocicion.y + (*ultimo)->DistanciaFrames.y))) && (((*primera)->disparo[i].pocicion.x+20 > (*ultimo)->pocicion.x) && ((*primera)->disparo[i].pocicion.x < ((*ultimo)->pocicion.x + (*ultimo)->DistanciaFrames.x))))
 			{
-					al_destroy_bitmap((*primera)->disparo[i].imagen);
+					//al_destroy_bitmap((*primera)->disparo[i].imagen);
 					(*ultimo)->vida.x-=(*primera)->danio;
 					(*primera)->tiros--;
 
@@ -203,7 +203,7 @@ int BuscarUltimoEnRadio(Enemigo **primero,Torre **seleccionada)
 	x=aux->pocicion.x;
 	y=aux->pocicion.y;
 	z=aux->bandera;
-	PredecirMovimiento(&aux,torre);
+	//PredecirMovimiento(&aux,torre);
 	//elchoclo es para calcular la distancia
       if(fabs(sqrt(pow(aux->pocicion.x+aux->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y+aux->DistanciaFrames.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(aux->pocicion.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y-(torre->pocicion.y+25),2))) < (torre->rango*CUADRADOX) || fabs(sqrt(pow(aux->pocicion.x+aux->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(aux->pocicion.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y+aux->DistanciaFrames.y-(torre->pocicion.y+25),2))) < (torre->rango*CUADRADOX))
       {
