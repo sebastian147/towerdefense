@@ -7,7 +7,8 @@ void  DibujarMenu(Iniciar *iniciar)
   al_draw_filled_rectangle(LARGO/2-CUADRADOX*2,ALTO/2-CUADRADOY*2, LARGO/2+CUADRADOX*2, ALTO/2, al_map_rgb(255, 255, 255));
   al_draw_textf(iniciar->fuente,al_map_rgb(0,0,0),LARGO/2-CUADRADOX*2+CUADRADOX/4,ALTO/2-CUADRADOY*2+CUADRADOY/2,0,"Enter para jugar");
 }
-int menu(Iniciar *iniciar)
+//int TeclasUpDownMenu()
+int Menu(Iniciar *iniciar)
 {
 
 
@@ -27,7 +28,7 @@ int menu(Iniciar *iniciar)
       //MoverCuadradoArriba(&cuadrado);
     if(teclas[ABAJO]){}
       //MoverCuadradoAbajo(&cuadrado);
-    if(teclas[IZQUIERDA])
+    if(teclas[ENTER])
     {
     //  salir=true;
       return 2;
@@ -45,7 +46,7 @@ int menu(Iniciar *iniciar)
           salir = true;
           break;
         case ALLEGRO_KEY_ENTER:
-          teclas[IZQUIERDA]=true;
+          teclas[ENTER]=true;
           break;
         case ALLEGRO_KEY_UP:
           teclas[ARRIBA] = true;
@@ -63,7 +64,7 @@ int menu(Iniciar *iniciar)
           salir = true;
           break;*/
         case ALLEGRO_KEY_ENTER:
-          teclas[IZQUIERDA]=false;//es enter pero para no crear orea variable
+          teclas[ENTER]=false;//es enter pero para no crear orea variable
           break;
         case ALLEGRO_KEY_UP:
           teclas[ARRIBA] = false;

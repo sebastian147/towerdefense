@@ -320,7 +320,7 @@ Enemigo *SpawnearEnemigos(Enemigo *enemigo,Jugador *jugador,bool *RelojSalida)
 	}*///no se si es util me olvide que hace
 	  if(enemigo==NULL&&jugador->malo==15)
 	  {
-	    jugador->oleada+=1;
+	    jugador->oleada++;
 	    jugador->malo=0;
 			jugador->relojito=0;
 	    *RelojSalida=false;

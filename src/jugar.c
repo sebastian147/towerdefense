@@ -1,6 +1,6 @@
 #include "header.h"
 
-int jugar(Iniciar *iniciar)
+int Jugar(Iniciar *iniciar)
 {
 
   /*********************************************variables*************************************/
@@ -22,6 +22,8 @@ int jugar(Iniciar *iniciar)
   IniciarReloj(&reloj);
   IniciarCuadrado(&cuadrado);
   IniciarJugador(&jugador);
+
+
   while(!salir)
   {
     ALLEGRO_EVENT ev;
@@ -58,7 +60,7 @@ int jugar(Iniciar *iniciar)
             CrearTorre(&torre);
             IniciarTorre(&torre,&cuadrado,1);
           }//pone la torre
-          teclas[B] = false;
+          teclas[B] =   false;
         }
       }
       // printf("%d\n",teclas[UNO]);
@@ -111,7 +113,7 @@ int jugar(Iniciar *iniciar)
         if(teclas[UNO]==true)
         {
           teclas[UNO] = false;
-        }
+        }//si la tecla esta apretada de antes cierra la pestania
         else if(teclas[UNO] == false)
         {
           teclas[UNO] = true;
@@ -156,12 +158,19 @@ int jugar(Iniciar *iniciar)
     {
       redraw = false;
 
-      DibujarCuadrado(&cuadrado);
-      al_flip_display();
 
       // al_draw_bitmap(iniciar.mapa,0,0,0);
+
+      DibujarCuadrado(&cuadrado);
+
+      al_flip_display();
       al_clear_to_color(al_map_rgb(0,0,0));
       ImprimirMapa(iniciar);
+
+
+
+
+
     }//si no recibe ningun evento hace esto
   }
   //IniciarLiberarMemoria(&torre,&enemigo);

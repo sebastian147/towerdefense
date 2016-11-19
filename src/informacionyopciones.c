@@ -65,7 +65,7 @@ bool EmpezarReloj(ALLEGRO_FONT *fuente,Reloj *reloj)
 			if(reloj->milisegundos==0)
 			{
 				reloj->segundos--;
-				reloj->milisegundos=1;//resta los segundos cuando se acaban los milisegundos
+				reloj->milisegundos=1;//resta los segundos cuando se acaban los milisegundos//poner 10  cuando presente
 				if((reloj->segundos==0) && (reloj->minutos==0))
 				{
 					return true;//retorna verdadero cuando se acaba el tiempo

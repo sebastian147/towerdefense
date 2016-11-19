@@ -1,7 +1,7 @@
 
 #include "header.h"
 void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado,int a)
-{
+{//se abre el archivo donde estan los datos de la torre, carga en buffer de datos.torres ...
   FILE *f;
 	char buff[100];
 	char *token;
@@ -16,11 +16,11 @@ void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado,int a)
 	{
 		fscanf(f,"%s",buff);
 		i++;
-	}
+	}//con strtok lee del buff hasta ";"  y lo guarda en token
 	token = strtok(buff, ";"); // token = "producto";
 	(*seleccionada)->imagen = al_load_bitmap(token);
 	al_convert_mask_to_alpha((*seleccionada)->imagen, al_map_rgb(0, 0, 0));
-	token = strtok(NULL, ";");
+	token = strtok(NULL, ";");//copia desde donde se quedo parado el strtok ";"
 	strcpy(aux,token);
 	(*seleccionada)->rango=atoi(aux);
 	token = strtok(NULL, ";");
@@ -29,7 +29,7 @@ void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado,int a)
 	token = strtok(NULL, ";");
 	strcpy(aux,token);
 	(*seleccionada)->cadencia=atoi(aux);
-	token = strtok(NULL, ";"); 
+	token = strtok(NULL, ";");
 	strcpy(aux,token);
 	(*seleccionada)->tiempo=atoi(aux);
 	token = strtok(NULL, ";");
@@ -38,8 +38,8 @@ void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado,int a)
 	token = strtok(NULL, "\n");
 	strcpy(aux,token);
 	(*seleccionada)->tiros=atoi(aux);
-	memset((*seleccionada)->disparo,0,5);
-  (*seleccionada)->pocicion.x=cuadrado->x;
+	memset((*seleccionada)->disparo,0,5);//que las 5 posiciones del string tomen como valor "0"
+  (*seleccionada)->pocicion.x=cuadrado->x;//posicion torre=posicion del cuadrado
   (*seleccionada)->pocicion.y=cuadrado->y;
 //le doy valor al enemigo
 }
@@ -146,7 +146,7 @@ void ActualizarProyectil(Torre **primera,Enemigo **ultimo)
 				(*primera)->disparo[i].pocicion.y-=(*primera)->disparo[i].velocidad;
 
 			}
-		printf("%d\n",(*primera)->pocicion.x);
+	//	printf("%d\n",(*primera)->pocicion.x);
 
 			al_draw_bitmap_region((*primera)->disparo[i].imagen,15,60,18,9,(*primera)->disparo[i].pocicion.x,(*primera)->disparo[i].pocicion.y,0);
       if((((*primera)->disparo[i].pocicion.y+11 > (*ultimo)->pocicion.y) && ((*primera)->disparo[i].pocicion.y < ((*ultimo)->pocicion.y + (*ultimo)->DistanciaFrames.y))) && (((*primera)->disparo[i].pocicion.x+20 > (*ultimo)->pocicion.x) && ((*primera)->disparo[i].pocicion.x < ((*ultimo)->pocicion.x + (*ultimo)->DistanciaFrames.x))))

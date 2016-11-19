@@ -10,6 +10,8 @@
 #include <math.h>
 #include <stdlib.h>
 #include "objetos.h"
+//incluyo las librerias de c
+
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -17,12 +19,16 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+//incluyo las librerias de allegro
+
 
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+//incluyo las librerias de sockets
+
 
 #define LARGO 750
 #define ALTO 600
@@ -39,6 +45,8 @@
 #define PUERTO 8888
 
 
+#define ENTER 2
+
 enum MYKEYS
 {
 	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
@@ -49,12 +57,13 @@ enum TECLAS
 };
 
 
+
 //jugar
-int jugar(Iniciar *iniciar);
+int Jugar(Iniciar *iniciar);
 
 
 //menu
-int menu(Iniciar *iniciar);
+int Menu(Iniciar *iniciar);
 
 
 //puntaje
@@ -67,7 +76,8 @@ void InicializarIniciar(Iniciar *iniciar);
 int IniciarYErrores(Iniciar *iniciar);
 void IniciarLiberarMemoria(Torre **torre,Enemigo **enemigo);
 void IniciarLiberarMemoriaCierre(Iniciar *iniciar);
-void  DibujarMenu(Iniciar *iniciar);
+void DibujarMenu(Iniciar *iniciar);
+
 
 //reloj
 bool EmpezarReloj(ALLEGRO_FONT *fuente,Reloj *reloj);
@@ -77,8 +87,6 @@ void Informacion(ALLEGRO_FONT *fuente,Jugador *jugador);
 void OpcionesTorre(ALLEGRO_FONT *fuente);
 
 
-
-
 //cuadrado
 void IniciarCuadrado(Cuadrado *cuadrado);
 void DibujarCuadrado(Cuadrado *cuadrado);
@@ -86,7 +94,6 @@ void MoverCuadradoArriba(Cuadrado *cuadrado);
 void MoverCuadradoAbajo(Cuadrado *cuadrado);
 void MoverCuadradoIzquierda(Cuadrado *cuadrado);
 void MoverCuadradoDerecha(Cuadrado *cuadrado);
-
 
 
 //jugador

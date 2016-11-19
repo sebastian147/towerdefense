@@ -78,10 +78,10 @@ int main(int argc, char **argv)
 						salir=true;
 						break;
 			case 1:
-						opcion=menu(&iniciar);
+						opcion=Menu(&iniciar);
 						break;
 			case 2:
-						opcion=jugar(&iniciar);
+						opcion=Jugar(&iniciar);
 						//funcion para ingresar iniciales
 						MandarPuntaje(opcion,PUERTO,"seb",IP,iniciar.fuente);
 						opcion=1;
