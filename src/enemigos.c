@@ -1,5 +1,5 @@
 #include "header.h"
-void IniciarEnemigo(Enemigo **enemigo,int a)
+int IniciarEnemigo(Enemigo **enemigo,int a)
 {
 //	enemigo->nombre={'D','r','a','g','o','n'};
 	FILE *f;
@@ -8,9 +8,12 @@ void IniciarEnemigo(Enemigo **enemigo,int a)
 	char aux[20];
 	int i=0;
 	f=fopen("./datos/enemigos","r");
+	FILE *error;
+	error=fopen("./datos/errores","a");
 	if(f==NULL)
 	{
-		fprintf(stdin,"Error al abrir el archivo\n");
+		fprintf(error,"Error al abrir el archivo\n");
+		return ERROR;
 	}
 	while(i!=a)
 	{
@@ -123,13 +126,14 @@ void BarraDeVida(Enemigo **enemigo)
 }
 Enemigo * NuevoEnemigo(Enemigo *enemigo)
 {
-
+	FILE *error;
+  error=fopen("./datos/errores","a");
 	Enemigo *aux=NULL,*nuevoEnemigo=NULL;//Declaro variables
 	nuevoEnemigo=(Enemigo *)malloc(sizeof(Enemigo));//pido memoria
 	if(nuevoEnemigo==NULL)//pregunto si sale error
 	{
-		printf("Error al crear enemigo");
-		return -1;
+		fprintf(error,"Error al crear enemigo");
+		return ERROR;
 	}
 	aux=enemigo;//hago la variable auxiliar igual al enemigo
 	if(aux==NULL)//si auxiliar no existe creo la lista

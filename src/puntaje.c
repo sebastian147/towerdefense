@@ -22,7 +22,6 @@ void OrdenarPuntaje(Puntaje *puntaje)
 
   i++;
   }while(i<=A );
-    fprintf(stderr, "hola");
 
 }
 int MostrarPuntaje(int sockfd, ALLEGRO_FONT *fuente)
@@ -34,36 +33,32 @@ int MostrarPuntaje(int sockfd, ALLEGRO_FONT *fuente)
   Puntaje puntaje[100];
 	for(i=0;i<100;i++)
 	{
-		puntaje[i].score=0;	
+		puntaje[i].score=0;
 	}
 	i=0;
   al_clear_to_color(al_map_rgb(0,0,0));
-//  fprintf(stderr, "hola");
+
    while(strcmp(buffer,salir)!=0 && i!=100)
   {
-//  fprintf(stderr, "hola");
 
     memset(buffer,0,20);
- // fprintf(stderr, "hola");
+
     n=read(sockfd,buffer,10);
    if(strncmp(buffer,salir,5)==0)
 	break;
     n=write(sockfd,"OK",2);
-//  fprintf(stderr, "hola");
-    fprintf(stderr, "%s\n\n\n\n",buffer);
-//	fgets(buffer,5,f);
+
     if (n < 0)
     {
           fprintf(error,"Error escribiendo al socket \n");
  	        return ERROR;
     }
 
-   // al_draw_textf(fuente,al_map_rgb(100,100,255),a,b,0,buffer);
+
    puntaje[i].score=atoi(strtok(buffer,";"));
     strcpy(puntaje[i].nombre,strtok(NULL,"\n"));
   i++;
-   // b+=20;
-  //  b+=20;
+
   }
   OrdenarPuntaje(puntaje);
   i=0;
@@ -74,7 +69,6 @@ int MostrarPuntaje(int sockfd, ALLEGRO_FONT *fuente)
         i++;
   }
   al_flip_display();
-printf("llegure\n\n\n\n\n");
 
   al_rest(10.0);
 }
@@ -124,10 +118,7 @@ int MandarPuntaje(int puntaje, int puerto,char *iniciales,char *ip, ALLEGRO_FONT
           fprintf(error,"Error conectandose \n");
           return ERROR;
     }
-    //printf("Escriba su mensaje: ");
 
-  //  memset((void *) buffer, '\0', 256);
-    //fgets(buffer,255,stdin);
     sprintf(buffer,"%d;%s",puntaje,iniciales);
     n = write(sockfd,buffer,strlen(buffer));
 
@@ -136,14 +127,7 @@ int MandarPuntaje(int puntaje, int puerto,char *iniciales,char *ip, ALLEGRO_FONT
           fprintf(error,"Error escribiendo al socket \n");
           return ERROR;
     }
-  //memset((void *) buffer, '\0', 256);
-  //  n = read(sockfd,buffer,255);
 
-  /*  if (n < 0)
-    {
-         fprintf(error,"Error leyendo desde el socket \n");
-         return ERROR;
-    }*/
   if(ERROR==MostrarPuntaje(sockfd,fuente))
   {
     return ERROR;

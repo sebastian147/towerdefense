@@ -9,6 +9,7 @@ void IniciarLiberarMemoriaCierre(Iniciar *iniciar)
 }
 void IniciarLiberarMemoria(Torre **torre,Enemigo **enemigo)
 {
+
 	Enemigo *aux=*enemigo, *aux2;
 	//Terminamos el programa
 	while(aux->siguiente!=NULL)
@@ -46,17 +47,20 @@ void InicializarIniciar(Iniciar *iniciar)
 }
 int IniciarYErrores(Iniciar *iniciar)
 {
+	FILE *error;
+	error=fopen("./datos/errores","a");
+
 	if(!al_init())
 	{
-		fprintf(stderr, "Fallo al iniciar allegro\n");
-		return -1;
+		fprintf(error, "Fallo al iniciar allegro\n");
+		return ERROR;
 	//verifica si se inicio bien allegro
 	}
 
 	if(!al_install_keyboard())
 	{
-		fprintf(stderr, "Fallo al iniciar el teclado\n");
-		return -1;
+		fprintf(error, "Fallo al iniciar el teclado\n");
+		return ERROR;
 	//verifica si se inicio bien el teclado
 	}
 
@@ -65,16 +69,16 @@ int IniciarYErrores(Iniciar *iniciar)
 
 	if(!iniciar->timer)
 	{
-		fprintf(stderr, "Fallo al crear el timer\n");
-		return -1;
+		fprintf(error, "Fallo al crear el timer\n");
+		return ERROR;
 	//ve si el timer anda
 	}
 
 	if(!al_init_image_addon())
 	{
-		fprintf(stderr,"Fallo al iniciar imagen addon\n");
+		fprintf(error,"Fallo al iniciar imagen addon\n");
 		al_destroy_timer(iniciar->timer);
-		return -1;
+		return ERROR;
 	}
 
 	iniciar->display = al_create_display(LARGO,ALTO);
@@ -82,9 +86,9 @@ int IniciarYErrores(Iniciar *iniciar)
 
 	if(!iniciar->display)
 	{
-		fprintf(stderr, "Fallo al crearo el display\n");
+		fprintf(error, "Fallo al crearo el display\n");
 		al_destroy_timer(iniciar->timer);
-		return -1;
+		return ERROR;
 	//Ver si el display anda
 	}
 
@@ -95,30 +99,30 @@ int IniciarYErrores(Iniciar *iniciar)
 
 	if(!iniciar->mapa)
 	{
-		fprintf(stderr, "Fallo al crear el mapa\n");
+		fprintf(error, "Fallo al crear el mapa\n");
 		al_destroy_display(iniciar->display);
 		al_destroy_timer(iniciar->timer);
-		return -1;
+		return ERROR;
 	//verifico si se cargo bien
 	}
 	if(!al_init_primitives_addon())
 	{
-		fprintf(stderr,"Fallo al crear el evento\n");
+		fprintf(error,"Fallo al crear el evento\n");
 		al_destroy_bitmap(iniciar->mapa);
 		al_destroy_display(iniciar->display);
 		al_destroy_timer(iniciar->timer);
      //           al_destroy_bitmap(enemigo1.imagen);
-		return -1;
+		return ERROR;
 	//fallo al crear dibujos primarios
 	}
 	if(!al_install_keyboard())
 	{
-		fprintf(stderr, "Fallo al crear el teclado\n");
+		fprintf(error, "Fallo al crear el teclado\n");
 		al_destroy_bitmap(iniciar->mapa);
 		al_destroy_display(iniciar->display);
 		al_destroy_timer(iniciar->timer);
  //               al_destroy_bitmap(enemigo1.imagen);
-		return -1;
+		return ERROR;
 
 	}
         iniciar->event_queue = al_create_event_queue();
@@ -126,13 +130,13 @@ int IniciarYErrores(Iniciar *iniciar)
 
 	if(!iniciar->event_queue)
 	{
-		fprintf(stderr, "Fallo al crear el evento queue\n");
+		fprintf(error, "Fallo al crear el evento queue\n");
 		al_destroy_bitmap(iniciar->mapa);
 		al_destroy_display(iniciar->display);
 		al_destroy_timer(iniciar->timer);
 
  //             al_destroy_bitmap(enemigo1.imagen);
-		return -1;
+		return ERROR;
 	//verifico si se creo bien
 	}
 
@@ -141,13 +145,13 @@ int IniciarYErrores(Iniciar *iniciar)
 
 	if(!al_init_ttf_addon())
 	{
-                fprintf(stderr, "Fallo al iniciar el archivo .ttf\n");
+                fprintf(error, "Fallo al iniciar el archivo .ttf\n");
                 al_destroy_bitmap(iniciar->mapa);
                 al_destroy_display(iniciar->display);
                 al_destroy_timer(iniciar->timer);
 	        al_destroy_event_queue(iniciar->event_queue);
 
-		return -1;
+		return ERROR;
 	//verifico si puede abrir el archivo de texto para leer fuentes
 	}
 
@@ -156,14 +160,14 @@ int IniciarYErrores(Iniciar *iniciar)
 	iniciar->fondo = al_load_bitmap("./assets/FondoMenu.bmp");
 	if(!iniciar->fondo)
 	{
-          fprintf(stderr, "Fallo al iniciar el archivo .ttf\n");
+          fprintf(error, "Fallo al iniciar el archivo .ttf\n");
           al_destroy_bitmap(iniciar->mapa);
           al_destroy_display(iniciar->display);
           al_destroy_timer(iniciar->timer);
 	        al_destroy_event_queue(iniciar->event_queue);
 
-		return -1;
+		return ERROR;
 	//verifico si puede abrir el archivo de texto para leer fuentes
 	}
-	return 0;
+	return OK;
 }

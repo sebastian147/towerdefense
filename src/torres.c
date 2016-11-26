@@ -200,9 +200,9 @@ int BuscarUltimoEnRadio(Enemigo **primero,Torre **seleccionada)
   int x,y,z;
   while(aux!=NULL)
   {
-	x=aux->pocicion.x;
-	y=aux->pocicion.y;
-	z=aux->bandera;
+	//x=aux->pocicion.x;
+	//y=aux->pocicion.y;
+	//z=aux->bandera;
 	//PredecirMovimiento(&aux,torre);
 	//elchoclo es para calcular la distancia
       if(fabs(sqrt(pow(aux->pocicion.x+aux->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y+aux->DistanciaFrames.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(aux->pocicion.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y-(torre->pocicion.y+25),2))) < (torre->rango*CUADRADOX) || fabs(sqrt(pow(aux->pocicion.x+aux->DistanciaFrames.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y-(torre->pocicion.y+25),2))) < torre->rango*CUADRADOX || fabs(sqrt(pow(aux->pocicion.x-(torre->pocicion.x+25),2)+pow(aux->pocicion.y+aux->DistanciaFrames.y-(torre->pocicion.y+25),2))) < (torre->rango*CUADRADOX))
@@ -244,9 +244,9 @@ int BuscarUltimoEnRadio(Enemigo **primero,Torre **seleccionada)
 
      j=OK;
      }
-	aux->pocicion.x=x;
-	aux->pocicion.y=y;
-	aux->bandera=z;
+	//aux->pocicion.x=x;
+	//aux->pocicion.y=y;
+	//aux->bandera=z;
 
      aux=aux->siguiente;
   }
@@ -269,7 +269,7 @@ void ActualizarTorre(Torre **primera,Cuadrado *cuadrado,Enemigo **primero,Reloj 
     		//dibujo el circulo cuando el cuadrado esta sobre la torre
     if(*primero!=NULL)
     {
-      if(/*aux->tiempo==aux->cadencia && agregarle cadencia*/ OK==BuscarUltimoEnRadio(&atacar,&aux))
+      if( OK==BuscarUltimoEnRadio(&atacar,&aux))
       {
 		      DispararAlUltimo(&aux,&atacar,reloj);
  		       //dispara

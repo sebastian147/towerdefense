@@ -108,7 +108,7 @@ void IniciarJugador(Jugador *jugador);
 
 //enemigos
 void MoverEnemigo(Enemigo **enemigo, Jugador *jugador);
-void IniciarEnemigo(Enemigo **enemigo,int a);
+int IniciarEnemigo(Enemigo **enemigo,int a);
 void MoverEnemigoAbajo(int final,Enemigo **enemigo,int bandera);
 void MoverEnemigoIzquierda(int final,Enemigo **enemigo,int bandera);
 void MoverEnemigoDerecha(int final,Enemigo **enemigo,int bandera);

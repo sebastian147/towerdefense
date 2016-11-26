@@ -22,17 +22,15 @@ int main(int argc, char *argv[])
      int sockfd, newsockfd, portno;
      socklen_t clilen;
      char buffer[20];
-     char salir[6]="salir";
+     char salir[6]="salir",ok[2]="OK";
      struct sockaddr_in serv_addr, cli_addr;
      int n,arch;
      int uno=1,i=0;
 	FILE *f;
-//	arch=open("mensaje",O_APPEND);
 	f=fopen("puntajes","a+");
- //if(sockgf==-1)
-	//error(errno, 1, ererero)
 
-	//eeror... para dejar de usar la direccion
+
+
      if (argc < 2)
      {
          fprintf(stderr,"ERROR, no port provided\n");
@@ -76,25 +74,18 @@ int main(int argc, char *argv[])
      fputs("\n",f);
      rewind(f);
 
-    while(!feof(f) /*&& i<20*/ )
+    while(!feof(f)  )
      {
-	//memset(buffer,0,20);
        fgets(buffer,20,f);
-       fprintf(stderr, "%s\n\n\n",buffer);
-       if(strncmp("OK",buffer,2)==0)
-		break;
+
 	n = write(newsockfd,buffer,strlen(buffer));
        if (n < 0) error("ERROR writing to socket");
-       n=read(newsockfd,buffer,2);
-	fprintf(stderr,"%s\n\n",buffer);
-	if(strncmp("OK",buffer,2)!=0)
+       n=read(newsockfd,ok,2);
+	if(strncmp("OK",ok,2)!=0)
 		fprintf(stderr,"error\n\n");
-	//fprintf(stderr, "%d\n", n);
-	//i++;
+
      }
-     //fprintf(stderr, "hola");
      n = write(newsockfd,salir,strlen(salir));
-     fprintf(stderr, "%s\n\n",salir);
 
 	close(newsockfd);
 	close(sockfd);
