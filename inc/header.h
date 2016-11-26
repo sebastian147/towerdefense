@@ -53,7 +53,7 @@ enum MYKEYS
 };
 enum TECLAS
 {
-	ARRIBA, ABAJO, IZQUIERDA, DERECHA, SPACE, UNO,DOS, B
+	ARRIBA, ABAJO, IZQUIERDA, DERECHA, SPACE, UNO,DOS,TRES, A, B, C
 };
 
 
@@ -68,7 +68,7 @@ bool ActualizarDibujosJuegar(Iniciar *iniciar,Cuadrado *cuadrado,Jugador *jugado
 //menu
 int Menu(Iniciar *iniciar);
 bool TeclasOprimidasMenu(bool *teclas, bool salir, ALLEGRO_EVENT *ev);
-
+void DibujarMenu(Iniciar *iniciar,Linea *linea);
 
 
 //puntaje
@@ -77,12 +77,20 @@ int MostrarPuntaje(int sockfd, ALLEGRO_FONT *fuente);
 void OrdenarPuntaje(Puntaje *puntaje);
 
 
+//instrucciones
+bool TeclasOprimidasInstrucciones(bool *teclas, bool salir, ALLEGRO_EVENT *ev);
+void MoverImagenIzquierda(ALLEGRO_BITMAP **);
+void MoverImagenDerecha(ALLEGRO_BITMAP **);
+void  DibujarInstrucciones(Iniciar *iniciar);
+int Instrucciones(Iniciar *iniciar);
+
+
+
 //iniciar
 void InicializarIniciar(Iniciar *iniciar);
 int IniciarYErrores(Iniciar *iniciar);
 void IniciarLiberarMemoria(Torre **torre,Enemigo **enemigo);
 void IniciarLiberarMemoriaCierre(Iniciar *iniciar);
-void DibujarMenu(Iniciar *iniciar);
 
 
 //reloj
@@ -93,13 +101,18 @@ void Informacion(ALLEGRO_FONT *fuente,Jugador *jugador);
 void OpcionesTorre(ALLEGRO_FONT *fuente);
 
 
-//cuadrado
+//cuadrado y linea
 void IniciarCuadrado(Cuadrado *cuadrado);
 void DibujarCuadrado(Cuadrado *cuadrado);
 void MoverCuadradoArriba(Cuadrado *cuadrado);
 void MoverCuadradoAbajo(Cuadrado *cuadrado);
 void MoverCuadradoIzquierda(Cuadrado *cuadrado);
 void MoverCuadradoDerecha(Cuadrado *cuadrado);
+void IniciarLinea(Linea *linea);
+void DibujarLinea(Linea *linea);
+void MoverLineaArriba(Linea *linea);
+void MoverLineaAbajo(Linea *linea);
+
 
 
 //jugador
@@ -124,7 +137,7 @@ void PredecirMovimiento(Enemigo **enemigo, Torre *torre);
 
 
 //torres
-void MejorarTorre(Torre **seleccionada);
+void MejorarTorre(Torre **seleccionada,Cuadrado *cuadrado,Jugador *jugador);
 void NuevoProyectil(Torre **primera);
 int DestruirTorre(Torre **seleccionada,Cuadrado *cuadrado);
 void LiberarMemoriaTorres(Torre **seleccionada, Torre **primera);

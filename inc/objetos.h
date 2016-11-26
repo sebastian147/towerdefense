@@ -108,6 +108,8 @@ struct TORRE
 {
 	int rango;
 	int danio;
+	xy FrameActual;
+	xy DistanciaFrames;
 	xy pocicion;
 	int cadencia;
 	int tiempo;
@@ -118,6 +120,8 @@ struct TORRE
 	struct TORRE *anterior;
 	struct BALA disparo[5];
 	ALLEGRO_BITMAP *imagen;
+	int bandera;
+	int PrecioMejora;
 };
 typedef struct TORRE Torre;
 
@@ -127,3 +131,11 @@ struct PUNTAJE
 	int score;
 };
 typedef struct PUNTAJE Puntaje;
+
+struct LINEA
+{
+		xy pocicioninicial;
+		xy pocicionfinal;
+		int bandera;
+};
+typedef struct LINEA Linea;

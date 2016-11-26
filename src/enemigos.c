@@ -272,7 +272,7 @@ Enemigo *EmpezarOleada(Enemigo *enemigo, int oleada,int malo)
 	else
 	{
 			enemigo=NuevoEnemigo(enemigo);//pide memoria para el enemigio en la lista
-			IniciarEnemigo(&enemigo,2);//inicia el enemigo con sus valores
+			IniciarEnemigo(&enemigo,3);//inicia el enemigo con sus valores
 	}
 	return enemigo;
 }

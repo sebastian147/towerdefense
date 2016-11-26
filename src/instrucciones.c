@@ -1,15 +1,16 @@
 #include "header.h"
-void  DibujarMenu(Iniciar *iniciar,Linea *linea)
+void  DibujarInstrucciones(Iniciar *iniciar)
 {
   al_clear_to_color(al_map_rgb(0,0,0));
 
 
+
   al_draw_bitmap(iniciar->fondo,0,0,0);
-  DibujarLinea(linea);
+
 
   al_flip_display();
 }
-bool TeclasOprimidasMenu(bool *teclas,bool salir, ALLEGRO_EVENT *ev)
+bool TeclasOprimidasInstrucciones(bool *teclas,bool salir, ALLEGRO_EVENT *ev)
 {
 
   if(ev->type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -20,20 +21,28 @@ bool TeclasOprimidasMenu(bool *teclas,bool salir, ALLEGRO_EVENT *ev)
   {
     switch(ev->keyboard.keycode)
     {
-      case ALLEGRO_KEY_ENTER:
+      case ALLEGRO_KEY_ESCAPE:
         teclas[ENTER]=true;//es enter pero para no crear orea variable
         break;
-      case ALLEGRO_KEY_UP:
-        teclas[ARRIBA] = true;
+      case ALLEGRO_KEY_LEFT:
+        teclas[IZQUIERDA] = true;
         break;
-      case ALLEGRO_KEY_DOWN:
-        teclas[ABAJO] = true;
+      case ALLEGRO_KEY_RIGHT:
+        teclas[DERECHA] = true;
         break;
     }
   }
   return salir;
 }
-int Menu(Iniciar *iniciar)
+void MoverImagenDerecha(ALLEGRO_BITMAP **imagenes)
+{
+
+}
+void MoverImagenIzquierda(ALLEGRO_BITMAP **imagenes)
+{
+
+}
+int Instrucciones(Iniciar *iniciar)
 {
 
 
@@ -42,11 +51,8 @@ int Menu(Iniciar *iniciar)
   bool salir=false;
   bool teclas[4] = {false, false, false, false};//le dice como estan las teclas
   int opcion=1;
+  ALLEGRO_BITMAP *imagenes[4];
 
-  Linea linea;
-
-
-  IniciarLinea(&linea);
 
   /********************************comienza el menu**********************************/
 
@@ -57,41 +63,25 @@ int Menu(Iniciar *iniciar)
     ALLEGRO_EVENT ev;
     al_wait_for_event(iniciar->event_queue, &ev);
 
-    DibujarMenu(iniciar,&linea);
+    DibujarInstrucciones(iniciar);
 
 
 //lo que hace por cada tecla que oprimo
-    if(teclas[ARRIBA])
+    if(teclas[IZQUIERDA])
     {
-      MoverLineaArriba(&linea);
+      MoverImagenIzquierda(imagenes);
     }
-    if(teclas[ABAJO])
+    if(teclas[DERECHA])
     {
-      MoverLineaAbajo(&linea);
+      MoverImagenDerecha(imagenes);
     }
     if(teclas[ENTER])
     {
-      if(linea.bandera==0)
-      {
-        return 2;
-      }
-      else if(linea.bandera==1)
-      {
-        return 3;
-      }
-      if(linea.bandera==2)
-      {
-        return 4;
-      }
-      else if(linea.bandera==3)
-      {
-        return 0;
-      }
-
+      return 1;
     }
     memset(teclas,false,3);
 
-    salir=TeclasOprimidasMenu(teclas, salir, &ev);
+    salir=TeclasOprimidasInstrucciones(teclas, salir, &ev);
 
   }
   return OK;

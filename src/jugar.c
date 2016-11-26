@@ -37,9 +37,20 @@ bool TeclasOprimidasJugar(bool *teclas, bool salir, ALLEGRO_EVENT *ev)
       case ALLEGRO_KEY_2:
         teclas[DOS] = true;
         break;
+      case ALLEGRO_KEY_3:
+        teclas[TRES] = true;
+        break;
+      case ALLEGRO_KEY_A:
+        if(teclas[UNO])
+          teclas[A] = true;
+          break;
       case ALLEGRO_KEY_B:
         if(teclas[UNO])
           teclas[B] = true;
+          break;
+      case ALLEGRO_KEY_C:
+        if(teclas[UNO])
+          teclas[C] = true;
           break;
     }
   }//cambia los botones mientras los aprieto
@@ -64,6 +75,9 @@ bool TeclasOprimidasJugar(bool *teclas, bool salir, ALLEGRO_EVENT *ev)
         break;
       case ALLEGRO_KEY_2:
         teclas[DOS] = false;
+        break;
+      case ALLEGRO_KEY_3:
+        teclas[TRES] = false;
         break;
     }
   }//cambia los botones cuando los suelto
@@ -106,7 +120,7 @@ int Jugar(Iniciar *iniciar)
   //declaro bools
   bool salir = false;//para salir del while
   bool redraw = true;//hace que entre al if de volver a dibujar
-  bool teclas[8] = {false, false, false, false, false, false , false, false};//le dice como estan las teclas
+  bool teclas[11] ;//le dice como estan las teclas
   bool RelojSalida=false;//reloj
   int oleada=0;//para saber donde esta
 
@@ -115,6 +129,7 @@ int Jugar(Iniciar *iniciar)
   IniciarReloj(&reloj);
   IniciarCuadrado(&cuadrado);
   IniciarJugador(&jugador);
+  memset(teclas,false,11);
 
   /********************************comienza el juego**********************************/
 
@@ -141,6 +156,28 @@ int Jugar(Iniciar *iniciar)
       if(teclas[UNO])
       {
         OpcionesTorre(iniciar->fuente);
+        if(teclas[A])
+        {
+          if((cuadrado.x/CUADRADOX==6&&cuadrado.y/CUADRADOY<2)||(cuadrado.y/CUADRADOY==1&&cuadrado.x/CUADRADOX>1&&cuadrado.x/CUADRADOX<6)||(cuadrado.x/CUADRADOX==1&&cuadrado.y/CUADRADOY<11&&cuadrado.y/CUADRADOY>0)||(cuadrado.y/CUADRADOY==10&&cuadrado.x/CUADRADOX>1&&cuadrado.x/CUADRADOX<8)||(cuadrado.x/CUADRADOX==7&&cuadrado.y/CUADRADOY<10&&cuadrado.y/CUADRADOY>5)||(cuadrado.y/CUADRADOY==5&&cuadrado.x/CUADRADOX>4&&cuadrado.x/CUADRADOX<8)||(cuadrado.x/CUADRADOX==5&&cuadrado.y/CUADRADOY<9&&cuadrado.y/CUADRADOY>5)||(cuadrado.y/CUADRADOY==8&&cuadrado.x/CUADRADOX<5&&cuadrado.x/CUADRADOX>2)||(cuadrado.x/CUADRADOX==3&&cuadrado.y/CUADRADOY<8&&cuadrado.y/CUADRADOY>2)||(cuadrado.y/CUADRADOY==3&&cuadrado.x/CUADRADOX>3&&cuadrado.x/CUADRADOX<11)||(cuadrado.x/CUADRADOX==10&&cuadrado.y/CUADRADOY>3&&cuadrado.y/CUADRADOY<12))
+          {//si es el camino imprime un errror
+            //tengo que imprimir un error
+          }
+          else if(HayTorre(&cuadrado,torre)==0)// si ya hay una torre ahi
+          {
+            //tengo que imprimir un error
+          }
+          else if(jugador.plata<200)
+          {
+            //error de no hay plata suficiente
+          }
+          else
+          {
+            CrearTorre(&torre);
+            IniciarTorre(&torre,&cuadrado,1);
+            jugador.plata-=200;
+          }//pone la torre
+          teclas[A] =   false;
+        }
         if(teclas[B])
         {
           if((cuadrado.x/CUADRADOX==6&&cuadrado.y/CUADRADOY<2)||(cuadrado.y/CUADRADOY==1&&cuadrado.x/CUADRADOX>1&&cuadrado.x/CUADRADOX<6)||(cuadrado.x/CUADRADOX==1&&cuadrado.y/CUADRADOY<11&&cuadrado.y/CUADRADOY>0)||(cuadrado.y/CUADRADOY==10&&cuadrado.x/CUADRADOX>1&&cuadrado.x/CUADRADOX<8)||(cuadrado.x/CUADRADOX==7&&cuadrado.y/CUADRADOY<10&&cuadrado.y/CUADRADOY>5)||(cuadrado.y/CUADRADOY==5&&cuadrado.x/CUADRADOX>4&&cuadrado.x/CUADRADOX<8)||(cuadrado.x/CUADRADOX==5&&cuadrado.y/CUADRADOY<9&&cuadrado.y/CUADRADOY>5)||(cuadrado.y/CUADRADOY==8&&cuadrado.x/CUADRADOX<5&&cuadrado.x/CUADRADOX>2)||(cuadrado.x/CUADRADOX==3&&cuadrado.y/CUADRADOY<8&&cuadrado.y/CUADRADOY>2)||(cuadrado.y/CUADRADOY==3&&cuadrado.x/CUADRADOX>3&&cuadrado.x/CUADRADOX<11)||(cuadrado.x/CUADRADOX==10&&cuadrado.y/CUADRADOY>3&&cuadrado.y/CUADRADOY<12))
@@ -151,12 +188,41 @@ int Jugar(Iniciar *iniciar)
           {
             //tengo que imprimir un error
           }
+          else if(jugador.plata<300)
+          {
+            //error de no hay plata suficiente
+          }
           else
           {
             CrearTorre(&torre);
-            IniciarTorre(&torre,&cuadrado,1);
+            IniciarTorre(&torre,&cuadrado,4);
+            jugador.plata-=300;
+
           }//pone la torre
           teclas[B] =   false;
+        }
+        if(teclas[C])
+        {
+          if((cuadrado.x/CUADRADOX==6&&cuadrado.y/CUADRADOY<2)||(cuadrado.y/CUADRADOY==1&&cuadrado.x/CUADRADOX>1&&cuadrado.x/CUADRADOX<6)||(cuadrado.x/CUADRADOX==1&&cuadrado.y/CUADRADOY<11&&cuadrado.y/CUADRADOY>0)||(cuadrado.y/CUADRADOY==10&&cuadrado.x/CUADRADOX>1&&cuadrado.x/CUADRADOX<8)||(cuadrado.x/CUADRADOX==7&&cuadrado.y/CUADRADOY<10&&cuadrado.y/CUADRADOY>5)||(cuadrado.y/CUADRADOY==5&&cuadrado.x/CUADRADOX>4&&cuadrado.x/CUADRADOX<8)||(cuadrado.x/CUADRADOX==5&&cuadrado.y/CUADRADOY<9&&cuadrado.y/CUADRADOY>5)||(cuadrado.y/CUADRADOY==8&&cuadrado.x/CUADRADOX<5&&cuadrado.x/CUADRADOX>2)||(cuadrado.x/CUADRADOX==3&&cuadrado.y/CUADRADOY<8&&cuadrado.y/CUADRADOY>2)||(cuadrado.y/CUADRADOY==3&&cuadrado.x/CUADRADOX>3&&cuadrado.x/CUADRADOX<11)||(cuadrado.x/CUADRADOX==10&&cuadrado.y/CUADRADOY>3&&cuadrado.y/CUADRADOY<12))
+          {//si es el camino imprime un errror
+            //tengo que imprimir un error
+          }
+          else if(HayTorre(&cuadrado,torre)==0)// si ya hay una torre ahi
+          {
+            //tengo que imprimir un error
+          }
+          else if(jugador.plata<300)
+          {
+            //error de no hay plata suficiente
+          }
+          else
+          {
+            CrearTorre(&torre);
+            IniciarTorre(&torre,&cuadrado,7);
+            jugador.plata-=300;
+
+          }//pone la torre
+          teclas[C] =   false;
         }
       }
       // printf("%d\n",teclas[UNO]);
@@ -164,7 +230,10 @@ int Jugar(Iniciar *iniciar)
       {
         DestruirTorre(&torre,&cuadrado);
       }
-
+      if(teclas[TRES])
+      {
+        MejorarTorre(&torre,&cuadrado,&jugador);
+      }
 
       // reloj
       if(!RelojSalida && enemigo==NULL)
@@ -180,6 +249,10 @@ int Jugar(Iniciar *iniciar)
     }
     ActualizarTorre(&torre,&cuadrado,&enemigo,&reloj);
   }//de acuero a la tecla que oprimi se mueve
+  if(jugador.vida<0)
+  {
+    salir=true;
+  }
   salir =TeclasOprimidasJugar(teclas, salir, &ev);
   redraw=ActualizarDibujosJuegar(iniciar,&cuadrado,&jugador,redraw);
 

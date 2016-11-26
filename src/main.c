@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 
 
 
-	char IP[]="127.0.0.1";
+	char IP[]="10.5.4.120";
 
 /**************************************Inicia Allegro y analiza errores*********************************/
 
@@ -84,6 +84,13 @@ int main(int argc, char **argv)
 						opcion=Jugar(&iniciar);
 						//funcion para ingresar iniciales
 						MandarPuntaje(opcion,PUERTO,"seb",IP,iniciar.fuente);
+						opcion=1;
+						break;
+			case 3:
+						opcion=Instrucciones(&iniciar);
+						break;
+			case 4:
+						MandarPuntaje(-1,PUERTO,"a",IP,iniciar.fuente);
 						opcion=1;
 						break;
 			}

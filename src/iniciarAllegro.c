@@ -157,7 +157,7 @@ int IniciarYErrores(Iniciar *iniciar)
 
   iniciar->fuente =al_load_ttf_font("./assets/fuente1.ttf",20,0);//cargo el archivo con las funtes de texto
 
-	iniciar->fondo = al_load_bitmap("./assets/FondoMenu.bmp");
+	iniciar->fondo = al_load_bitmap("./assets/TD.bmp");
 	if(!iniciar->fondo)
 	{
           fprintf(error, "Fallo al iniciar el archivo .ttf\n");

@@ -36,59 +36,66 @@ int main(int argc, char *argv[])
          fprintf(stderr,"ERROR, no port provided\n");
          exit(1);
      }
+     while(salir)
+     {
 
-     sockfd = socket(AF_INET, SOCK_STREAM, 0);
+       sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
-     if (sockfd < 0)
-        error("ERROR opening socket");
-      if(setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (void*)&uno,(socklen_t)(sizeof(uno))))
-        error("error opciones de socket");
-     // Armando la estructura "sockaddr_in"
-     portno = atoi(argv[1]);
-     serv_addr.sin_family = AF_INET;
-     serv_addr.sin_addr.s_addr = INADDR_ANY;
-     serv_addr.sin_port = htons(portno);
-     memset((void *) &(serv_addr.sin_zero), '\0', 8); // Poner a cero el resto de la estructura
+       if (sockfd < 0)
+          error("ERROR opening socket");
+          if(setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (void*)&uno,(socklen_t)(sizeof(uno))))
+          error("error opciones de socket");
+          // Armando la estructura "sockaddr_in"
+          portno = atoi(argv[1]);
+          serv_addr.sin_family = AF_INET;
+          serv_addr.sin_addr.s_addr = INADDR_ANY;
+          serv_addr.sin_port = htons(portno);
+          memset((void *) &(serv_addr.sin_zero), '\0', 8); // Poner a cero el resto de la estructura
 
-     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
+       if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
               error("ERROR on binding");
 
-     listen(sockfd,5);
+      listen(sockfd,5);
 
-     clilen = sizeof(cli_addr);
+      clilen = sizeof(cli_addr);
 
 
-     printf("Esperando conexiones...\n");
-     // Llamado bloqueante a accept()
-     newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
-     if (newsockfd < 0)
-          error("ERROR on accept");
+      printf("Esperando conexiones...\n");
+      // Llamado bloqueante a accept()
+      newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
+      if (newsockfd < 0)
+           error("ERROR on accept");
 
-     memset((void *) buffer, '\0', 20);
+      memset((void *) buffer, '\0', 20);
 
-     n = read(newsockfd,buffer,20);
-     if (n < 0) error("ERROR reading from socket");
+      n = read(newsockfd,buffer,20);
+      if(strncmp("-1;a",buffer,4)!=0)
+      {
+      if (n < 0) error("ERROR reading from socket");
 
-    fputs(buffer,f);
+     fputs(buffer,f);
 
      fputs("\n",f);
+    }
      rewind(f);
 
-    while(!feof(f)  )
-     {
-       fgets(buffer,20,f);
 
-	n = write(newsockfd,buffer,strlen(buffer));
-       if (n < 0) error("ERROR writing to socket");
-       n=read(newsockfd,ok,2);
-	if(strncmp("OK",ok,2)!=0)
-		fprintf(stderr,"error\n\n");
+     while(!feof(f)  )
+      {
+        fgets(buffer,20,f);
 
-     }
-     n = write(newsockfd,salir,strlen(salir));
+	 n = write(newsockfd,buffer,strlen(buffer));
+        if (n < 0) error("ERROR writing to socket");
+        n=read(newsockfd,ok,2);
+	 if(strncmp("OK",ok,2)!=0)
+	  	fprintf(stderr,"error\n\n");
 
-	close(newsockfd);
-	close(sockfd);
-	fclose(f);
+      }
+    n = write(newsockfd,salir,strlen(salir));
+    sleep(2);
+  }
+	 close(newsockfd);
+	 close(sockfd);
+	 fclose(f);
      return 0;
 }

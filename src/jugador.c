@@ -4,7 +4,7 @@ void IniciarJugador(Jugador *jugador)
 	strcpy(jugador->iniciales,"seb");
 	jugador->vida=50;
 	jugador->score=0;
-	jugador->plata=300;
+	jugador->plata=200;
 	//arreglar
 	jugador->oleada=1;
 	jugador->relojito=0;

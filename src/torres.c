@@ -19,7 +19,7 @@ void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado,int a)
 	}//con strtok lee del buff hasta ";"  y lo guarda en token
 	token = strtok(buff, ";"); // token = "producto";
 	(*seleccionada)->imagen = al_load_bitmap(token);
-	al_convert_mask_to_alpha((*seleccionada)->imagen, al_map_rgb(0, 0, 0));
+	al_convert_mask_to_alpha((*seleccionada)->imagen, al_map_rgb(255, 255, 255));
 	token = strtok(NULL, ";");//copia desde donde se quedo parado el strtok ";"
 	strcpy(aux,token);
 	(*seleccionada)->rango=atoi(aux);
@@ -35,27 +35,50 @@ void IniciarTorre(Torre **seleccionada,Cuadrado *cuadrado,int a)
 	token = strtok(NULL, ";");
 	strcpy(aux,token);
 	(*seleccionada)->velocidad=atoi(aux);
-	token = strtok(NULL, "\n");
+	token = strtok(NULL, ";");
 	strcpy(aux,token);
 	(*seleccionada)->tiros=atoi(aux);
+  token = strtok(NULL, ";");
+  strcpy(aux,token);
+  (*seleccionada)->FrameActual.x=atoi(aux);
+  token = strtok(NULL, ";");
+  strcpy(aux,token);
+  (*seleccionada)->FrameActual.y=atoi(aux);
+  token = strtok(NULL, ";");
+  strcpy(aux,token);
+  (*seleccionada)->DistanciaFrames.x=atoi(aux);
+  token = strtok(NULL, ";");
+  strcpy(aux,token);
+  (*seleccionada)->DistanciaFrames.y=atoi(aux);
+  token = strtok(NULL, ";");
+  strcpy(aux,token);
+  (*seleccionada)->PrecioMejora=atoi(aux);
 	memset((*seleccionada)->disparo,0,5);//que las 5 posiciones del string tomen como valor "0"
   (*seleccionada)->pocicion.x=cuadrado->x;//posicion torre=posicion del cuadrado
   (*seleccionada)->pocicion.y=cuadrado->y;
+  (*seleccionada)->bandera=a;
+
 //le doy valor al enemigo
 }
 int HayTorre(Cuadrado *cuadrado,Torre *torre)
 {
+
 	while(torre!=NULL)
 	{
 		if(cuadrado->x == torre->pocicion.x && cuadrado->y == torre->pocicion.y)
 			return OK;//si el cuadrado esta sobre la pocicion de una torre retorna ok
 		torre=torre->siguiente;
 	}
+
 	return ERROR;
 }
-void MejorarTorre(Torre **seleccionada)
+void MejorarTorre(Torre **seleccionada,Cuadrado *cuadrado,Jugador *jugador)
 {
 
+  if(((*seleccionada)->PrecioMejora != -1)&& ((*seleccionada)->PrecioMejora<=jugador->plata)&&(HayTorre(cuadrado,*seleccionada)==OK))
+  {
+    IniciarTorre(seleccionada,cuadrado,(*seleccionada)->bandera+1);
+  }
 }
 void NuevoProyectil(Torre **primera)
 {
@@ -262,7 +285,7 @@ void ActualizarTorre(Torre **primera,Cuadrado *cuadrado,Enemigo **primero,Reloj 
   int i;
   while(aux!=NULL)
   {
-    al_draw_bitmap_region(aux->imagen,150,50,50,50,aux->pocicion.x,aux->pocicion.y,0);
+    al_draw_bitmap_region(aux->imagen,aux->FrameActual.x,aux->FrameActual.y,aux->DistanciaFrames.x,aux->DistanciaFrames.y,aux->pocicion.x,aux->pocicion.y,0);
 	//dibujo la torre
     if(cuadrado->x==aux->pocicion.x&&cuadrado->y==aux->pocicion.y)
 	 al_draw_circle(cuadrado->x+25,cuadrado->y+25,aux->rango*CUADRADOX, al_map_rgb(255, 255, 255),0);
